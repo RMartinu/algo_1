@@ -10,5 +10,8 @@ package ads1hash;
  * @author Robert Martinu
  */
 public class StockData {
+        public String Name;
+    public String Abbrev;
+    public String WKN;
     
 }
