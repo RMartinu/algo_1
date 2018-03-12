@@ -10,8 +10,19 @@ package ads1hash;
  * @author Robert Martinu
  */
 public class StockData {
-        public String Name;
-    public String Abbrev;
-    public String WKN;
+        private String Name;
+    private String Abbrev;
+    private String WKN;
+    
+   private DayData data[];
+   private int fillIndex;
+   
+   StockData(String name, String Abbreb, String WKN)
+   {
+       data=new DayData[30];
+       fillIndex=0;
+   }
+   void insertDayData(DayData dataPoint)
+   {}
     
 }
