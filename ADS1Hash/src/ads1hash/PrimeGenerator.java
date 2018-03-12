@@ -42,4 +42,18 @@ public class PrimeGenerator
                   2699,  2707,  2711,  2713,  2719,  2729,  2731,  2741,  2749,  2753,  2767,  2777,  2789,  2791,
                   2797,  2801,  2803,  2819,  2833,  2837,  2843,  2851,  2857,  2861,  2879,  2887,  2897,  2903,
                   2909,  2917,  2927,  2939,  2953,  2957,  2963,  2969,  2971,  2999,  3001};
+    
+    boolean isPrime(int Candidate)
+    {
+        return false;
+    }
+    boolean isMersennePrime(int input)
+    {
+        return false;
+    }
+    
+    int findClosestPrime(int input)
+    {
+        return 2017;
+    }
 }
