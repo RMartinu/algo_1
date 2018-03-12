@@ -18,7 +18,7 @@ public class HashTable {
     private StockData byAbbrev[];
 
     HashTable(int desiredCapacity) {
-        
+
         capacity = desiredCapacity;
         byName = new StockData[desiredCapacity];
         byAbbrev = new StockData[desiredCapacity];
@@ -28,6 +28,33 @@ public class HashTable {
 
     boolean requestResize(int newCapacity) {
         return false;
+    }
+
+    int getHashCode(String hashMe) {
+        int currentChar;
+        int hashCode = 0;
+        for (int i = 0; i < hashMe.length(); i++) {
+            currentChar = hashMe.charAt(i);
+            hashCode = (hashCode * 256 + currentChar) % capacity;
+        }
+
+        return hashCode;
+
+    }
+
+    int getQuadraticProbing(int hashCode, int iteration) {
+        int newIndex = hashCode;
+        newIndex += Math.pow(iteration, 2); //Just in case someone ponders higher order probing
+
+        return newIndex;
+    }
+
+    StockData findByName(String name) {
+        return null;
+    }
+
+    StockData findByAbbreviation(String abbreviation) {
+        return null;
     }
 
 }
