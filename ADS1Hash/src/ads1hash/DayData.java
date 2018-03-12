@@ -21,5 +21,13 @@ private double close;
 private double volume;
 private double adjClose;
 
-DayData(Date dIn, double open, double high, double low, double close, double volume, double adjClose){}
+DayData(Date dIn, double open, double high, double low, double close, double volume, double adjClose){
+    this.date = dIn;
+    this.open = open;
+    this.high = high;
+    this.low = low;
+    this.close = close;
+    this.volume = volume;
+    this.adjClose = adjClose;
+}
 }
