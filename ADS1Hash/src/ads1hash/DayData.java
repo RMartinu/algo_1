@@ -5,10 +5,21 @@
  */
 package ads1hash;
 
+import java.util.Date;
+
 /**
  *
  * @author Robert Martinu
  */
 public class DayData {
     
+private Date date;
+private double open;
+private double high;
+private double low;
+private double close;
+private double volume;
+private double adjClose;
+
+DayData(Date dIn, double open, double high, double low, double close, double volume, double adjClose){}
 }
