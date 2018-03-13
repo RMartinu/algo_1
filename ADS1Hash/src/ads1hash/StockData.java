@@ -11,14 +11,17 @@ package ads1hash;
  */
 public class StockData {
 
-    private String Name;
-    private String Abbrev;
-    private String WKN;
+    private final String Name;
+    private final String Abbrev;
+    private final String WKN;
 
     private DayData data[];
     private int fillIndex;
 
-    StockData(String name, String Abbreb, String WKN) {
+    StockData(String name, String Abbrevation, String WKN) {
+        this.Name=name;
+        this.Abbrev=Abbrevation;
+        this.WKN=WKN;
         data = new DayData[30];
         fillIndex = 0;
     }

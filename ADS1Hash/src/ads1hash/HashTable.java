@@ -30,6 +30,18 @@ public class HashTable {
         return false;
     }
 
+    boolean insert(StockData sd) {
+        return true;
+    }
+
+    StockData retrieveByName(String name) {
+        return null;
+    }
+
+    StockData retrieveByAbbreviation(String abbreviation) {
+        return null;
+    }
+
     int getHashCode(String hashMe) {
         int currentChar;
         int hashCode = 0;
