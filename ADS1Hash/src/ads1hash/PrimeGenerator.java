@@ -49,11 +49,21 @@ public class PrimeGenerator
     }
     boolean isMersennePrime(int input)
     {
+        int x = 0;
+        for(int i = 0;x<=input; ++i)
+        {           
+            if(x==input)
+            {
+                return true;
+            }
+            x += Math.pow(2,i);
+        }
         return false;
     }
     
     int findClosestPrime(int input)
     {
+        System.out.println(prime.length);
         return 2017;
     }
 }
