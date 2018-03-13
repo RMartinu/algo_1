@@ -5,7 +5,7 @@
  */
 package ads1hash;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  *
@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class DayData {
     
-private Date date;
+private LocalDate date;
 private double open;
 private double high;
 private double low;
@@ -21,7 +21,7 @@ private double close;
 private double volume;
 private double adjClose;
 
-DayData(Date dIn, double open, double high, double low, double close, double volume, double adjClose){
+DayData(LocalDate dIn, double open, double high, double low, double close, double volume, double adjClose){
     this.date = dIn;
     this.open = open;
     this.high = high;
@@ -30,4 +30,17 @@ DayData(Date dIn, double open, double high, double low, double close, double vol
     this.volume = volume;
     this.adjClose = adjClose;
 }
+
+//TODO write Getters 
+LocalDate getDate()
+{
+    return date;
+}
+
+double getOpenCourse()
+{
+    /*allows using the "open"-course data without being able to alter it*/
+    return open;
+}
+
 }
