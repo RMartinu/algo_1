@@ -40,7 +40,7 @@ public class StockData {
         int hashCode = 0;
         for (int i = 0; i < hashMe.length(); i++) {
             currentChar = hashMe.charAt(i);
-            hashCode = (hashCode * 257 + currentChar) % 3001;
+            hashCode = (hashCode * 257 + currentChar) %  1405695061; /* 1405695061 is a (markov) prime,close to the max value int can represent in java*/
         }
 
         return hashCode;
