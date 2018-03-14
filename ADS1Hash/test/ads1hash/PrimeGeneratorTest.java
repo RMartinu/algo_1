@@ -43,13 +43,13 @@ public class PrimeGeneratorTest {
     @Test
     public void testIsPrime() {
         System.out.println("isPrime");
-        int Candidate = 0;
+        int Candidate = 2017;
         PrimeGenerator instance = new PrimeGenerator();
-        boolean expResult = false;
+        boolean expResult = true;
         boolean result = instance.isPrime(Candidate);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -58,13 +58,13 @@ public class PrimeGeneratorTest {
     @Test
     public void testIsMersennePrime() {
         System.out.println("isMersennePrime");
-        int input = 0;
+        int input = 2017;
         PrimeGenerator instance = new PrimeGenerator();
         boolean expResult = false;
         boolean result = instance.isMersennePrime(input);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -75,11 +75,11 @@ public class PrimeGeneratorTest {
         System.out.println("findClosestPrime");
         int input = 0;
         PrimeGenerator instance = new PrimeGenerator();
-        int expResult = 0;
+        int expResult = 2017;
         int result = instance.findClosestPrime(input);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+       // fail("The test case is a prototype.");
     }
     
 }

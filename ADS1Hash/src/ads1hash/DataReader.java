@@ -62,7 +62,7 @@ public class DataReader {
         date=sc.next();
         open=sc.nextDouble();
         high=sc.nextDouble();
-        low=sc.nextFloat();
+        low=sc.nextDouble();
         close=sc.nextDouble();
         volume=sc.nextDouble();
         adjClose=sc.nextDouble();

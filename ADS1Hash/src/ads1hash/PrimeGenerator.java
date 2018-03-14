@@ -5,6 +5,8 @@
  */
 package ads1hash;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Julia
@@ -45,7 +47,23 @@ public class PrimeGenerator
     
     boolean isPrime(int Candidate)
     {
-        return false;
+        if(prime[prime.length-1]<Candidate)
+        {
+            //need a large Prime table
+            throw new RuntimeException("Need to enlarge array");
+            
+        }
+        
+        for(int primeInt:prime)
+        {
+            if(Candidate==primeInt)
+                return true;
+            if(Candidate%primeInt==0)
+                return false;
+            
+        }
+        
+        return true;
     }
     boolean isMersennePrime(int input)
     {
@@ -66,4 +84,20 @@ public class PrimeGenerator
         System.out.println(prime.length);
         return 2017;
     }
+    PrimeGenerator(int toInt)
+    {
+        ArrayList<Integer> primes;
+        primes = new ArrayList<>();
+        for(int i=0; i<=toInt; i++)
+        {
+            if(isPrime(i)&&(!isMersennePrime(i)))
+                primes.add(i);
+        }
+        
+    }
+
+    /*Need a default constructor in case the default array is sufficient*/
+    public PrimeGenerator() {
+    }
+    
 }
