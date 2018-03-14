@@ -31,7 +31,7 @@ public class StockData {
     }
 
     void insertDayData(DayData dataPoint) {
-        data[fillIndex]=dataPoint;
+        data[fillIndex] = dataPoint;
         fillIndex++;
     }
 
@@ -46,13 +46,18 @@ public class StockData {
         return hashCode;
 
     }
-    
-    String getName()
-    {return this.Name;}
-    String getAbbreviation()
-    {return this.Abbrev;}
-    String getWKN()
-    {return this.WKN;}
+
+    String getName() {
+        return this.Name;
+    }
+
+    String getAbbreviation() {
+        return this.Abbrev;
+    }
+
+    String getWKN() {
+        return this.WKN;
+    }
 
     int getNameHash() {
         return cachedNameHash;

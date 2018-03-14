@@ -34,12 +34,13 @@ public class HashTable {
         return true;
     }
 
-    StockData retrieveByName(String name) {
-        return null;
+    void delete(StockData del) {
     }
 
-    StockData retrieveByAbbreviation(String abbreviation) {
-        return null;
+    void deleteByName(String name) {
+    }
+
+    void deleteByAbbreviation(String abbrev) {
     }
 
     int getQuadraticProbing(int hashCode, int iteration) {
