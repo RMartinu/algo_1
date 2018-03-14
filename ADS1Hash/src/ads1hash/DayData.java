@@ -13,13 +13,13 @@ import java.time.LocalDate;
  */
 public class DayData {
     
-private LocalDate date;
-private double open;
-private double high;
-private double low;
-private double close;
-private double volume;
-private double adjClose;
+private final LocalDate date;
+private final double open;
+private final double high;
+private final double low;
+private final double close;
+private final double volume;
+private final double adjClose;
 
 DayData(LocalDate dIn, double open, double high, double low, double close, double volume, double adjClose){
     this.date = dIn;

@@ -52,21 +52,7 @@ public class HashTableTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of getHashCode method, of class HashTable.
-     */
-    @Test
-    public void testGetHashCode() {
-        System.out.println("getHashCode");
-        String hashMe = "";
-        HashTable instance = null;
-        int expResult = 0;
-        int result = instance.getHashCode(hashMe);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
+    
     /**
      * Test of getQuadraticProbing method, of class HashTable.
      */

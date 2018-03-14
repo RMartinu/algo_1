@@ -42,18 +42,6 @@ public class HashTable {
         return null;
     }
 
-    int getHashCode(String hashMe) {
-        int currentChar;
-        int hashCode = 0;
-        for (int i = 0; i < hashMe.length(); i++) {
-            currentChar = hashMe.charAt(i);
-            hashCode = (hashCode * 256 + currentChar) % capacity;
-        }
-
-        return hashCode;
-
-    }
-
     int getQuadraticProbing(int hashCode, int iteration) {
         int newIndex = hashCode;
         newIndex += Math.pow(iteration, 2); //Just in case someone ponders higher order probing
