@@ -5,6 +5,8 @@
  */
 package ads1hash;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Robert Martinu
@@ -17,22 +19,24 @@ public class StockData {
     private final int cachedNameHash;
     private final int cachedAbbreviationHash;
 
-    private DayData data[];
-    private int fillIndex;
+//    private DayData data[];
+//    private int fillIndex;
+    private ArrayList<DayData> data;
 
     StockData(String name, String Abbrevation, String WKN) {
         this.Name = name;
         this.Abbrev = Abbrevation;
         this.WKN = WKN;
-        data = new DayData[30];
-        fillIndex = 0;
+        data = new ArrayList<>();
+        //fillIndex = 0;
         cachedNameHash = this.getHashCode(Name);
         cachedAbbreviationHash = this.getHashCode(Abbrev);
     }
 
     void insertDayData(DayData dataPoint) {
-        data[fillIndex] = dataPoint;
-        fillIndex++;
+        //data[fillIndex] = dataPoint;
+        //fillIndex++;
+        data.add(dataPoint);
     }
 
     private int getHashCode(String hashMe) {
@@ -40,7 +44,8 @@ public class StockData {
         int hashCode = 0;
         for (int i = 0; i < hashMe.length(); i++) {
             currentChar = hashMe.charAt(i);
-            hashCode = (hashCode * 257 + currentChar) %  1405695061; /* 1405695061 is a (markov) prime,close to the max value int can represent in java*/
+            hashCode = (hashCode * 257 + currentChar) % 1405695061;
+            /* 1405695061 is a (markov) prime,close to the max value int can represent in java*/
         }
 
         return hashCode;
@@ -71,11 +76,21 @@ public class StockData {
     /*Construct an array of course value(ie. return the content of a specific column in the CSV), will be handed to the plotter*/
     //TODO: same for all data fields to be plotted
     double[] getOpeningCourse() {
-        double values[] = new double[data.length];
-        for (int i = 0; i < data.length; i++) {
-            values[i] = data[i].getOpenCourse();
+        double values[] = new double[data.size()];
+        for (int i = 0; i < data.size(); i++) {
+            values[i] = data.get(i).getOpenCourse();
         }
 
+        return values;
+    }
+
+    /*Get a specific number of Datapoints*/
+    double[] getOpeningCourse(int amount) {
+        amount = (amount < data.size()) ? amount : data.size(); //Do we have enough Data to fullfill the request? Best Effort
+        double values[] = new double[amount];
+        for (int i = 0; i < amount; ++i) {
+            values[i] = data.get(i).getOpenCourse();
+        }
         return values;
     }
 

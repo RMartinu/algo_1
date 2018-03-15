@@ -44,12 +44,13 @@ public class DayDataTest {
     @Test
     public void testGetDate() {
         System.out.println("getDate");
-        DayData instance = null;
-        LocalDate expResult = null;
+        DayData instance = new DayData(LocalDate.parse("2015-03-02"), 0, 0, 0, 0, 0, 0);
+        LocalDate expResult = LocalDate.parse("2015-03-02");
         LocalDate result = instance.getDate();
-        assertEquals(expResult, result);
+        //assertEquals(expResult, result);
+        assertTrue(expResult.equals(result));
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+       // fail("The test case is a prototype.");
     }
 
     /**
@@ -58,12 +59,12 @@ public class DayDataTest {
     @Test
     public void testGetOpenCourse() {
         System.out.println("getOpenCourse");
-        DayData instance = null;
-        double expResult = 0.0;
+        DayData instance = new DayData(LocalDate.parse("2011-01-15"), 30, 0, 0, 0, 0, 0);
+        double expResult = 30.0;
         double result = instance.getOpenCourse();
-        assertEquals(expResult, result, 0.0);
+        assertEquals(expResult, result, 0.0001);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
     
 }
