@@ -77,19 +77,72 @@ public class HashTable {
     }
 
     void deleteByName(String name) {
+        /*does the object even exist?
+        *Otherwise the decrements during deletion would mess up the table*/
+        if (findByName(name) == null) {
+            return;
+        }
+
+        int baseIndex = StockData.getHashCode(name) % this.capacity;
+        if (byName[baseIndex].getName().equals(name)) {
+            byName[baseIndex] = null;
+            byNameCounter[baseIndex]--;
+        } else {
+            byNameCounter[baseIndex]--;
+            int counter = 1;
+            int modifiedIndex;
+            while (counter < this.capacity) {
+                modifiedIndex = getQuadraticProbing(baseIndex, counter);
+                byNameCounter[modifiedIndex]--;
+                if (byName[modifiedIndex].getName().equals(name)) {
+                    byName[modifiedIndex] = null;
+                    break;
+                }
+            }
+
+        }
+
     }
 
     void deleteByAbbreviation(String abbrev) {
     }
 
-    int getQuadraticProbing(int hashCode, int iteration) {
-        int newIndex = hashCode;
+    int getQuadraticProbing(int baseIndex, int iteration) {
+        int newIndex = baseIndex;
         newIndex += Math.pow(iteration, 2); //Just in case someone ponders higher order probing
 
         return newIndex;
     }
 
     StockData findByName(String name) {
+
+        int baseIndex = StockData.getHashCode(name) % this.capacity;
+
+        //this cell is neither container nor stepping stone
+        if (this.byNameCounter[baseIndex] == 0) {
+            return null;
+        }
+
+        /*if this cell holds a value and this value is the wanted one:
+        *return it, we found the target*/
+        if (this.byName[baseIndex] != null && this.byName[baseIndex].getName().equals(name)) {
+            return this.byName[baseIndex];
+        }
+        int counter = 1;
+        int modifiedIndex;
+        while (counter < this.capacity) {
+            modifiedIndex = getQuadraticProbing(baseIndex, counter) % this.capacity;
+            if (this.byNameCounter[modifiedIndex] == 0) {
+                return null;
+            }
+            if (this.byNameCounter[modifiedIndex] == 0) {
+                break;
+            }
+            if (this.byName[modifiedIndex] != null && this.byName[modifiedIndex].getName().equals(name)) {
+                return byName[modifiedIndex];
+            }
+        }
+
         return null;
     }
 

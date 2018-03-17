@@ -39,7 +39,7 @@ public class StockData {
         data.add(dataPoint);
     }
 
-    private int getHashCode(String hashMe) {
+     static int getHashCode(String hashMe) {
         int currentChar;
         int hashCode = 0;
         for (int i = 0; i < hashMe.length(); i++) {
@@ -55,10 +55,10 @@ public class StockData {
     /*the abbreviation is short and has a very limited character set. 
     *we can pack the information more densely the with arbitrary strings,
     *thus increasing hash quality*/
-    private int getAbbrevHash(String hashMe) {
+    static int getAbbrevHash(String hashMe) {
         if (hashMe.length() > 6)//to much String, fall back to the default
         {
-            return this.getHashCode(hashMe);
+            return getHashCode(hashMe);
         }
 
         int hashCode = 0;
