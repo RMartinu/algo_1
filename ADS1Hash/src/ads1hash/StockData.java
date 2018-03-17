@@ -30,7 +30,7 @@ public class StockData {
         data = new ArrayList<>();
         //fillIndex = 0;
         cachedNameHash = this.getHashCode(Name);
-        cachedAbbreviationHash = this.getHashCode(Abbrev);
+        cachedAbbreviationHash = this.getAbbrevHash(Abbrev);
     }
 
     void insertDayData(DayData dataPoint) {
@@ -50,6 +50,23 @@ public class StockData {
 
         return hashCode;
 
+    }
+
+    /*the abbreviation is short and has a very limited character set. 
+    *we can pack the information more densely the with arbitrary strings,
+    *thus increasing hash quality*/
+    private int getAbbrevHash(String hashMe) {
+        if (hashMe.length() > 6)//to much String, fall back to the default
+        {
+            return this.getHashCode(hashMe);
+        }
+
+        int hashCode = 0;
+        for (int i = 0; i < hashMe.length(); i++) {
+            hashCode += ((Character.toUpperCase(hashMe.charAt(i) - 'A') << (5 * i)));
+        }
+
+        return hashCode;
     }
 
     String getName() {
@@ -92,6 +109,19 @@ public class StockData {
             values[i] = data.get(i).getOpenCourse();
         }
         return values;
+    }
+
+    boolean equals(StockData other) {
+        if (!this.Abbrev.equals(other.Abbrev)) {
+            return false;
+        }
+        if (!this.Name.equals(other.Name)) {
+            return false;
+        }
+        if (!this.WKN.equals(other.WKN)) {
+            return false;
+        }
+        return true;
     }
 
 }

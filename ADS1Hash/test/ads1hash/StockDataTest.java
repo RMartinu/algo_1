@@ -65,4 +65,10 @@ public class StockDataTest {
         fail("The test case is a prototype.");
     }
     
+    @Test
+    public void testEquals()
+    {
+          fail("The test case is a prototype.");
+    }      
+    
 }
