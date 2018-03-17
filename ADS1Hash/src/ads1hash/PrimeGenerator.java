@@ -75,18 +75,63 @@ public class PrimeGenerator {
     }
 
     int findClosestPrime(int input) {
+        // TODO: implement non generic return value
         System.out.println(prime.length);
         return 2017;
     }
 
     PrimeGenerator(int toInt) {
-        ArrayList<Integer> primes;
-        primes = new ArrayList<>();
-        for (int i = 0; i <= toInt; i++) {
-            if (isPrime(i) && (!isMersennePrime(i))) {
-                primes.add(i);
+//        ArrayList<Integer> primes;
+//        primes = new ArrayList<>();
+//        for (int i = 0; i <= toInt; i++) {
+//            if (isPrime(i) && (!isMersennePrime(i))) {
+//                primes.add(i);
+//            }
+//        }
+
+        boolean sieve[] = new boolean[toInt + 1];
+        for (int i = 0; i < sieve.length; i++) {
+            sieve[i] = true;
+        }
+        /*Zero and One aren't primes by definition*/
+        sieve[0] = false;
+        sieve[1] = false;
+
+        for (int i = 2; i < sieve.length; i++) {
+            int runner = 2;
+            if (sieve[i] == true) {
+
+                while ((i * runner) < sieve.length) {
+                    sieve[i * runner] = false;
+                    runner++;
+                }
+            }
+
+        }
+
+        for (int i = 0; i < sieve.length; i++) {
+            if (sieve[i] == true) {
+                /*check if the prime in question is a Mersenne prime
+                * and exclude it if neccessary*/
+                if (isMersennePrime(i)) {
+                    sieve[i] = false;
+                }
             }
         }
+
+        ArrayList<Integer> tempPrimeList = new ArrayList<>();
+        for (int i = 0; i < sieve.length; i++) {
+            if (sieve[i] == true) {
+                tempPrimeList.add(i);
+            }
+        }
+
+        prime = tempPrimeList.stream().mapToInt(i -> i).toArray();
+
+        for (int i : prime) {
+            System.out.print(i + " ");
+        }
+        System.out.println(" done");
 
     }
 
