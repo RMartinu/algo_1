@@ -6,10 +6,13 @@
 package ads1hash;
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,8 +44,13 @@ public class DataReader {
     }
 
     public DataReader(String fileName) {
-        sc=new Scanner(fileName);
-        sc.nextLine();
+        System.out.println("Going for "+fileName);
+        File inputFile=null;
+        try{ inputFile= new File(fileName);
+                    sc=new Scanner(inputFile);
+                    System.out.println("Discard first line: "+sc.nextLine());
+        }catch(Exception e){System.err.println(" File " + fileName +" not found");}
+
     }
     
     
@@ -56,18 +64,30 @@ public class DataReader {
     
     DayData getDayData()
     {
+        
+        sc.useDelimiter(",|\\n");
+        sc.useLocale(Locale.US);
         //ToDo: someone should handle the potential exceptions
         String date;
-        double open, high, low, close, volume, adjClose;
+        double open=0, high=0, low=0, close=0,  adjClose=0;
+        long volume;
+        try{
         date=sc.next();
         open=sc.nextDouble();
         high=sc.nextDouble();
         low=sc.nextDouble();
         close=sc.nextDouble();
-        volume=sc.nextDouble();
+        volume=sc.nextLong();
         adjClose=sc.nextDouble();
+
         
-        return new DayData(LocalDate.parse(date), open, high, low, close, volume, adjClose);
+        
+        return new DayData(LocalDate.parse(date), open, high, low, close, volume, adjClose);}
+        catch(Exception e)
+        {
+            System.err.println("Significant data shortfall: "+e.getMessage());
+        }
+        return null;
     }
     
     

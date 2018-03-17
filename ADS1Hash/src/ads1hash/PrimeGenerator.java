@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @author Julia
  */
 public class PrimeGenerator {
-
+    
     int prime[] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43,
         47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107,
         109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181,
@@ -44,13 +44,13 @@ public class PrimeGenerator {
         2699, 2707, 2711, 2713, 2719, 2729, 2731, 2741, 2749, 2753, 2767, 2777, 2789, 2791,
         2797, 2801, 2803, 2819, 2833, 2837, 2843, 2851, 2857, 2861, 2879, 2887, 2897, 2903,
         2909, 2917, 2927, 2939, 2953, 2957, 2963, 2969, 2971, 2999, 3001};
-
+    
     boolean isPrime(int Candidate) {
         if (prime[prime.length - 1] < Candidate) {
             //need a large Prime table
             throw new RuntimeException("Need to enlarge array");
         }
-
+        
         for (int primeInt : prime) {
             if (Candidate == primeInt) {
                 return true;
@@ -59,10 +59,10 @@ public class PrimeGenerator {
                 return false;
             }
         }
-
+        
         return true;
     }
-
+    
     boolean isMersennePrime(int input) {
         int x = 0;
         for (int i = 0; x <= input; ++i) {
@@ -73,25 +73,72 @@ public class PrimeGenerator {
         }
         return false;
     }
-
+    
     int findClosestPrime(int input) {
+        // TODO: implement non generic return value
         System.out.println(prime.length);
         return 2017;
     }
-
+    
     PrimeGenerator(int toInt) {
-        ArrayList<Integer> primes;
-        primes = new ArrayList<>();
-        for (int i = 0; i <= toInt; i++) {
-            if (isPrime(i) && (!isMersennePrime(i))) {
-                primes.add(i);
+//        ArrayList<Integer> primes;
+//        primes = new ArrayList<>();
+//        for (int i = 0; i <= toInt; i++) {
+//            if (isPrime(i) && (!isMersennePrime(i))) {
+//                primes.add(i);
+//            }
+//        }
+
+        boolean sieve[] = new boolean[toInt + 1];
+        for (int i = 0; i < sieve.length; i++) {
+            sieve[i] = true;
+        }
+        /*Zero and One aren't primes by definition*/
+        sieve[0] = false;
+        sieve[1] = false;
+        
+        for (int i = 2; i < sieve.length; i++) {
+            int runner = 2;
+            if (sieve[i] == true) {
+                
+                while ((i * runner) < sieve.length) {
+                    sieve[i * runner] = false;
+                    runner++;
+                }
+            }
+            
+        }
+        
+        for(int i=0; i<sieve.length; i++)
+        {
+            if(sieve[i]==true)
+            {
+                /*check if the prime in question is a Mersenne prime
+                * and exclude it if neccessary*/
+                if(isMersennePrime(i))
+                    sieve[i]=false;
             }
         }
-
+        
+        ArrayList<Integer> tempPrimeList = new ArrayList<>();
+        for (int i = 0; i < sieve.length; i++) {
+            if (sieve[i] == true) {
+                tempPrimeList.add(i);
+            }
+        }
+        
+        
+        prime = tempPrimeList.stream().mapToInt(i -> i).toArray();
+        
+        for (int i : prime) {
+            System.out.print(i + " ");
+        }
+        System.out.println(" done");
+        
     }
 
     /*Need a default constructor in case the default array is sufficient*/
     public PrimeGenerator() {
     }
-
+    
 }
