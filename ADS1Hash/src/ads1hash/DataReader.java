@@ -23,11 +23,11 @@ import java.util.logging.Logger;
 public class DataReader {
 
     private Scanner sc;
-    private InputStream inStream;
+
 
     DataReader(InputStream inStream) {
-        this.inStream = inStream;
-        sc = new Scanner(this.inStream);
+        
+        sc = new Scanner(inStream);
         sc.nextLine();
         /*throw the first line, with the column names, away*/
     }
@@ -62,7 +62,7 @@ public class DataReader {
     public DataReader(String fileName) {
      
         System.out.println("Going for " + fileName);
-        File inputFile = null;
+        File inputFile;
         try {
             inputFile = new File(fileName);
             sc = new Scanner(inputFile);
@@ -85,7 +85,7 @@ public class DataReader {
         sc.useLocale(Locale.US);
         //ToDo: someone should handle the potential exceptions
         String date;
-        double open = 0, high = 0, low = 0, close = 0, adjClose = 0;
+        double open, high, low, close, adjClose;
         long volume;
         try {
             date = sc.next();
