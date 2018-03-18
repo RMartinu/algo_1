@@ -154,5 +154,58 @@ public class HashTableTest {
         // TODO review the generated test code and remove the default call to fail.
        // fail("The test case is a prototype.");
     }
+
+    /**
+     * Test of getLoadFActor method, of class HashTable.
+     */
+    @Test
+    public void testGetLoadFActor() {
+        System.out.println("getLoadFActor");
+        HashTable instance = null;
+        float expResult = 0.0F;
+        float result = instance.getLoadFActor();
+        assertEquals(expResult, result, 0.0);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of delete method, of class HashTable.
+     */
+    @Test
+    public void testDelete() {
+        System.out.println("delete");
+        StockData del = null;
+        HashTable instance = null;
+        instance.delete(del);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of deleteByName method, of class HashTable.
+     */
+    @Test
+    public void testDeleteByName() {
+        System.out.println("deleteByName");
+        String name = "";
+        HashTable instance = null;
+        instance.deleteByName(name);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of deleteByAbbreviation method, of class HashTable.
+     */
+    @Test
+    public void testDeleteByAbbreviation() {
+        System.out.println("deleteByAbbreviation");
+        String abbrev = "";
+        HashTable instance = null;
+        instance.deleteByAbbreviation(abbrev);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
     
 }

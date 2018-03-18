@@ -41,6 +41,10 @@ public class DataReader {
         sc.nextLine();
     }
 
+    /**
+     *
+     * @param inputFile
+     */
     public DataReader(File inputFile) {
         try {
             sc = new Scanner(inputFile);
@@ -50,7 +54,13 @@ public class DataReader {
         }
     }
 
+    /**
+     * Opens file specified by fileName
+     * Discards first line(containing column names)
+     * @param fileName the Filename as String
+     */
     public DataReader(String fileName) {
+     
         System.out.println("Going for " + fileName);
         File inputFile = null;
         try {

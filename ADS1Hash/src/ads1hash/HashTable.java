@@ -45,12 +45,13 @@ public class HashTable {
 
     boolean insert(StockData sd) {
 
-        /*do we even have an object to insert*/
+        /*do we even have an object to insert?*/
         if (sd == null) {
             return false;
         }
 
         //can we even insert the new element?
+        //should we try to insert into a table beyond a certain laod factor?
         if (size == capacity) {
             //ToDO: trigger relocation to a larger hashtable
             return false;
@@ -81,6 +82,7 @@ public class HashTable {
     }
 
     void delete(StockData del) {
+        deleteByName(del.getName()); //ok, that was cheap...
     }
 
     void deleteByName(String name) {
@@ -100,6 +102,9 @@ public class HashTable {
         for (int i = 0; i < this.capacity; i++) {
             modifiedIndex = getQuadraticProbing(baseIndex, i) % this.capacity;
             byNameCounter[modifiedIndex]--;
+            /*use of short circuiting: 
+            * if the first condition fails, i.e. cell is empty, the second one will
+            * not be evaluated. This prevents NullPointerExceptions*/
             if (byName[modifiedIndex] != null && byName[modifiedIndex].getName().equals(name)) {
                 byName[modifiedIndex] = null;
                 break;
