@@ -41,6 +41,15 @@ public class DataReader {
         sc.nextLine();
     }
 
+    public DataReader(File inputFile) {
+        try {
+            sc = new Scanner(inputFile);
+            sc.nextLine();
+        } catch (FileNotFoundException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
     public DataReader(String fileName) {
         System.out.println("Going for " + fileName);
         File inputFile = null;
@@ -48,7 +57,7 @@ public class DataReader {
             inputFile = new File(fileName);
             sc = new Scanner(inputFile);
             System.out.println("Discard first line: " + sc.nextLine());
-        } catch (Exception e) {
+        } catch (FileNotFoundException e) {
             System.err.println(" File " + fileName + " not found");
         }
 

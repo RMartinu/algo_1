@@ -44,13 +44,58 @@ public class HashTableTest {
     public void testRequestResize() {
         System.out.println("requestResize");
         int newCapacity = 0;
-        HashTable instance = null;
+        HashTable instance = new HashTable(137);
         boolean expResult = false;
         boolean result = instance.requestResize(newCapacity);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
+    
+    @Test
+    public void testDeletionByName()
+    {
+        
+        System.out.println("Testing deletion");
+        HashTable instance =null;
+        StockData sd1=null, sd2=null, sd3=null;
+        StockData result=null;
+        sd1=new StockData("ABC", "abc", "abc");
+        sd2=new StockData("XYZ", "xyz", "xyz");
+        sd3=new StockData("NME", "foe", "yeah");
+        
+        instance=new HashTable(1000);
+        instance.insert(sd1);
+        instance.insert(sd2);
+        instance.insert(sd3);
+        result=instance.findByName("XYZ");
+        assertEquals(sd2, result);
+        instance.deleteByName("XYZ");
+        result=instance.findByName("XYZ");
+        assertEquals(null, result);
+    }
+    
+    @Test
+    public void testInsert()
+    {
+        System.out.println("Testing insertion");
+        HashTable instance =null;
+        StockData sd1=null, sd2=null, sd3=null;
+        StockData result=null;
+        sd1=new StockData("ABC", "abc", "abc");
+        sd2=new StockData("XYZ", "xyz", "xyz");
+        sd3=new StockData("NME", "foe", "yeah");
+        
+        instance=new HashTable(1000);
+        instance.insert(sd1);
+        instance.insert(sd2);
+        instance.insert(sd3);
+        result=instance.findByName("XYZ");
+        assertEquals(sd2, result);
+            
+    }
+    
+
 
     
     /**
@@ -61,12 +106,12 @@ public class HashTableTest {
         System.out.println("getQuadraticProbing");
         int hashCode = 0;
         int iteration = 0;
-        HashTable instance = null;
+        HashTable instance = new HashTable(1234);
         int expResult = 0;
         int result = instance.getQuadraticProbing(hashCode, iteration);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+       // fail("The test case is a prototype.");
     }
 
     /**
@@ -76,12 +121,23 @@ public class HashTableTest {
     public void testFindByName() {
         System.out.println("findByName");
         String name = "";
-        HashTable instance = null;
-        StockData expResult = null;
-        StockData result = instance.findByName(name);
+        HashTable instance = new HashTable(43);
+                StockData sd1=null, sd2=null, sd3=null;
+        
+                        sd1=new StockData("ABC", "abc", "abc");
+        sd2=new StockData("XYZ", "xyz", "xyz");
+        sd3=new StockData("NME", "foe", "yeah");
+        
+       
+        instance.insert(sd1);
+        instance.insert(sd2);
+        instance.insert(sd3);
+                
+        StockData expResult = sd3;
+        StockData result = instance.findByName("NME");
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+       // fail("The test case is a prototype.");
     }
 
     /**
@@ -91,12 +147,12 @@ public class HashTableTest {
     public void testFindByAbbreviation() {
         System.out.println("findByAbbreviation");
         String abbreviation = "";
-        HashTable instance = null;
+        HashTable instance = new HashTable(79);
         StockData expResult = null;
         StockData result = instance.findByAbbreviation(abbreviation);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+       // fail("The test case is a prototype.");
     }
     
 }

@@ -76,7 +76,7 @@ public class PrimeGenerator {
 
     int findClosestPrime(int input) {
         // TODO: implement non generic return value
-        System.out.println(prime.length);
+        //System.out.println(prime.length);
         return 2017;
     }
 

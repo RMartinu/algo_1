@@ -27,10 +27,10 @@ public class HashTable {
         /*Get a prime number marginally large then the desired size,
         *as we want the map to have an undividable amount of elements*/
         capacity = primeGen.findClosestPrime(desiredCapacity);
-        byName = new StockData[desiredCapacity];
-        byNameCounter = new int[desiredCapacity];
-        byAbbreviation = new StockData[desiredCapacity];
-        byAbbreviationCounter = new int[desiredCapacity];
+        byName = new StockData[capacity];
+        byNameCounter = new int[capacity];
+        byAbbreviation = new StockData[capacity];
+        byAbbreviationCounter = new int[capacity];
         size = 0;
 
     }
@@ -45,8 +45,14 @@ public class HashTable {
 
     boolean insert(StockData sd) {
 
+        /*do we even have an object to insert*/
+        if (sd == null) {
+            return false;
+        }
+
         //can we even insert the new element?
         if (size == capacity) {
+            //ToDO: trigger relocation to a larger hashtable
             return false;
         }
         //insert into byName table
@@ -54,6 +60,7 @@ public class HashTable {
         int IndexFromHash = sd.getNameHash() % this.capacity;
         if (byName[IndexFromHash] == null) {
             byName[IndexFromHash] = sd;
+            byNameCounter[IndexFromHash]++;
         } else {
             int counter = 1;
             while (true) {
@@ -78,28 +85,36 @@ public class HashTable {
 
     void deleteByName(String name) {
         /*does the object even exist?
-        *Otherwise the decrements during deletion would mess up the table*/
-        if (findByName(name) == null) {
+        *Otherwise the decrements during deletion would mess up the table
+        *the returned reference will be useful to retrieve the Abbreviation 
+        *so we can remove the Objects entry from the byAbbreviation table*/
+
+        StockData deleteMe = findByName(name);
+        if (deleteMe == null) {
             return;
         }
 
         int baseIndex = StockData.getHashCode(name) % this.capacity;
-        if (byName[baseIndex].getName().equals(name)) {
-            byName[baseIndex] = null;
-            byNameCounter[baseIndex]--;
-        } else {
-            byNameCounter[baseIndex]--;
-            int counter = 1;
-            int modifiedIndex;
-            while (counter < this.capacity) {
-                modifiedIndex = getQuadraticProbing(baseIndex, counter);
-                byNameCounter[modifiedIndex]--;
-                if (byName[modifiedIndex].getName().equals(name)) {
-                    byName[modifiedIndex] = null;
-                    break;
-                }
-            }
+        int modifiedIndex;
 
+        for (int i = 0; i < this.capacity; i++) {
+            modifiedIndex = getQuadraticProbing(baseIndex, i) % this.capacity;
+            byNameCounter[modifiedIndex]--;
+            if (byName[modifiedIndex] != null && byName[modifiedIndex].getName().equals(name)) {
+                byName[modifiedIndex] = null;
+                break;
+            }
+        }
+
+        /*removing the entry also from the byAbbreviation table*/
+        baseIndex = StockData.getAbbrevHash(deleteMe.getAbbreviation()) % this.capacity;
+        for (int i = 0; i < this.capacity; i++) {
+            modifiedIndex = getQuadraticProbing(baseIndex, i) % this.capacity;
+            byAbbreviationCounter[modifiedIndex]--;
+            if (byAbbreviation[modifiedIndex] != null && byAbbreviation[modifiedIndex].getAbbreviation().equals(deleteMe.getAbbreviation())) {
+                byAbbreviation[modifiedIndex] = null;
+                break;
+            }
         }
 
     }
@@ -109,37 +124,21 @@ public class HashTable {
 
     int getQuadraticProbing(int baseIndex, int iteration) {
         int newIndex = baseIndex;
-        newIndex += Math.pow(iteration, 2); //Just in case someone ponders higher order probing
+        newIndex += Math.pow(iteration, 2); //Just in case someone is pondering higher order probing
 
         return newIndex;
     }
 
     StockData findByName(String name) {
 
-        int baseIndex = StockData.getHashCode(name) % this.capacity;
-
-        //this cell is neither container nor stepping stone
-        if (this.byNameCounter[baseIndex] == 0) {
-            return null;
-        }
-
-        /*if this cell holds a value and this value is the wanted one:
-        *return it, we found the target*/
-        if (this.byName[baseIndex] != null && this.byName[baseIndex].getName().equals(name)) {
-            return this.byName[baseIndex];
-        }
-        int counter = 1;
-        int modifiedIndex;
-        while (counter < this.capacity) {
-            modifiedIndex = getQuadraticProbing(baseIndex, counter) % this.capacity;
-            if (this.byNameCounter[modifiedIndex] == 0) {
+        int baseHash = StockData.getHashCode(name) % this.capacity;
+        for (int i = 0; i < this.capacity; i++) {
+            int modifiedHash = getQuadraticProbing(baseHash, i) % this.capacity;
+            if (byName[modifiedHash] != null && byName[modifiedHash].getName().equals(name)) {
+                return byName[modifiedHash];
+            }
+            if (byNameCounter[modifiedHash] == 0) {
                 return null;
-            }
-            if (this.byNameCounter[modifiedIndex] == 0) {
-                break;
-            }
-            if (this.byName[modifiedIndex] != null && this.byName[modifiedIndex].getName().equals(name)) {
-                return byName[modifiedIndex];
             }
         }
 
