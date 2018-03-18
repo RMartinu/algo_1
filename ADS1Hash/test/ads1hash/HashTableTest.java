@@ -17,22 +17,22 @@ import static org.junit.Assert.*;
  * @author Robert Martinu
  */
 public class HashTableTest {
-    
+
     public HashTableTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -51,53 +51,48 @@ public class HashTableTest {
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
-    
+
     @Test
-    public void testDeletionByName()
-    {
-        
+    public void testDeletionByName() {
+
         System.out.println("Testing deletion");
-        HashTable instance =null;
-        StockData sd1=null, sd2=null, sd3=null;
-        StockData result=null;
-        sd1=new StockData("ABC", "abc", "abc");
-        sd2=new StockData("XYZ", "xyz", "xyz");
-        sd3=new StockData("NME", "foe", "yeah");
-        
-        instance=new HashTable(1000);
+        HashTable instance;
+        StockData sd1, sd2, sd3;
+        StockData result;
+        sd1 = new StockData("ABC", "abc", "abc");
+        sd2 = new StockData("XYZ", "xyz", "xyz");
+        sd3 = new StockData("NME", "foe", "yeah");
+
+        instance = new HashTable(1000);
         instance.insert(sd1);
         instance.insert(sd2);
         instance.insert(sd3);
-        result=instance.findByName("XYZ");
+        result = instance.findByName("XYZ");
         assertEquals(sd2, result);
         instance.deleteByName("XYZ");
-        result=instance.findByName("XYZ");
+        result = instance.findByName("XYZ");
         assertEquals(null, result);
     }
-    
+
     @Test
-    public void testInsert()
-    {
+    public void testInsert() {
         System.out.println("Testing insertion");
-        HashTable instance =null;
-        StockData sd1=null, sd2=null, sd3=null;
-        StockData result=null;
-        sd1=new StockData("ABC", "abc", "abc");
-        sd2=new StockData("XYZ", "xyz", "xyz");
-        sd3=new StockData("NME", "foe", "yeah");
-        
-        instance=new HashTable(1000);
+        HashTable instance;
+        StockData sd1, sd2, sd3;
+        StockData result;
+        sd1 = new StockData("ABC", "abc", "abc");
+        sd2 = new StockData("XYZ", "xyz", "xyz");
+        sd3 = new StockData("NME", "foe", "yeah");
+
+        instance = new HashTable(1000);
         instance.insert(sd1);
         instance.insert(sd2);
         instance.insert(sd3);
-        result=instance.findByName("XYZ");
+        result = instance.findByName("XYZ");
         assertEquals(sd2, result);
-            
+
     }
-    
 
-
-    
     /**
      * Test of getQuadraticProbing method, of class HashTable.
      */
@@ -111,7 +106,7 @@ public class HashTableTest {
         int result = instance.getQuadraticProbing(hashCode, iteration);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-       // fail("The test case is a prototype.");
+        // fail("The test case is a prototype.");
     }
 
     /**
@@ -122,22 +117,21 @@ public class HashTableTest {
         System.out.println("findByName");
         String name = "";
         HashTable instance = new HashTable(43);
-                StockData sd1=null, sd2=null, sd3=null;
-        
-                        sd1=new StockData("ABC", "abc", "abc");
-        sd2=new StockData("XYZ", "xyz", "xyz");
-        sd3=new StockData("NME", "foe", "yeah");
-        
-       
+        StockData sd1, sd2, sd3;
+
+        sd1 = new StockData("ABC", "abc", "abc");
+        sd2 = new StockData("XYZ", "xyz", "xyz");
+        sd3 = new StockData("NME", "foe", "yeah");
+
         instance.insert(sd1);
         instance.insert(sd2);
         instance.insert(sd3);
-                
+
         StockData expResult = sd3;
         StockData result = instance.findByName("NME");
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-       // fail("The test case is a prototype.");
+        // fail("The test case is a prototype.");
     }
 
     /**
@@ -152,7 +146,7 @@ public class HashTableTest {
         StockData result = instance.findByAbbreviation(abbreviation);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-       // fail("The test case is a prototype.");
+        // fail("The test case is a prototype.");
     }
 
     /**
@@ -187,12 +181,26 @@ public class HashTableTest {
      */
     @Test
     public void testDeleteByName() {
-        System.out.println("deleteByName");
-        String name = "";
-        HashTable instance = null;
-        instance.deleteByName(name);
+
+        System.out.println("Testing deletion");
+        HashTable instance;
+        StockData sd1, sd2, sd3;
+        StockData result;
+        sd1 = new StockData("ABC", "abc", "abc");
+        sd2 = new StockData("XYZ", "xyz", "xyz");
+        sd3 = new StockData("NME", "foe", "yeah");
+
+        instance = new HashTable(1000);
+        instance.insert(sd1);
+        instance.insert(sd2);
+        instance.insert(sd3);
+        result = instance.findByName("XYZ");
+        assertEquals(sd2, result);
+        instance.deleteByName("XYZ");
+        result = instance.findByName("XYZ");
+        assertEquals(null, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+       // fail("The test case is a prototype.");
     }
 
     /**
@@ -207,5 +215,5 @@ public class HashTableTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-    
+
 }
