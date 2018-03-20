@@ -45,6 +45,7 @@ public class DayDataTest {
     public void testGetDate() {
         System.out.println("getDate");
         DayData instance = new DayData(LocalDate.parse("2015-03-02"), 0, 0, 0, 0, 0, 0);
+        
         LocalDate expResult = LocalDate.parse("2015-03-02");
         LocalDate result = instance.getDate();
         //assertEquals(expResult, result);

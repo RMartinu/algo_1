@@ -34,11 +34,33 @@ public class StockData {
         cachedAbbreviationHash = StockData.getAbbrevHash(Abbrev);
     }
 
+    /**
+     * inserts new Datapoint into Dataset Will not insert if there is already a
+     * Datapoint for the specific date
+     */
     void insertDayData(DayData dataPoint) {
-        //data[fillIndex] = dataPoint;
-        //fillIndex++;
+
+        //check if there is already an entry for this date
+        if (data.contains(dataPoint)) {
+            System.out.println("Already in there");
+            return;
+        }
         data.add(dataPoint);
-        Collections.sort(data, (o1, o2)->o2.getDate().compareTo(o1.getDate()));
+        Collections.sort(data, (o1, o2) -> o2.getDate().compareTo(o1.getDate()));
+    }
+
+    /**
+     * inserts new Datapoints
+     * replaces Datapoints that already exists at the date of the new Datapoint
+     */
+    void replaceDayData(DayData dataPoint) {
+        if (data.contains(dataPoint)) {
+            System.out.println("Replacing");
+            data.remove(data.indexOf(dataPoint));
+        }
+
+        data.add(dataPoint);
+        Collections.sort(data, (o1, o2) -> o2.getDate().compareTo(o1.getDate()));
     }
 
     static int getHashCode(String hashMe) {
@@ -97,9 +119,9 @@ public class StockData {
         return cachedAbbreviationHash;
     }
 
-
     /**
-     * Construct an array of course value(ie. return the content of a specific column in the CSV), will be handed to the plotter
+     * Construct an array of course value(ie. return the content of a specific
+     * column in the CSV), will be handed to the plotter
      */
     //TODO: same for all data fields to be plotted
     double[] getOpeningCourse() {
@@ -122,20 +144,20 @@ public class StockData {
         }
         return values;
     }
-    
-    
+
     /**
      * retrives the most recent Set of datapoints
      */
-    DayData getLatestDataPoint()
-    {
-        if(data.isEmpty())
+    DayData getLatestDataPoint() {
+        if (data.isEmpty()) {
             return null;
+        }
         return this.data.get(0);
     }
 
     /**
-     * compares two Stock entries based on their designation; ignores course data
+     * compares two Stock entries based on their designation; ignores course
+     * data
      */
     boolean equals(StockData other) {
         if (!this.Abbrev.equals(other.Abbrev)) {

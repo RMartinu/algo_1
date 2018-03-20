@@ -48,4 +48,17 @@ public class DayData {
         return "DayData{" + "date=" + date + ", open=" + open + ", high=" + high + ", low=" + low + ", close=" + close + ", volume=" + volume + ", adjClose=" + adjClose + '}';
     }
 
+    /**
+     * Overridden to allow for checks for equal date in standard containers
+     * @param o A Daydata object whichs timestamp will be matched to this object
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof DayData) {
+            DayData d = (DayData) o;
+            return d.date.isEqual(date);
+        }
+        return false;
+    }
+
 }

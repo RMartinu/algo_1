@@ -46,7 +46,7 @@ public class StockDataTest {
     @Test
     public void testInsertDayData() {
         System.out.println("insertDayData");
-        DayData dataPoint;
+        DayData dataPoint=null;
         StockData instance = new StockData("Dummy", "DUM", "123456");
         
                 File inputFile=new File("D:\\msft.csv");
@@ -58,6 +58,7 @@ public class StockDataTest {
             instance.insertDayData(dataPoint);}
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
+        instance.insertDayData(dataPoint);
         System.out.println(Arrays.toString(instance.getOpeningCourse()));
     }
 
