@@ -89,6 +89,8 @@ public class PrimeGenerator {
 //            }
 //        }
 
+
+        /*Using the Sieve of Eratosthenes to create a table of prime numbers*/
         boolean sieve[] = new boolean[toInt + 1];
         for (int i = 0; i < sieve.length; i++) {
             sieve[i] = true;

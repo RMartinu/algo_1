@@ -52,27 +52,7 @@ public class HashTableTest {
         //fail("The test case is a prototype.");
     }
 
-    @Test
-    public void testDeletionByName() {
 
-        System.out.println("Testing deletion");
-        HashTable instance;
-        StockData sd1, sd2, sd3;
-        StockData result;
-        sd1 = new StockData("ABC", "abc", "abc");
-        sd2 = new StockData("XYZ", "xyz", "xyz");
-        sd3 = new StockData("NME", "foe", "yeah");
-
-        instance = new HashTable(1000);
-        instance.insert(sd1);
-        instance.insert(sd2);
-        instance.insert(sd3);
-        result = instance.findByName("XYZ");
-        assertEquals(sd2, result);
-        instance.deleteByName("XYZ");
-        result = instance.findByName("XYZ");
-        assertEquals(null, result);
-    }
 
     @Test
     public void testInsert() {
@@ -155,26 +135,16 @@ public class HashTableTest {
     @Test
     public void testGetLoadFActor() {
         System.out.println("getLoadFActor");
+        fail("The test case is a prototype.");
         HashTable instance = null;
         float expResult = 0.0F;
         float result = instance.getLoadFActor();
         assertEquals(expResult, result, 0.0);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
 
-    /**
-     * Test of delete method, of class HashTable.
-     */
-    @Test
-    public void testDelete() {
-        System.out.println("delete");
-        StockData del = null;
-        HashTable instance = null;
-        instance.delete(del);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+
 
     /**
      * Test of deleteByName method, of class HashTable.
@@ -209,11 +179,12 @@ public class HashTableTest {
     @Test
     public void testDeleteByAbbreviation() {
         System.out.println("deleteByAbbreviation");
+        fail("The test case is a prototype.");
         String abbrev = "";
         HashTable instance = null;
         instance.deleteByAbbreviation(abbrev);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
 
 }

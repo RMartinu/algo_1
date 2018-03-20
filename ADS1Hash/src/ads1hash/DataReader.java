@@ -78,6 +78,10 @@ public class DataReader {
         sc.close();
 
     }
+    
+    /**
+     * Returns exactly on set of Data from the Data source associated with the reader
+     */
 
     DayData getDayData() {
 

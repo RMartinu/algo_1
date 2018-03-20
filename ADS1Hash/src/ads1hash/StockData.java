@@ -6,6 +6,7 @@
 package ads1hash;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  *
@@ -29,17 +30,18 @@ public class StockData {
         this.WKN = WKN;
         data = new ArrayList<>();
         //fillIndex = 0;
-        cachedNameHash = this.getHashCode(Name);
-        cachedAbbreviationHash = this.getAbbrevHash(Abbrev);
+        cachedNameHash = StockData.getHashCode(Name);
+        cachedAbbreviationHash = StockData.getAbbrevHash(Abbrev);
     }
 
     void insertDayData(DayData dataPoint) {
         //data[fillIndex] = dataPoint;
         //fillIndex++;
         data.add(dataPoint);
+        Collections.sort(data, (o1, o2)->o2.getDate().compareTo(o1.getDate()));
     }
 
-     static int getHashCode(String hashMe) {
+    static int getHashCode(String hashMe) {
         int currentChar;
         int hashCode = 0;
         for (int i = 0; i < hashMe.length(); i++) {
@@ -62,6 +64,12 @@ public class StockData {
         }
 
         int hashCode = 0;
+        /**
+         * Shift the value range of the input string's characters from A to Z to
+         * 0-25, we can represent each character by 5 bits and assemble those
+         * blocks by shifting them according to their position in the string and
+         * adding them together;
+         */
         for (int i = 0; i < hashMe.length(); i++) {
             hashCode += ((Character.toUpperCase(hashMe.charAt(i) - 'A') << (5 * i)));
         }
@@ -90,7 +98,9 @@ public class StockData {
     }
 
 
-    /*Construct an array of course value(ie. return the content of a specific column in the CSV), will be handed to the plotter*/
+    /**
+     * Construct an array of course value(ie. return the content of a specific column in the CSV), will be handed to the plotter
+     */
     //TODO: same for all data fields to be plotted
     double[] getOpeningCourse() {
         double values[] = new double[data.size()];
@@ -101,7 +111,9 @@ public class StockData {
         return values;
     }
 
-    /*Get a specific number of Datapoints*/
+    /**
+     * Get a specific number of Datapoints
+     */
     double[] getOpeningCourse(int amount) {
         amount = (amount < data.size()) ? amount : data.size(); //Do we have enough Data to fullfill the request? Best Effort
         double values[] = new double[amount];
@@ -110,7 +122,21 @@ public class StockData {
         }
         return values;
     }
+    
+    
+    /**
+     * retrives the most recent Set of datapoints
+     */
+    DayData getLatestDataPoint()
+    {
+        if(data.isEmpty())
+            return null;
+        return this.data.get(0);
+    }
 
+    /**
+     * compares two Stock entries based on their designation; ignores course data
+     */
     boolean equals(StockData other) {
         if (!this.Abbrev.equals(other.Abbrev)) {
             return false;

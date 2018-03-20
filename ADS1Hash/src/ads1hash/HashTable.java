@@ -62,6 +62,7 @@ public class HashTable {
         if (byName[IndexFromHash] == null) {
             byName[IndexFromHash] = sd;
             byNameCounter[IndexFromHash]++;
+            size++;
         } else {
             int counter = 1;
             while (true) {
@@ -69,6 +70,8 @@ public class HashTable {
                 if (byName[modifiedIndexFromHash] == null) {
                     byName[modifiedIndexFromHash] = sd;
                     byNameCounter[modifiedIndexFromHash]++;
+                    //note: increase size only either here or when inserting into abbreviation table, not twice
+                    size++;
                     break;
                 } else {
                     counter++;
@@ -81,22 +84,13 @@ public class HashTable {
         return true;
     }
 
-    void delete(StockData del) {
-        deleteByName(del.getName()); //ok, that was cheap...
-    }
+    /**
+     * removes an object from hastable by reference
+     */
+   private void delete(StockData deleteMe) {
+        
 
-    void deleteByName(String name) {
-        /*does the object even exist?
-        *Otherwise the decrements during deletion would mess up the table
-        *the returned reference will be useful to retrieve the Abbreviation 
-        *so we can remove the Objects entry from the byAbbreviation table*/
-
-        StockData deleteMe = findByName(name);
-        if (deleteMe == null) {
-            return;
-        }
-
-        int baseIndex = StockData.getHashCode(name) % this.capacity;
+        int baseIndex = StockData.getHashCode(deleteMe.getName()) % this.capacity;
         int modifiedIndex;
 
         for (int i = 0; i < this.capacity; i++) {
@@ -105,7 +99,7 @@ public class HashTable {
             /*use of short circuiting: 
             * if the first condition fails, i.e. cell is empty, the second one will
             * not be evaluated. This prevents NullPointerExceptions*/
-            if (byName[modifiedIndex] != null && byName[modifiedIndex].getName().equals(name)) {
+            if (byName[modifiedIndex] != null && byName[modifiedIndex].getName().equals(deleteMe.getName())) {
                 byName[modifiedIndex] = null;
                 break;
             }
@@ -118,21 +112,48 @@ public class HashTable {
             byAbbreviationCounter[modifiedIndex]--;
             if (byAbbreviation[modifiedIndex] != null && byAbbreviation[modifiedIndex].getAbbreviation().equals(deleteMe.getAbbreviation())) {
                 byAbbreviation[modifiedIndex] = null;
+                size--;
                 break;
             }
         }
+    }
+
+    /**
+     * Searches for an entry by its Name and if found removes it from both of Name and Abbreviation tables
+     */
+    void deleteByName(String name) {
+
+        StockData deleteMe = findByName(name);
+        if (deleteMe == null) {
+            return;
+        }
+        this.delete(deleteMe);
 
     }
+    
+    /**
+     * Searches for an entry by Abbreviation and if found removes it from Name and Abbreviation table
+     */
 
     void deleteByAbbreviation(String abbrev) {
     }
 
+    /**
+     * Takes the index of where a object would be inserted by default
+     * Adds an offset appopriate to the nth iteration of quadratic probing
+     * result needs to be modulo'd to the actual table size.
+     * @param baseIndex Where the object should have gone in the first place
+     * @param iteration number of previously failed attempt
+     */
     int getQuadraticProbing(int baseIndex, int iteration) {
         int newIndex = baseIndex;
         newIndex += Math.pow(iteration, 2); //Just in case someone is pondering higher order probing
-
         return newIndex;
     }
+    
+    /**
+     * finds an object by name, returns reference if found, null otherwise
+     */
 
     StockData findByName(String name) {
 
@@ -150,6 +171,7 @@ public class HashTable {
         return null;
     }
 
+    //ToDO: find the same way as by name
     StockData findByAbbreviation(String abbreviation) {
         return null;
     }

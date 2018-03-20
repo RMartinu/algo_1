@@ -5,17 +5,26 @@
  */
 package ads1hash;
 
+import javafx.application.Application;
+import javafx.stage.Stage;
+
 /**
  *
  * @author Robert Martinu
  */
-public class ADS1Hash {
+public class ADS1Hash extends Application {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        Application.launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
