@@ -87,7 +87,7 @@ public class HashTable {
     /**
      * removes an object from hastable by reference
      */
-   private void delete(StockData deleteMe) {
+    void delete(StockData deleteMe) {
         
 
         int baseIndex = StockData.getHashCode(deleteMe.getName()) % this.capacity;

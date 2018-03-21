@@ -51,6 +51,7 @@ public class DayData {
     /**
      * Overridden to allow for checks for equal date in standard containers
      * @param o A Daydata object whichs timestamp will be matched to this object
+     * @return Equality of Date, ignoring course values
      */
     @Override
     public boolean equals(Object o) {

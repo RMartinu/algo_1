@@ -6,6 +6,18 @@
 package ads1hash;
 
 import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 /**
@@ -24,7 +36,72 @@ public class ADS1Hash extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        MenuBar menuBar=new MenuBar();
+        
+        Menu fileMenu=new Menu("File");
+        Menu stockMenu=new Menu("Stock");
+        Menu plotMenu=new Menu("Plot");
+        
+        MenuItem miLoad=new MenuItem("Load");
+        miLoad.setAccelerator(KeyCombination.keyCombination("Ctrl-L"));
+        
+        MenuItem miSave=new MenuItem("Save");
+        miSave.setAccelerator(KeyCombination.keyCombination("Ctrl-S"));
+        MenuItem miExit=new MenuItem("Quit");
+        miExit.setAccelerator(new KeyCodeCombination(KeyCode.X, KeyCombination.CONTROL_DOWN));
+        miExit.setOnAction(e->{System.out.println("Bye");});
+        
+        
+        MenuItem miNewStock=new MenuItem("New Stock");
+        miNewStock.setAccelerator(new KeyCodeCombination(KeyCode.N));
+        miNewStock.setOnAction(e->{System.out.println("Creating a new Entry");});
+        MenuItem miImport=new MenuItem("Import Data");
+        
+        Menu smSearch=new Menu("Search Stock");
+        MenuItem smiSearchByName=new MenuItem("Search by Name");
+        MenuItem smiSearchByAbbreviation=new MenuItem("Search by Abbreviation");
+        smSearch.getItems().addAll(smiSearchByName, smiSearchByAbbreviation);
+        
+        Menu smDelete= new Menu("Delete Stock");
+       
+        MenuItem smiDelCurrent=new MenuItem("Delete current Stock");
+        MenuItem smiDelByName=new MenuItem("Delete Stock by Name");
+        MenuItem smiDelByAbbrev=new MenuItem("Delete Stock by Abbreviation");
+        
+        smDelete.getItems().addAll(smiDelCurrent,new SeparatorMenuItem(),smiDelByName,smiDelByAbbrev);
+        
+        
+        CheckMenuItem cmiOpen=new CheckMenuItem("Open Course");
+        CheckMenuItem cmiHigh=new CheckMenuItem("Daily High");
+        CheckMenuItem cmiLow=new CheckMenuItem("Daily Low");
+        CheckMenuItem cmiCLose=new CheckMenuItem("Closing Course");
+        CheckMenuItem cmiVolume=new CheckMenuItem("Trade Volume");
+        CheckMenuItem cmiAdjClose=new CheckMenuItem("Adjusted Closeing");
+        
+        RadioMenuItem rmiPlotAbsolute=new RadioMenuItem("Absolute Values");
+        RadioMenuItem rmiPlotRelative=new RadioMenuItem("Relative Values");
+        rmiPlotAbsolute.setSelected(true);
+        
+        ToggleGroup plotStyle=new ToggleGroup();
+        rmiPlotAbsolute.setToggleGroup(plotStyle);
+        rmiPlotRelative.setToggleGroup(plotStyle);
+        
+        fileMenu.getItems().addAll(miLoad,miSave,new SeparatorMenuItem() ,miExit);
+        stockMenu.getItems().addAll(smSearch, new SeparatorMenuItem(), miNewStock,miImport, smDelete);
+        plotMenu.getItems().addAll(cmiOpen,cmiHigh,cmiLow,cmiCLose,cmiVolume,cmiAdjClose,new SeparatorMenuItem(), rmiPlotAbsolute, rmiPlotRelative);
+        
+        menuBar.getMenus().addAll(fileMenu, stockMenu, plotMenu);
+        
+        
+        
+        
+        
+        BorderPane root = new BorderPane();
+        root.setTop(menuBar);
+        Scene scene = new Scene(root, 450,250);
+        primaryStage.setTitle("ADS1 - HashTable");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
     
 }

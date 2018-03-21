@@ -42,7 +42,8 @@ public class DataReader {
     }
 
     /**
-     *
+     * Discards first line (column names)
+     * Consecutive reads will come from this file
      * @param inputFile
      */
     public DataReader(File inputFile) {
@@ -91,6 +92,7 @@ public class DataReader {
         String date;
         double open, high, low, close, adjClose;
         long volume;
+        if(sc.hasNext()){
         try {
             date = sc.next();
             open = sc.nextDouble();
@@ -103,7 +105,7 @@ public class DataReader {
             return new DayData(LocalDate.parse(date), open, high, low, close, volume, adjClose);
         } catch (Exception e) {
             System.err.println("Significant data shortfall: " + e.getMessage());
-        }
+        }}
         return null;
     }
 
