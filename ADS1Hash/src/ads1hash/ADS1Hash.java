@@ -97,7 +97,9 @@ public class ADS1Hash extends Application {
         
         
         BorderPane root = new BorderPane();
+        PlotterPanel pp=new PlotterPanel();
         root.setTop(menuBar);
+        root.setCenter(pp);
         Scene scene = new Scene(root, 450,250);
         primaryStage.setTitle("ADS1 - HashTable");
         primaryStage.setScene(scene);
