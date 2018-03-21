@@ -26,6 +26,8 @@ import javafx.stage.Stage;
  */
 public class ADS1Hash extends Application {
 
+    PlotterPanel pp=new PlotterPanel();
+    StockData recentStockData;
     /**
      * @param args the command line arguments
      */
@@ -43,23 +45,29 @@ public class ADS1Hash extends Application {
         Menu plotMenu=new Menu("Plot");
         
         MenuItem miLoad=new MenuItem("Load");
-        miLoad.setAccelerator(KeyCombination.keyCombination("Ctrl-L"));
+        miLoad.setAccelerator(new KeyCodeCombination(KeyCode.L, KeyCombination.CONTROL_DOWN));
+        miLoad.setOnAction(e->{System.out.println("Loading map from File");});
         
         MenuItem miSave=new MenuItem("Save");
-        miSave.setAccelerator(KeyCombination.keyCombination("Ctrl-S"));
+        miSave.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
+        miSave.setOnAction(e->{System.out.println("Saving Hashmap to File");});
         MenuItem miExit=new MenuItem("Quit");
         miExit.setAccelerator(new KeyCodeCombination(KeyCode.X, KeyCombination.CONTROL_DOWN));
         miExit.setOnAction(e->{System.out.println("Bye");});
         
         
         MenuItem miNewStock=new MenuItem("New Stock");
-        miNewStock.setAccelerator(new KeyCodeCombination(KeyCode.N));
+  
         miNewStock.setOnAction(e->{System.out.println("Creating a new Entry");});
         MenuItem miImport=new MenuItem("Import Data");
         
         Menu smSearch=new Menu("Search Stock");
         MenuItem smiSearchByName=new MenuItem("Search by Name");
+        smiSearchByName.setAccelerator(new KeyCodeCombination(KeyCode.N));
+        smiSearchByName.setOnAction(e->{System.out.println("Searching by Name");});
         MenuItem smiSearchByAbbreviation=new MenuItem("Search by Abbreviation");
+        smiSearchByAbbreviation.setAccelerator(new KeyCodeCombination(KeyCode.A));
+        smiSearchByAbbreviation.setOnAction(e->{System.out.println("Searching by Abbreviaion");});
         smSearch.getItems().addAll(smiSearchByName, smiSearchByAbbreviation);
         
         Menu smDelete= new Menu("Delete Stock");
@@ -72,6 +80,9 @@ public class ADS1Hash extends Application {
         
         
         CheckMenuItem cmiOpen=new CheckMenuItem("Open Course");
+        cmiOpen.setAccelerator(new KeyCodeCombination(KeyCode.DIGIT1));
+        cmiOpen.setOnAction(e->{pp.showOpen(cmiOpen.isSelected());});
+        
         CheckMenuItem cmiHigh=new CheckMenuItem("Daily High");
         CheckMenuItem cmiLow=new CheckMenuItem("Daily Low");
         CheckMenuItem cmiCLose=new CheckMenuItem("Closing Course");
@@ -97,10 +108,10 @@ public class ADS1Hash extends Application {
         
         
         BorderPane root = new BorderPane();
-        PlotterPanel pp=new PlotterPanel();
+        
         root.setTop(menuBar);
         root.setCenter(pp);
-        Scene scene = new Scene(root, 450,250);
+        Scene scene = new Scene(root, 900,450);
         primaryStage.setTitle("ADS1 - HashTable");
         primaryStage.setScene(scene);
         primaryStage.show();

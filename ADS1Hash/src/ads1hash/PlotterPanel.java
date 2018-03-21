@@ -5,11 +5,14 @@
  */
 package ads1hash;
 
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -18,14 +21,14 @@ import javafx.scene.shape.Rectangle;
  */
 public class PlotterPanel extends Pane{
 
-    
+    StockData workSet;
     HBox Layout=new HBox();
     
     GridPane gp=new GridPane();
     Pane Display=new Pane();
      
     Label lname=new Label("Stock Name");
-    Label name=new Label();
+    Label name=new Label("TestDAta");
     
     Label labbrev=new Label("Stock Abbreviation");
     Label abbrev=new Label();
@@ -38,30 +41,38 @@ public class PlotterPanel extends Pane{
     Label ldate=new Label("Date");
     Label date=new Label();
     
+    
+    boolean showOpen;
     Label lopen=new Label("Open");
     Label open=new Label();
     
+    boolean showHigh;
     Label lhigh=new Label("Daily High");
     Label high=new Label();
     
+    boolean showLow;
     Label llow=new Label("Daily Low");
     Label low=new Label();
     
+    boolean showClose;
     Label lclose=new Label("Close");
     Label close=new Label();
     
-    
+    boolean showVolume;
     Label lvolume=new Label("Trade Volume");
     Label volume=new Label();
     
-    
-    Label lAdjClose=new Label("Close");
+    boolean showAdjClose;
+    Label lAdjClose=new Label("Adjusted Close");
     Label adjClose=new Label();
     
     StockData data;
 
     public PlotterPanel() {
-        
+
+       
+        name.minWidth(100);
+        name.setContentDisplay(ContentDisplay.RIGHT);
         gp.add(lname, 0, 0); gp.add(name, 1, 0);
         gp.add(labbrev, 0, 1); gp.add(abbrev, 1, 1);
         gp.add(lwkn,0,2); gp.add(wkn, 1, 2);
@@ -75,16 +86,49 @@ public class PlotterPanel extends Pane{
         gp.setHgap(10); gp.setVgap(10);
         gp.setPadding(new Insets(5));
         gp.setPrefWidth(200);
+        gp.setMinWidth(200);
+        GridPane.setHalignment(name, HPos.RIGHT);
+        GridPane.setHgrow(name, Priority.ALWAYS);
         Layout.getChildren().addAll(gp,Display);
-        Rectangle backgnd=new Rectangle(250, 150);
+        Rectangle backgnd=new Rectangle(650, 400);
         Display.getChildren().add(backgnd);
         this.getChildren().addAll(Layout);
         
         
     }
     
+    public void showOpen(boolean show)
+    {
+        this.showOpen=show;
+        this.update();
+    }
+    public void showHigh(boolean show)
+    {}
+    public void showLow(boolean show)
+    {}
+    public void showClose(boolean show)
+    {}
+    public void showVolume(boolean show)
+    {}
+    public void showAdjClose(boolean show)
+    {}
     
+    /**
+     * Fills the pane with active plots based on recent StockData
+     */
+    public void update()
+    {
+    System.out.println("Updatingthe plot");
+    }
     
+    /**
+     * Sets the StockData the Panel is supposed to display.
+     * @param workset the Stockdata to be used
+     */
+    public void setStock(StockData workset)
+    {this.workSet=workset;
+    this.update();
+    }
     
     
     
