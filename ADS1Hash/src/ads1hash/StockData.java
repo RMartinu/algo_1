@@ -50,8 +50,8 @@ public class StockData {
     }
 
     /**
-     * inserts new Datapoints
-     * replaces Datapoints that already exists at the date of the new Datapoint
+     * inserts new Datapoints replaces Datapoints that already exists at the
+     * date of the new Datapoint
      */
     void replaceDayData(DayData dataPoint) {
         if (data.contains(dataPoint)) {

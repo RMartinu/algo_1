@@ -88,7 +88,6 @@ public class HashTable {
      * removes an object from hastable by reference
      */
     void delete(StockData deleteMe) {
-        
 
         int baseIndex = StockData.getHashCode(deleteMe.getName()) % this.capacity;
         int modifiedIndex;
@@ -119,7 +118,8 @@ public class HashTable {
     }
 
     /**
-     * Searches for an entry by its Name and if found removes it from both of Name and Abbreviation tables
+     * Searches for an entry by its Name and if found removes it from both of
+     * Name and Abbreviation tables
      */
     void deleteByName(String name) {
 
@@ -130,18 +130,19 @@ public class HashTable {
         this.delete(deleteMe);
 
     }
-    
-    /**
-     * Searches for an entry by Abbreviation and if found removes it from Name and Abbreviation table
-     */
 
+    /**
+     * Searches for an entry by Abbreviation and if found removes it from Name
+     * and Abbreviation table
+     */
     void deleteByAbbreviation(String abbrev) {
     }
 
     /**
-     * Takes the index of where a object would be inserted by default
-     * Adds an offset appopriate to the nth iteration of quadratic probing
-     * result needs to be modulo'd to the actual table size.
+     * Takes the index of where a object would be inserted by default Adds an
+     * offset appopriate to the nth iteration of quadratic probing result needs
+     * to be modulo'd to the actual table size.
+     *
      * @param baseIndex Where the object should have gone in the first place
      * @param iteration number of previously failed attempt
      */
@@ -150,11 +151,10 @@ public class HashTable {
         newIndex += Math.pow(iteration, 2); //Just in case someone is pondering higher order probing
         return newIndex;
     }
-    
+
     /**
      * finds an object by name, returns reference if found, null otherwise
      */
-
     StockData findByName(String name) {
 
         int baseHash = StockData.getHashCode(name) % this.capacity;

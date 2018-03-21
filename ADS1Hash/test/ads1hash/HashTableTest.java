@@ -52,8 +52,6 @@ public class HashTableTest {
         //fail("The test case is a prototype.");
     }
 
-
-
     @Test
     public void testInsert() {
         System.out.println("Testing insertion");
@@ -141,10 +139,8 @@ public class HashTableTest {
         float result = instance.getLoadFActor();
         assertEquals(expResult, result, 0.0);
         // TODO review the generated test code and remove the default call to fail.
-        
+
     }
-
-
 
     /**
      * Test of deleteByName method, of class HashTable.
@@ -170,7 +166,7 @@ public class HashTableTest {
         result = instance.findByName("XYZ");
         assertEquals(null, result);
         // TODO review the generated test code and remove the default call to fail.
-       // fail("The test case is a prototype.");
+        // fail("The test case is a prototype.");
     }
 
     /**
@@ -184,7 +180,7 @@ public class HashTableTest {
         HashTable instance = null;
         instance.deleteByAbbreviation(abbrev);
         // TODO review the generated test code and remove the default call to fail.
-        
+
     }
 
 }

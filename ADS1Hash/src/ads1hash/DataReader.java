@@ -24,9 +24,8 @@ public class DataReader {
 
     private Scanner sc;
 
-
     DataReader(InputStream inStream) {
-        
+
         sc = new Scanner(inStream);
         sc.nextLine();
         /*throw the first line, with the column names, away*/
@@ -42,8 +41,9 @@ public class DataReader {
     }
 
     /**
-     * Discards first line (column names)
-     * Consecutive reads will come from this file
+     * Discards first line (column names) Consecutive reads will come from this
+     * file
+     *
      * @param inputFile
      */
     public DataReader(File inputFile) {
@@ -56,12 +56,13 @@ public class DataReader {
     }
 
     /**
-     * Opens file specified by fileName
-     * Discards first line(containing column names)
+     * Opens file specified by fileName Discards first line(containing column
+     * names)
+     *
      * @param fileName the Filename as String
      */
     public DataReader(String fileName) {
-     
+
         System.out.println("Going for " + fileName);
         File inputFile;
         try {
@@ -79,11 +80,11 @@ public class DataReader {
         sc.close();
 
     }
-    
-    /**
-     * Returns exactly on set of Data from the Data source associated with the reader
-     */
 
+    /**
+     * Returns exactly on set of Data from the Data source associated with the
+     * reader
+     */
     DayData getDayData() {
 
         sc.useDelimiter(",|\\n");
@@ -92,20 +93,21 @@ public class DataReader {
         String date;
         double open, high, low, close, adjClose;
         long volume;
-        if(sc.hasNext()){
-        try {
-            date = sc.next();
-            open = sc.nextDouble();
-            high = sc.nextDouble();
-            low = sc.nextDouble();
-            close = sc.nextDouble();
-            volume = sc.nextLong();
-            adjClose = sc.nextDouble();
+        if (sc.hasNext()) {
+            try {
+                date = sc.next();
+                open = sc.nextDouble();
+                high = sc.nextDouble();
+                low = sc.nextDouble();
+                close = sc.nextDouble();
+                volume = sc.nextLong();
+                adjClose = sc.nextDouble();
 
-            return new DayData(LocalDate.parse(date), open, high, low, close, volume, adjClose);
-        } catch (Exception e) {
-            System.err.println("Significant data shortfall: " + e.getMessage());
-        }}
+                return new DayData(LocalDate.parse(date), open, high, low, close, volume, adjClose);
+            } catch (Exception e) {
+                System.err.println("Significant data shortfall: " + e.getMessage());
+            }
+        }
         return null;
     }
 
