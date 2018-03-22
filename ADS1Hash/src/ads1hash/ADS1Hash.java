@@ -44,6 +44,9 @@ public class ADS1Hash extends Application {
         Application.launch(args);
     }
 
+    
+    public void CreateStock()
+    {}
     public String SearchPanel(String whatFor) {
 
         Stage searchStage = new Stage();
@@ -57,6 +60,7 @@ public class ADS1Hash extends Application {
         btn.setOnAction(e -> {
             String s = tf.getText();
             recentStockData = (whatFor.charAt(0) == 'N') ? dataTable.findByName(s) : dataTable.findByAbbreviation(s);
+            pp.update();
         });
         Pane p = new Pane();
         p.getChildren().add(v);
