@@ -37,6 +37,15 @@ public class ADS1Hash extends Application {
         Application.launch(args);
     }
 
+    
+    public String SearchPanel()
+    {
+        return null;
+    }
+    
+    public void insertPanel()
+    {}
+    
     @Override
     public void start(Stage primaryStage) throws Exception {
         MenuBar menuBar = new MenuBar();
