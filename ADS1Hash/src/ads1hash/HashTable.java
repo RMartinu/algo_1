@@ -149,6 +149,10 @@ public class HashTable {
     int getQuadraticProbing(int baseIndex, int iteration) {
         int newIndex = baseIndex;
         newIndex += Math.pow(iteration, 2); //Just in case someone is pondering higher order probing
+        if (newIndex < 0) {
+            System.err.println("overflowm base: " + baseIndex + " iteration " + iteration);
+            return 0;
+        }
         return newIndex;
     }
 
@@ -157,6 +161,7 @@ public class HashTable {
      */
     StockData findByName(String name) {
 
+        System.out.println("Searching for: " + name);
         int baseHash = StockData.getHashCode(name) % this.capacity;
         for (int i = 0; i < this.capacity; i++) {
             int modifiedHash = getQuadraticProbing(baseHash, i) % this.capacity;

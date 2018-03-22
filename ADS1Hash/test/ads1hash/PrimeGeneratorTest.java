@@ -76,7 +76,7 @@ public class PrimeGeneratorTest {
     public void testFindClosestPrime() {
         System.out.println("findClosestPrime");
         int input = 0;
-        PrimeGenerator instance = new PrimeGenerator(4500);
+        PrimeGenerator instance = new PrimeGenerator(234500);
         int expResult = 2017;
         int result = instance.findClosestPrime(input);
         assertEquals(expResult, result);

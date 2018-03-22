@@ -60,29 +60,21 @@ public class PrimeGenerator {
 //                return false;
 //            }
 //        }
-
         //Speedy Search
-        int lowerBound=0; int upperBound=prime.length;
+        int lowerBound = 0;
+        int upperBound = prime.length;
         int index;
-        while(lowerBound<=upperBound)
-        {
-            index=(lowerBound+upperBound)/2;
-            if(Candidate==prime[index])
-            {
+        while (lowerBound <= upperBound) {
+            index = (lowerBound + upperBound) / 2;
+            if (Candidate == prime[index]) {
                 return true;
             }
-            if(Candidate>prime[index])
-            {
-                lowerBound=index+1;
-            }
-            else
-            {
-                upperBound=index-1;
+            if (Candidate > prime[index]) {
+                lowerBound = index + 1;
+            } else {
+                upperBound = index - 1;
             }
         }
-
-
-
 
         return false;
     }

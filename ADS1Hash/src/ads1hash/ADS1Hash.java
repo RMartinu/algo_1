@@ -7,17 +7,22 @@ package ads1hash;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -28,26 +33,47 @@ public class ADS1Hash extends Application {
 
     PlotterPanel pp = new PlotterPanel();
     StockData recentStockData;
+    HashTable dataTable;
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
+
         Application.launch(args);
     }
 
-    
-    public String SearchPanel()
-    {
+    public String SearchPanel(String whatFor) {
+
+        Stage searchStage = new Stage();
+
+        searchStage.setTitle("Searching for: " + whatFor);
+        VBox v = new VBox();
+        Label l = new Label("Search for " + whatFor);
+        TextField tf = new TextField("enter here...");
+        Button btn = new Button("ClickMe");
+        v.getChildren().addAll(l, tf, btn);
+        btn.setOnAction(e -> {
+            String s = tf.getText();
+            recentStockData = (whatFor.charAt(0) == 'N') ? dataTable.findByName(s) : dataTable.findByAbbreviation(s);
+        });
+        Pane p = new Pane();
+        p.getChildren().add(v);
+        Scene sc = new Scene(p, 350, 150);
+        searchStage.setScene(sc);
+
+        searchStage.show();
+
         return null;
     }
-    
-    public void insertPanel()
-    {}
-    
+
+    public void insertPanel() {
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
+        dataTable = new HashTable(2000);
         MenuBar menuBar = new MenuBar();
 
         Menu fileMenu = new Menu("File");
@@ -83,11 +109,15 @@ public class ADS1Hash extends Application {
         smiSearchByName.setAccelerator(new KeyCodeCombination(KeyCode.N));
         smiSearchByName.setOnAction(e -> {
             System.out.println("Searching by Name");
+            String findme = this.SearchPanel("Name");
+            System.out.println("found" + findme);
         });
         MenuItem smiSearchByAbbreviation = new MenuItem("Search by Abbreviation");
         smiSearchByAbbreviation.setAccelerator(new KeyCodeCombination(KeyCode.A));
         smiSearchByAbbreviation.setOnAction(e -> {
+            String findme = SearchPanel("Abbreviation");
             System.out.println("Searching by Abbreviaion");
+            System.out.println("find me some " + findme);
         });
         smSearch.getItems().addAll(smiSearchByName, smiSearchByAbbreviation);
 
