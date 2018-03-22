@@ -65,6 +65,7 @@ public class PlotterPanel extends Pane {
     Label lAdjClose = new Label("Adjusted Close");
     Label adjClose = new Label();
 
+    boolean renderAbsolute=false;
     StockData data;
 
     public PlotterPanel() {
@@ -134,12 +135,52 @@ public class PlotterPanel extends Pane {
         
         /*Plotting the opening course*/
         //ToDo: the same for the others
+        
+        double dPointsY[]=this.data.getOpeningCourse(30);
+        plotData(dPointsY);
+
+        System.out.println(Display.getWidth());
         if(this.showOpen)
         {
-            double dPointsY[]=this.data.getOpeningCourse(30);
+
+                    
+            
+        }
+        System.out.println("Updatingthe plot");
+        
+    }
+    
+    /**
+     * DRY: reusable  Code for every plotline
+     */
+    private void plotData(double dPointsY[])
+    {
+                    
             //ToDo: normalize Y coords to display size and mode
+        
+        double sum=0, min=0, max=0;
+        for(double c: dPointsY)
+        {
+            sum+=c;
+            if(c<min)
+            {min=c;}
+            if(c>max)
+            {max=c;}
+        }
+        //ToDO: Transform Coords according to render flag
+        
             double dPointsX[]=new double[dPointsY.length];
-            //Todo: generate even distribution of array.length points over width
+            
+            int padding=20;
+            double spacing=(Display.getWidth()-2*padding)/(double)dPointsX.length;
+            
+            double xCoord=padding;
+            for(int i =0; i<dPointsX.length;i++)
+            {
+                dPointsX[i]=xCoord;
+                xCoord+=spacing;
+            }
+            
             double dPointsInterleaved[]=new double[dPointsX.length+dPointsY.length];
             
             
@@ -153,11 +194,6 @@ public class PlotterPanel extends Pane {
             Polyline plot=new Polyline(dPointsInterleaved);
             plot.setStroke(Color.RED);
             Display.getChildren().add(plot);
-                    
-            
-        }
-        System.out.println("Updatingthe plot");
-        
     }
 
     /**

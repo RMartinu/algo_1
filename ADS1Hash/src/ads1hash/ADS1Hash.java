@@ -21,6 +21,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -46,7 +47,36 @@ public class ADS1Hash extends Application {
 
     
     public void CreateStock()
-    {}
+    {
+        Stage creationStage=new Stage();  
+        creationStage.setTitle("Create a new Stock Entry");
+        GridPane grid = new GridPane();
+        Scene sc = new Scene(grid,350,300);
+        
+        Label head=new Label("Create a new Stock");
+        Label lName = new Label("Name: ");
+        TextField tfName = new TextField();
+        Label lAbrreviation = new Label("Abbreviation");
+        TextField tfAbbreviation = new TextField();
+        Label lWkn=new Label("WKN");
+        TextField tfWkn=new TextField();
+        Button submit = new Button("Submit");
+        
+        grid.add(head,0,0);
+        grid.add(lName, 0, 1);
+        grid.add(tfName, 1, 1);
+        
+        grid.add(lAbrreviation, 0, 2);
+        grid.add(tfAbbreviation, 1, 2);
+        
+        grid.add(lWkn, 0, 3);
+        grid.add(tfWkn,1,3);
+       
+        grid.add(submit, 0, 4);
+        
+        creationStage.setScene(sc);
+        creationStage.show();
+    }
     public String SearchPanel(String whatFor) {
 
         Stage searchStage = new Stage();
@@ -60,7 +90,7 @@ public class ADS1Hash extends Application {
         btn.setOnAction(e -> {
             String s = tf.getText();
             recentStockData = (whatFor.charAt(0) == 'N') ? dataTable.findByName(s) : dataTable.findByAbbreviation(s);
-            pp.update();
+            pp.setStock(recentStockData); /*The StockPlotter gets the new Dataset and will update itself*/
         });
         Pane p = new Pane();
         p.getChildren().add(v);
@@ -105,6 +135,7 @@ public class ADS1Hash extends Application {
 
         miNewStock.setOnAction(e -> {
             System.out.println("Creating a new Entry");
+            this.CreateStock();
         });
         MenuItem miImport = new MenuItem("Import Data");
 
