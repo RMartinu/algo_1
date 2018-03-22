@@ -51,16 +51,40 @@ public class PrimeGenerator {
             throw new RuntimeException("Need to enlarge array");
         }
 
-        for (int primeInt : prime) {
-            if (Candidate == primeInt) {
+        //SlowBoat serch
+//        for (int primeInt : prime) {
+//            if (Candidate == primeInt) {
+//                return true;
+//            }
+//            if (Candidate % primeInt == 0) {
+//                return false;
+//            }
+//        }
+
+        //Speedy Search
+        int lowerBound=0; int upperBound=prime.length;
+        int index;
+        while(lowerBound<upperBound)
+        {
+            index=(lowerBound+upperBound)/2;
+            if(Candidate==prime[index])
+            {
                 return true;
             }
-            if (Candidate % primeInt == 0) {
-                return false;
+            if(Candidate>prime[index])
+            {
+                lowerBound=index+1;
+            }
+            else
+            {
+                upperBound=index-1;
             }
         }
 
-        return true;
+
+
+
+        return false;
     }
 
     boolean isMersennePrime(int input) {

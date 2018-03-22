@@ -105,6 +105,8 @@ public class PlotterPanel extends Pane {
 
     }
 
+    
+    //ToDo: implement all toggle functions
     public void showOpen(boolean show) {
         this.showOpen = show;
         this.update();

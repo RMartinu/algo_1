@@ -43,6 +43,8 @@ public class PrimeGeneratorTest {
     @Test
     public void testIsPrime() {
         System.out.println("isPrime");
+        
+        //ToDo: Test exhaustive
         int Candidate = 2017;
         PrimeGenerator instance = new PrimeGenerator();
         boolean expResult = true;
