@@ -6,15 +6,18 @@
 package ads1hash;
 
 import java.time.LocalDate;
+import java.util.StringTokenizer;
 
 /**
  *
  * @author Robert Martinu
  */
-public class DayData {
+public class DayData implements Serialize {
 
     /*For educational purposes only! 
     *!!never use float/double in actual financial software!!*/
+    static final String STARTTAG="<DayData>\n";
+    static final String ENDTAG  ="</DayData>\n";
     private final LocalDate date;
     private final double open;
     private final double high;
@@ -32,6 +35,22 @@ public class DayData {
         this.volume = volume;
         this.adjClose = adjClose;
     }
+
+    public DayData(StringTokenizer Deserialize) {
+     
+        Deserialize.nextToken(" ");
+        
+        this.date = LocalDate.parse(Deserialize.nextToken());
+        this.open = Double.parseDouble(Deserialize.nextToken());
+        this.high = Double.parseDouble(Deserialize.nextToken());
+        this.low = Double.parseDouble(Deserialize.nextToken());
+        this.close = Double.parseDouble(Deserialize.nextToken());
+        this.volume = Long.parseLong(Deserialize.nextToken());
+        this.adjClose = Double.parseDouble(Deserialize.nextToken());
+        Deserialize.nextToken("\n");
+    }
+    
+    
 
 //TODO write Getters 
     LocalDate getDate() {
@@ -61,6 +80,26 @@ public class DayData {
             return d.date.isEqual(date);
         }
         return false;
+    }
+
+    @Override
+    public String createStringRepresentation() {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        StringBuilder sb=new StringBuilder(STARTTAG);
+        sb.append(date.toString()).append(" ");
+        sb.append(open).append(" ");
+        sb.append(high).append(" ");
+        sb.append(low).append(" ");
+        sb.append(close).append(" ");
+        sb.append(volume).append(" ");
+        sb.append(adjClose).append(" ");
+        sb.append(ENDTAG).append("\n");
+ 
+        
+
+         
+        return sb.toString();
     }
 
 }
