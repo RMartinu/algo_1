@@ -65,7 +65,7 @@ public class PlotterPanel extends Pane {
     Label lAdjClose = new Label("Adjusted Close");
     Label adjClose = new Label();
 
-    boolean renderAbsolute=false;
+    boolean renderAbsolute = false;
     StockData data;
 
     public PlotterPanel() {
@@ -106,7 +106,6 @@ public class PlotterPanel extends Pane {
 
     }
 
-    
     //ToDo: implement all toggle functions
     public void showOpen(boolean show) {
         this.showOpen = show;
@@ -132,68 +131,73 @@ public class PlotterPanel extends Pane {
      * Fills the pane with active plots based on recent StockData
      */
     public void update() {
-        
+
         /*Plotting the opening course*/
         //ToDo: the same for the others
-        
-        double dPointsY[]=this.data.getOpeningCourse(30);
-        plotData(dPointsY);
-
         System.out.println(Display.getWidth());
-        if(this.showOpen)
-        {
+        if (this.showOpen) {
 
-                    
-            
+            double dPointsY[] = this.data.getOpeningCourse(30);
+
+            plotData(dPointsY);
         }
         System.out.println("Updatingthe plot");
-        
+
     }
-    
+
     /**
-     * DRY: reusable  Code for every plotline
+     * DRY: reusable Code for every plotline
      */
-    private void plotData(double dPointsY[])
-    {
-                    
-            //ToDo: normalize Y coords to display size and mode
-        
-        double sum=0, min=0, max=0;
-        for(double c: dPointsY)
-        {
-            sum+=c;
-            if(c<min)
-            {min=c;}
-            if(c>max)
-            {max=c;}
+    private void plotData(double dPointsY[]) {
+
+        //ToDo: normalize Y coords to display size and mode
+        double min = 0, max = 0;
+        for (double c : dPointsY) {
+            if (c < min) {
+                min = c;
+            }
+            if (c > max) {
+                max = c;
+            }
         }
         //ToDO: Transform Coords according to render flag
-        
-            double dPointsX[]=new double[dPointsY.length];
-            
-            int padding=20;
-            double spacing=(Display.getWidth()-2*padding)/(double)dPointsX.length;
-            
-            double xCoord=padding;
-            for(int i =0; i<dPointsX.length;i++)
-            {
-                dPointsX[i]=xCoord;
-                xCoord+=spacing;
+
+        if (renderAbsolute) {
+            double scaling = (Display.getHeight() -20)/ max;
+            for (int i = 0; i < dPointsY.length; i++) {
+                dPointsY[i] *= scaling+10;
             }
-            
-            double dPointsInterleaved[]=new double[dPointsX.length+dPointsY.length];
-            
-            
-            //interleaving, als PolyLine wants its points in this format
-            for(int i =0; i<dPointsY.length; i++)
-            {
-                dPointsInterleaved[2*i]=dPointsX[i];
-                dPointsInterleaved[2*i+1]=dPointsY[i];
+        } else {
+            double range = max - min;
+            double scaling = (Display.getHeight() -20)/ range;
+            for (int i = 0; i < dPointsY.length; i++) {
+                dPointsY[i] = (dPointsY[i] - min) * scaling+10;
             }
-            
-            Polyline plot=new Polyline(dPointsInterleaved);
-            plot.setStroke(Color.RED);
-            Display.getChildren().add(plot);
+
+        }
+
+        double dPointsX[] = new double[dPointsY.length];
+
+        int padding = 20;
+        double spacing = (Display.getWidth() - 2 * padding) / (double) dPointsX.length;
+
+        double xCoord = padding;
+        for (int i = 0; i < dPointsX.length; i++) {
+            dPointsX[i] = xCoord;
+            xCoord += spacing;
+        }
+
+        double dPointsInterleaved[] = new double[dPointsX.length + dPointsY.length];
+
+        //interleaving, als PolyLine wants its points in this format
+        for (int i = 0; i < dPointsY.length; i++) {
+            dPointsInterleaved[2 * i] = dPointsX[i];
+            dPointsInterleaved[2 * i + 1] = dPointsY[i];
+        }
+
+        Polyline plot = new Polyline(dPointsInterleaved);
+        plot.setStroke(Color.RED);
+        Display.getChildren().add(plot);
     }
 
     /**
