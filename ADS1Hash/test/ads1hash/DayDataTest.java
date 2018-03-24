@@ -7,8 +7,6 @@ package ads1hash;
 
 import java.time.LocalDate;
 import java.util.Scanner;
-import java.util.StringTokenizer;
-import javafx.util.converter.LocalDateStringConverter;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
