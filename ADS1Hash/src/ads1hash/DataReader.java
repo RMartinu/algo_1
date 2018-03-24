@@ -13,6 +13,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,11 +24,12 @@ import java.util.logging.Logger;
 public class DataReader {
 
     private Scanner sc;
+    private String readOrder[] = new String[12];
 
     DataReader(InputStream inStream) {
 
         sc = new Scanner(inStream);
-        sc.nextLine();
+        evalColumnOrder();
         /*throw the first line, with the column names, away*/
     }
 
@@ -37,7 +39,8 @@ public class DataReader {
         } catch (IOException ex) {
             Logger.getLogger(DataReader.class.getName()).log(Level.SEVERE, null, ex);
         }
-        sc.nextLine();
+
+        evalColumnOrder();
     }
 
     /**
@@ -49,7 +52,8 @@ public class DataReader {
     public DataReader(File inputFile) {
         try {
             sc = new Scanner(inputFile);
-            sc.nextLine();
+            evalColumnOrder();
+
         } catch (FileNotFoundException e) {
             System.err.println(e.getMessage());
         }
@@ -68,7 +72,7 @@ public class DataReader {
         try {
             inputFile = new File(fileName);
             sc = new Scanner(inputFile);
-            System.out.println("Discard first line: " + sc.nextLine());
+            evalColumnOrder();
         } catch (FileNotFoundException e) {
             System.err.println(" File " + fileName + " not found");
         }
@@ -85,14 +89,116 @@ public class DataReader {
      * Returns exactly on set of Data from the Data source associated with the
      * reader
      */
+    private void evalColumnOrder() {
+        String t = sc.nextLine();
+        StringTokenizer st = new StringTokenizer(t, ",");
+        for (int i = 0; i < readOrder.length; i++) {
+            if (st.hasMoreTokens()) {
+                readOrder[i] = st.nextToken();
+            }
+        }
+        for (String s : readOrder) {
+            System.out.println(s);
+        }
+    }
+
     DayData getDayData() {
 
         sc.useDelimiter(",|\\n");
         sc.useLocale(Locale.US);
         //ToDo: someone should handle the potential exceptions
-        String date;
-        double open, high, low, close, adjClose;
-        long volume;
+        System.err.println("start reading");
+        if (!sc.hasNextLine()) {
+            return null;
+        }
+        String date = "";
+        double open = 0, high = 0, low = 0, close = 0, adjClose = 0;
+        long volume = 0;
+        LocalDate ld = null;
+
+        /**
+         * Apparently the column order in Yahoos stock CSVs has changed over
+         * time, making the reader more convoluted then neccessary Lets hope at
+         * leasr their names remain stable.
+         */
+        for (String Column : readOrder) {
+            if (Column == null) {
+                continue;
+            }
+            switch (Column) {
+                case "Date": {
+                    if (sc.hasNext()) {
+                        date = sc.next();
+                    } else {
+                        return null;
+                    }
+                    if (date.length() < 8) {
+                        System.err.println("TRouble: " + date);
+                        return null;
+                    }
+                    ld = LocalDate.parse(date);
+                    if (ld == null) {
+                        System.err.println("TRouble: " + date);
+                        return null;
+                    }
+                    break;
+                }
+                case "Open": {
+                    if (sc.hasNextDouble()) {
+                        open = sc.nextDouble();
+                    } else {
+                        return null;
+                    }
+                    break;
+                }
+                case "High": {
+                    if (sc.hasNextDouble()) {
+                        high = sc.nextDouble();
+                    } else {
+                        return null;
+                    }
+                    break;
+                }
+                case "Low": {
+                    if (sc.hasNextDouble()) {
+                        low = sc.nextDouble();
+                    } else {
+                        return null;
+                    }
+                    break;
+                }
+                case "Close": {
+                    if (sc.hasNextDouble()) {
+                        close = sc.nextDouble();
+                    } else {
+                        return null;
+                    }
+                    break;
+                }
+                case "Volume": {
+                    if (sc.hasNextLong()) {
+                        volume = sc.nextLong();
+                    } else {
+                        return null;
+                    }
+                    break;
+                }
+                case "Adj Close": {
+                    if (sc.hasNextDouble()) {
+                        adjClose = sc.nextDouble();
+                    } else {
+                        return null;
+                    }
+                    break;
+                }
+                default: {
+                    System.err.println("I've never been here: " + Column);
+                }
+
+            }
+        }
+        return new DayData(ld, open, high, low, close, volume, adjClose);
+        /*
         if (sc.hasNext()) {
             try {
                 date = sc.next();
@@ -100,15 +206,21 @@ public class DataReader {
                 high = sc.nextDouble();
                 low = sc.nextDouble();
                 close = sc.nextDouble();
+                
+                if(readOrder[6].equals("Volume"))
+                        {adjClose = sc.nextDouble();volume = sc.nextLong();
+                }else
+                {
                 volume = sc.nextLong();
-                adjClose = sc.nextDouble();
+                adjClose = sc.nextDouble();}
+            
 
                 return new DayData(LocalDate.parse(date), open, high, low, close, volume, adjClose);
             } catch (Exception e) {
                 System.err.println("Significant data shortfall: " + e.getMessage());
             }
         }
-        return null;
+        return null;*/
     }
 
 }

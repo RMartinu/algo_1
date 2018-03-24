@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
@@ -231,7 +232,14 @@ public class ADS1Hash extends Application {
             this.CreateStock();
         });
         MenuItem miImport = new MenuItem("Import Data");
-        miImport.setOnAction(e -> this.importDayData(primaryStage, 30));
+        miImport.setOnAction((ActionEvent e) -> {
+            try {
+                this.importDayData(primaryStage, 30);
+            } catch (RuntimeException ex) {
+                System.err.println("Got less datapoints then expected");
+            }
+        }
+        );
 
         Menu smSearch = new Menu("Search Stock");
         MenuItem smiSearchByName = new MenuItem("Search by Name");

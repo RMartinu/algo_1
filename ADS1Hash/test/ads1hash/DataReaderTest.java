@@ -58,9 +58,9 @@ public class DataReaderTest {
         System.out.println("getDayData");
         URL myLink = null;
         /*Path should refer to a existing file*/
-       // DataReader instance = new DataReader("D:\\msft.csv");
-        
-        File inputFile=new File("D:\\msft.csv");
+        // DataReader instance = new DataReader("D:\\msft.csv");
+
+        File inputFile = new File("D:\\AAPL.csv");
         DataReader instance = new DataReader(inputFile);
 
         /*Yahoo insists on returning HTTP 401...no joy, with nothing to download*/

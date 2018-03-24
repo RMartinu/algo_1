@@ -55,6 +55,11 @@ public class HashTable {
         if (sd == null) {
             return false;
         }
+        /*is there ambiguity?*/
+        if ((findByName(sd.getName()) != null) || (findByAbbreviation(sd.getAbbreviation()) != null)) {
+            System.err.println("Stock already in DB");
+            return false;
+        }
 
         //can we even insert the new element?
         //should we try to insert into a table beyond a certain laod factor?
