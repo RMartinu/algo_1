@@ -196,12 +196,12 @@ public class HashTable {
             //Here go the indvidual StockData entries
             for (StockData sd : this.byName) {
                 if (sd == null) {//System.err.println("null");
-                    
+
                 } else {
                     p.append(sd.createStringRepresentation());
                 }
             }
-            
+
             p.append(ENDTAG);
             p.flush();
         }
@@ -216,16 +216,14 @@ public class HashTable {
         }
         t = sc.nextLine();
         int prospectiveSize = Integer.parseInt(t);
-        capacity=primeGen.findClosestPrime(3*prospectiveSize);
-        
-        
-        this.byAbbreviation=new StockData[capacity];
-        this.byAbbreviationCounter=new int[capacity];
-        
-        this.byName=new StockData[capacity];
-        this.byNameCounter=new int[capacity];
-        
-        
+        capacity = primeGen.findClosestPrime(3 * prospectiveSize);
+
+        this.byAbbreviation = new StockData[capacity];
+        this.byAbbreviationCounter = new int[capacity];
+
+        this.byName = new StockData[capacity];
+        this.byNameCounter = new int[capacity];
+
         while (sc.peek().equals(StockData.STARTTAG)) {
             if (sc.peek().equals(StockData.STARTTAG)) {
                 System.err.println("Got one!");

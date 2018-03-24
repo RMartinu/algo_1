@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
@@ -77,30 +78,42 @@ public class ADS1Hash extends Application {
         Label head = new Label("Create a new Stock");
         Label lName = new Label("Name: ");
         TextField tfWkn = new TextField();
-        tfWkn.setOnKeyReleased(e->{if(e.getCode()==KeyCode.E){perf.setFocusTraversable(true);}});
+        tfWkn.setOnKeyReleased(e -> {
+            if (e.getCode() == KeyCode.E) {
+                perf.setFocusTraversable(true);
+            }
+        });
         TextField tfAbbreviation = new TextField();
-        tfAbbreviation.setOnKeyPressed(e->{if(e.getCode()==KeyCode.ENTER){tfWkn.requestFocus();}});
-        
+        tfAbbreviation.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                tfWkn.requestFocus();
+            }
+        });
+
         TextField tfName = new TextField();
-        tfName.setOnKeyReleased(e->{if(e.getCode()==KeyCode.ENTER){tfAbbreviation.requestFocus();}});
+        tfName.setOnKeyReleased(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                tfAbbreviation.requestFocus();
+            }
+        });
         Label lAbrreviation = new Label("Abbreviation");
-        
+
         Label lWkn = new Label("WKN");
- 
-        
+
         perf.defaultButtonProperty().bind(perf.focusedProperty());
         perf.setOnAction(e -> {
-            if(tfName.getText().isEmpty())
-            {tfName.requestFocus();}else
-            if(tfAbbreviation.getText().isEmpty())
-            {tfAbbreviation.requestFocus();
-            }else
-            if(tfWkn.getText().isEmpty())
-            {tfWkn.requestFocus();}else{
-            recentStockData = new StockData(tfName.getText(), tfAbbreviation.getText(), tfWkn.getText());
-            this.dataTable.insert(recentStockData);
-            pp.setStock(recentStockData);
-            creationStage.hide();}
+            if (tfName.getText().isEmpty()) {
+                tfName.requestFocus();
+            } else if (tfAbbreviation.getText().isEmpty()) {
+                tfAbbreviation.requestFocus();
+            } else if (tfWkn.getText().isEmpty()) {
+                tfWkn.requestFocus();
+            } else {
+                recentStockData = new StockData(tfName.getText(), tfAbbreviation.getText(), tfWkn.getText());
+                this.dataTable.insert(recentStockData);
+                pp.setStock(recentStockData);
+                creationStage.hide();
+            }
         });
 
         grid.add(head, 0, 0);
@@ -128,12 +141,16 @@ public class ADS1Hash extends Application {
         Label l = new Label("Search for " + whatFor);
         Button btn = new Button("Search");
         TextField tf = new TextField("enter here...");
-        tf.setOnKeyReleased(e->{if(e.getCode()==KeyCode.ENTER){btn.fire();}});
-        Label lNotFound=new Label();
-        
+        tf.setOnKeyReleased(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                btn.fire();
+            }
+        });
+        Label lNotFound = new Label();
+
         btn.defaultButtonProperty().bind(btn.focusedProperty());
-        
-        v.getChildren().addAll(l, tf,lNotFound, btn);
+
+        v.getChildren().addAll(l, tf, lNotFound, btn);
         btn.setOnAction(e -> {
             String s = (tf.getText().length() > 4) ? tf.getText().substring(0, 4) : tf.getText();
             StockData t = (whatFor.charAt(0) == 'N') ? dataTable.findByName(tf.getText()) : dataTable.findByAbbreviation(s);
@@ -143,11 +160,9 @@ public class ADS1Hash extends Application {
                 pp.setStock(recentStockData);
                 searchStage.hide();
                 /*The StockPlotter gets the new Dataset and will update itself*/
+            } else {
+                lNotFound.setText(tf.getText() + " not Found");
             }
-            else
-                {
-                    lNotFound.setText(tf.getText()+" not Found");
-                }
         });
         Pane p = new Pane();
         p.getChildren().add(v);
@@ -206,6 +221,7 @@ public class ADS1Hash extends Application {
         miExit.setAccelerator(new KeyCodeCombination(KeyCode.X, KeyCombination.CONTROL_DOWN));
         miExit.setOnAction(e -> {
             System.out.println("Bye");
+            Platform.exit();
         });
 
         MenuItem miNewStock = new MenuItem("New Stock");
@@ -237,7 +253,11 @@ public class ADS1Hash extends Application {
         Menu smDelete = new Menu("Delete Stock");
 
         MenuItem smiDelCurrent = new MenuItem("Delete current Stock");
-        smiDelCurrent.setOnAction(e->{dataTable.delete(recentStockData); recentStockData=null; pp.setStock(recentStockData);});
+        smiDelCurrent.setOnAction(e -> {
+            dataTable.delete(recentStockData);
+            recentStockData = null;
+            pp.setStock(recentStockData);
+        });
         MenuItem smiDelByName = new MenuItem("Delete Stock by Name");
         smiDelByName.setDisable(true);
         MenuItem smiDelByAbbrev = new MenuItem("Delete Stock by Abbreviation");

@@ -14,49 +14,47 @@ import java.util.Scanner;
  * @author Robert Martinu
  */
 public class PeekableScanner {
+
     private Scanner sc;
     private String next;
 
     public PeekableScanner(File in) throws FileNotFoundException {
-        sc=new Scanner(in);
-        next =sc.hasNextLine()? sc.nextLine():null;
+        sc = new Scanner(in);
+        next = sc.hasNextLine() ? sc.nextLine() : null;
     }
-    public PeekableScanner( String in)
-    {sc=new Scanner(in);
-        next =sc.hasNextLine()? sc.nextLine():null;
+
+    public PeekableScanner(String in) {
+        sc = new Scanner(in);
+        next = sc.hasNextLine() ? sc.nextLine() : null;
     }
-    
-    public boolean hasNext()
-    {
-        return next!=null;
+
+    public boolean hasNext() {
+        return next != null;
     }
-    
-    public boolean hasNextLine()
-    {
-        return next!=null;
+
+    public boolean hasNextLine() {
+        return next != null;
     }
-    
-    public String next(){
-        String current=next;
-        next=sc.hasNextLine()?sc.nextLine():null;
+
+    public String next() {
+        String current = next;
+        next = sc.hasNextLine() ? sc.nextLine() : null;
         return current;
     }
-    public String peek()
-    {
+
+    public String peek() {
         return next;
     }
-    
-    public String nextLine()
-    {
+
+    public String nextLine() {
         //Dulicates next to avoid excessive rewrites
-                String current=next;
-        next=sc.hasNextLine()?sc.nextLine():null;
+        String current = next;
+        next = sc.hasNextLine() ? sc.nextLine() : null;
         return current;
     }
-    
-    public void close()
-    {sc.close();
+
+    public void close() {
+        sc.close();
     }
-    
-    
+
 }

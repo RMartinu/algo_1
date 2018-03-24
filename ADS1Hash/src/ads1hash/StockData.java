@@ -38,8 +38,9 @@ public class StockData implements Serialize {
 
     public StockData(PeekableScanner Deserialize) {
 
-        if(!(Deserialize.hasNext() && Deserialize.nextLine().contains(StockData.STARTTAG)))
+        if (!(Deserialize.hasNext() && Deserialize.nextLine().contains(StockData.STARTTAG))) {
             throw new RuntimeException("Restore failed");
+        }
         if (Deserialize.hasNextLine()) {
             this.Name = Deserialize.nextLine();
         } else {
@@ -85,8 +86,7 @@ public class StockData implements Serialize {
      */
     void insertDayData(DayData dataPoint) {
 
-        if(dataPoint==null)
-        {
+        if (dataPoint == null) {
             throw new RuntimeException("No Data to Insert");
         }
         //check if there is already an entry for this date
@@ -161,11 +161,11 @@ public class StockData implements Serialize {
         return this.WKN;
     }
 
-     int getNameHash() {
+    int getNameHash() {
         return cachedNameHash;
     }
 
-     int getAbbreviationHash() {
+    int getAbbreviationHash() {
         return cachedAbbreviationHash;
     }
 
@@ -239,8 +239,8 @@ public class StockData implements Serialize {
 
         return sb.toString();
     }
-    boolean containsDayData()
-    {
+
+    boolean containsDayData() {
         return !data.isEmpty();
     }
 
