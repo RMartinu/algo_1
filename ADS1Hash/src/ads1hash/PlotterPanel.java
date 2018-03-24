@@ -134,15 +134,27 @@ public class PlotterPanel extends Pane {
      */
     public void update() {
 
-        /*Plotting the opening course*/
-        //ToDo: the same for the others
-        System.out.println(Display.getWidth());
-        System.err.println(this.workSet.getName());
-        Display.getChildren().clear();
+                Display.getChildren().clear();
         
         Rectangle bg=new Rectangle(650, 400);
         bg.setFill(Color.BISQUE);
         Display.getChildren().add(bg);
+        if(workSet==null)
+        {
+            this.name.setText("");
+            
+            this.abbrev.setText("");
+            this.wkn.setText("");
+            this.open.setText("");
+            //ToDo: all the other labels need to be reset
+            
+            return;
+        }
+        /*Plotting the opening course*/
+        //ToDo: the same for the others
+        System.out.println(Display.getWidth());
+        System.err.println(this.workSet.getName());
+
                 
         if (this.showOpen) {
 
@@ -156,7 +168,9 @@ public class PlotterPanel extends Pane {
         this.wkn.setText(workSet.getWKN());
         
         if(workSet.containsDayData()){
-        this.open.setText(Double.toString(workSet.getOpeningCourse(1)[0]));}
+        this.open.setText(Double.toString(workSet.getOpeningCourse(1)[0]));
+        //ToDo: The other fields need values too
+        }
 
     }
 
@@ -256,7 +270,7 @@ public class PlotterPanel extends Pane {
      */
     public void setStock(StockData workset) {
         if(workset==null)
-        {System.err.println("Missin somethin");return;}
+        {System.err.println("Missin somethin");}
         this.workSet = workset;
         this.update();
     }

@@ -26,7 +26,7 @@ public class HashTable {
     private int byNameCounter[];
     private StockData[] byAbbreviation;
     private int byAbbreviationCounter[];
-    private PrimeGenerator primeGen;
+    private final PrimeGenerator primeGen;
 
     HashTable(int desiredCapacity) {
         primeGen = new PrimeGenerator();
@@ -190,21 +190,21 @@ public class HashTable {
     }
 
     void saveToFile(File saveTo) throws FileNotFoundException {
-        PrintWriter p = new PrintWriter(saveTo);
-        p.append(STARTTAG).append("\n");
-        p.append(Integer.toString(size)).append("\n");
-        //Here go the indvidual StockData entries
-        for (StockData sd : this.byName) {
-            if (sd == null) {//System.err.println("null");
-
-            } else {
-                p.append(sd.createStringRepresentation());
+        try (PrintWriter p = new PrintWriter(saveTo)) {
+            p.append(STARTTAG).append("\n");
+            p.append(Integer.toString(size)).append("\n");
+            //Here go the indvidual StockData entries
+            for (StockData sd : this.byName) {
+                if (sd == null) {//System.err.println("null");
+                    
+                } else {
+                    p.append(sd.createStringRepresentation());
+                }
             }
+            
+            p.append(ENDTAG);
+            p.flush();
         }
-
-        p.append(ENDTAG);
-        p.flush();
-        p.close();
 
     }
 
@@ -216,6 +216,16 @@ public class HashTable {
         }
         t = sc.nextLine();
         int prospectiveSize = Integer.parseInt(t);
+        capacity=primeGen.findClosestPrime(3*prospectiveSize);
+        
+        
+        this.byAbbreviation=new StockData[capacity];
+        this.byAbbreviationCounter=new int[capacity];
+        
+        this.byName=new StockData[capacity];
+        this.byNameCounter=new int[capacity];
+        
+        
         while (sc.peek().equals(StockData.STARTTAG)) {
             if (sc.peek().equals(StockData.STARTTAG)) {
                 System.err.println("Got one!");

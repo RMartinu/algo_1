@@ -73,20 +73,34 @@ public class ADS1Hash extends Application {
         GridPane grid = new GridPane();
         Scene sc = new Scene(grid, 350, 300);
 
+        Button perf = new Button("Submit");
         Label head = new Label("Create a new Stock");
         Label lName = new Label("Name: ");
-        TextField tfName = new TextField();
-        Label lAbrreviation = new Label("Abbreviation");
-        TextField tfAbbreviation = new TextField();
-        Label lWkn = new Label("WKN");
         TextField tfWkn = new TextField();
-        Button perf = new Button("Submit");
+        tfWkn.setOnKeyReleased(e->{if(e.getCode()==KeyCode.E){perf.setFocusTraversable(true);}});
+        TextField tfAbbreviation = new TextField();
+        tfAbbreviation.setOnKeyPressed(e->{if(e.getCode()==KeyCode.ENTER){tfWkn.requestFocus();}});
+        
+        TextField tfName = new TextField();
+        tfName.setOnKeyReleased(e->{if(e.getCode()==KeyCode.ENTER){tfAbbreviation.requestFocus();}});
+        Label lAbrreviation = new Label("Abbreviation");
+        
+        Label lWkn = new Label("WKN");
+ 
+        
         perf.defaultButtonProperty().bind(perf.focusedProperty());
         perf.setOnAction(e -> {
+            if(tfName.getText().isEmpty())
+            {tfName.requestFocus();}else
+            if(tfAbbreviation.getText().isEmpty())
+            {tfAbbreviation.requestFocus();
+            }else
+            if(tfWkn.getText().isEmpty())
+            {tfWkn.requestFocus();}else{
             recentStockData = new StockData(tfName.getText(), tfAbbreviation.getText(), tfWkn.getText());
             this.dataTable.insert(recentStockData);
             pp.setStock(recentStockData);
-            creationStage.hide();
+            creationStage.hide();}
         });
 
         grid.add(head, 0, 0);
@@ -112,14 +126,28 @@ public class ADS1Hash extends Application {
         searchStage.setTitle("Searching for: " + whatFor);
         VBox v = new VBox();
         Label l = new Label("Search for " + whatFor);
-        TextField tf = new TextField("enter here...");
         Button btn = new Button("Search");
-        v.getChildren().addAll(l, tf, btn);
+        TextField tf = new TextField("enter here...");
+        tf.setOnKeyReleased(e->{if(e.getCode()==KeyCode.ENTER){btn.fire();}});
+        Label lNotFound=new Label();
+        
+        btn.defaultButtonProperty().bind(btn.focusedProperty());
+        
+        v.getChildren().addAll(l, tf,lNotFound, btn);
         btn.setOnAction(e -> {
-            String s = tf.getText();
-            recentStockData = (whatFor.charAt(0) == 'N') ? dataTable.findByName(s) : dataTable.findByAbbreviation(s);
-            pp.setStock(recentStockData);
-            /*The StockPlotter gets the new Dataset and will update itself*/
+            String s = (tf.getText().length() > 4) ? tf.getText().substring(0, 4) : tf.getText();
+            StockData t = (whatFor.charAt(0) == 'N') ? dataTable.findByName(tf.getText()) : dataTable.findByAbbreviation(s);
+            if (t != null) {
+
+                recentStockData = t;
+                pp.setStock(recentStockData);
+                searchStage.hide();
+                /*The StockPlotter gets the new Dataset and will update itself*/
+            }
+            else
+                {
+                    lNotFound.setText(tf.getText()+" not Found");
+                }
         });
         Pane p = new Pane();
         p.getChildren().add(v);
@@ -129,9 +157,6 @@ public class ADS1Hash extends Application {
         searchStage.show();
 
         return null;
-    }
-
-    public void insertPanel() {
     }
 
     @Override
@@ -212,8 +237,11 @@ public class ADS1Hash extends Application {
         Menu smDelete = new Menu("Delete Stock");
 
         MenuItem smiDelCurrent = new MenuItem("Delete current Stock");
+        smiDelCurrent.setOnAction(e->{dataTable.delete(recentStockData); recentStockData=null; pp.setStock(recentStockData);});
         MenuItem smiDelByName = new MenuItem("Delete Stock by Name");
+        smiDelByName.setDisable(true);
         MenuItem smiDelByAbbrev = new MenuItem("Delete Stock by Abbreviation");
+        smiDelByAbbrev.setDisable(true);
 
         smDelete.getItems().addAll(smiDelCurrent, new SeparatorMenuItem(), smiDelByName, smiDelByAbbrev);
 
