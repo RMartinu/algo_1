@@ -6,6 +6,7 @@
 package ads1hash;
 
 import java.time.LocalDate;
+import java.util.Scanner;
 import java.util.StringTokenizer;
 import javafx.util.converter.LocalDateStringConverter;
 import org.junit.After;
@@ -20,22 +21,22 @@ import static org.junit.Assert.*;
  * @author Robert Martinu
  */
 public class DayDataTest {
-    
+
     public DayDataTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -47,13 +48,13 @@ public class DayDataTest {
     public void testGetDate() {
         System.out.println("getDate");
         DayData instance = new DayData(LocalDate.parse("2015-03-02"), 0, 0, 0, 0, 0, 0);
-        
+
         LocalDate expResult = LocalDate.parse("2015-03-02");
         LocalDate result = instance.getDate();
         //assertEquals(expResult, result);
         assertTrue(expResult.equals(result));
         // TODO review the generated test code and remove the default call to fail.
-       // fail("The test case is a prototype.");
+        // fail("The test case is a prototype.");
     }
 
     /**
@@ -105,7 +106,7 @@ public class DayDataTest {
     @Test
     public void testCreateStringRepresentation() {
         System.out.println("createStringRepresentation");
-        DayData instance = new DayData(LocalDate.parse("2015-03-02"), 45.0,56.43,67.0,78.0,12345,3.14);
+        DayData instance = new DayData(LocalDate.parse("2015-03-02"), 45.0, 56.43, 67.0, 78.0, 12345, 3.14);
         String expResult = "";
         String result = instance.createStringRepresentation();
         System.out.println(result);
@@ -113,17 +114,18 @@ public class DayDataTest {
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
-    
+
     @Test
-    public void testConstructionFromSerString()
-    {
-        String input="<DayData>\n 2015-03-02 45.0 56.43 67.0 78.0 12345 3.14 </DayData>\nplus something\nnothing else";
-        StringTokenizer st= new StringTokenizer(input,"\n");
-        System.out.println("Executing" + st.nextToken()+":\n");
-        DayData instance = new DayData(st);
+    public void testConstructionFromSerString() {
+        //String input="<DayData>\n 2015-03-02 45.0 56.43 67.0 78.0 12345 3.14 </DayData>\nplus something\nnothing else";
+        DayData basic = new DayData(LocalDate.parse("2001-01-01"), 123, 450, 670, 10, 580, 960);
+
+        Scanner sc = new Scanner(basic.createStringRepresentation() + basic.createStringRepresentation());
+        // System.out.println("Executing" + sc.next()+":\n");
+        DayData instance = new DayData(sc.nextLine());
         System.out.println("got me: " + instance.toString());
-        System.out.println("What remains: " + st.nextToken());
+        System.out.println("What remains: " + sc.next());
 
     }
-    
+
 }

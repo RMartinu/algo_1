@@ -6,6 +6,7 @@
 package ads1hash;
 
 import java.time.LocalDate;
+import java.util.Scanner;
 import java.util.StringTokenizer;
 
 /**
@@ -16,8 +17,8 @@ public class DayData implements Serialize {
 
     /*For educational purposes only! 
     *!!never use float/double in actual financial software!!*/
-    static final String STARTTAG="<DayData>\n";
-    static final String ENDTAG  ="</DayData>\n";
+    static final String STARTTAG = "<DayData>";
+    static final String ENDTAG = "</DayData>";
     private final LocalDate date;
     private final double open;
     private final double high;
@@ -36,21 +37,34 @@ public class DayData implements Serialize {
         this.adjClose = adjClose;
     }
 
-    public DayData(StringTokenizer Deserialize) {
-     
-        Deserialize.nextToken(" ");
+    public DayData(String input) {
+
+        StringTokenizer Deserialize = new StringTokenizer(input);
+
+        String temp = Deserialize.nextToken(" ");
+
+        if (temp.startsWith(STARTTAG)) {
+            this.date = LocalDate.parse(temp.substring(STARTTAG.length()));
+            this.open = Double.parseDouble(Deserialize.nextToken());
+            this.high = Double.parseDouble(Deserialize.nextToken());
+            this.low = Double.parseDouble(Deserialize.nextToken());
+            this.close = Double.parseDouble(Deserialize.nextToken());
+            this.volume = Long.parseLong(Deserialize.nextToken());
+            this.adjClose = Double.parseDouble(Deserialize.nextToken());
+            String check = Deserialize.nextToken("\n");
+            if (check.endsWith(ENDTAG)) {//System.out.println("everythings fine");
+
+            } else {
+                System.err.println("rest fail");
+                throw new RuntimeException("restoration failed");
+            }
+        } else {
+            System.err.println("Didn't start w proper Tag: " + temp);
+            throw new RuntimeException("restore failed");
+        }
         
-        this.date = LocalDate.parse(Deserialize.nextToken());
-        this.open = Double.parseDouble(Deserialize.nextToken());
-        this.high = Double.parseDouble(Deserialize.nextToken());
-        this.low = Double.parseDouble(Deserialize.nextToken());
-        this.close = Double.parseDouble(Deserialize.nextToken());
-        this.volume = Long.parseLong(Deserialize.nextToken());
-        this.adjClose = Double.parseDouble(Deserialize.nextToken());
-        Deserialize.nextToken("\n");
+
     }
-    
-    
 
 //TODO write Getters 
     LocalDate getDate() {
@@ -85,8 +99,8 @@ public class DayData implements Serialize {
     @Override
     public String createStringRepresentation() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        
-        StringBuilder sb=new StringBuilder(STARTTAG);
+
+        StringBuilder sb = new StringBuilder(STARTTAG);
         sb.append(date.toString()).append(" ");
         sb.append(open).append(" ");
         sb.append(high).append(" ");
@@ -95,10 +109,7 @@ public class DayData implements Serialize {
         sb.append(volume).append(" ");
         sb.append(adjClose).append(" ");
         sb.append(ENDTAG).append("\n");
- 
-        
 
-         
         return sb.toString();
     }
 

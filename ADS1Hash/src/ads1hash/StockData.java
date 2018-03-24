@@ -7,13 +7,17 @@ package ads1hash;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Scanner;
+import java.util.StringTokenizer;
 
 /**
  *
  * @author Robert Martinu
  */
-public class StockData {
+public class StockData implements Serialize {
 
+    final static String STARTTAG = "<StockData>";
+    final static String ENDTAG = "</StockData>";
     private final String Name;
     private final String Abbrev;
     private final String WKN;
@@ -32,6 +36,47 @@ public class StockData {
         //fillIndex = 0;
         cachedNameHash = StockData.getHashCode(Name);
         cachedAbbreviationHash = StockData.getAbbrevHash(Abbrev);
+    }
+
+    public StockData(Scanner Deserialize) {
+
+        if (Deserialize.hasNextLine()) {
+            this.Name = Deserialize.nextLine();
+        } else {
+            throw new RuntimeException("Restore failed");
+        }
+        if (Deserialize.hasNextLine()) {
+            this.Abbrev = Deserialize.nextLine();
+        } else {
+            throw new RuntimeException("Restore failed");
+        }
+        if (Deserialize.hasNextLine()) {
+            this.WKN = Deserialize.nextLine();
+        } else {
+            throw new RuntimeException("Restore failed");
+        }
+        this.cachedNameHash = StockData.getHashCode(Name);
+        this.cachedAbbreviationHash = StockData.getAbbrevHash(Abbrev);
+
+        data = new ArrayList<>();
+        String temp = null;
+        while (temp == null || !temp.endsWith(ENDTAG)) {
+            if (Deserialize.hasNextLine()) {
+                temp = Deserialize.nextLine();
+                if (temp.contains(StockData.ENDTAG)) {
+                    //System.out.println("Done");
+                }
+                if (temp.contains(DayData.STARTTAG)) {
+                    //System.err.println(temp);
+                    DayData t = new DayData(temp);
+
+                    data.add(t);
+                }
+
+            } else {
+                throw new RuntimeException("Restore failed");
+            }
+        }
     }
 
     /**
@@ -111,11 +156,11 @@ public class StockData {
         return this.WKN;
     }
 
-    int getNameHash() {
+     int getNameHash() {
         return cachedNameHash;
     }
 
-    int getAbbreviationHash() {
+     int getAbbreviationHash() {
         return cachedAbbreviationHash;
     }
 
@@ -170,6 +215,24 @@ public class StockData {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String createStringRepresentation() {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        StringBuilder sb = new StringBuilder();
+        sb.append(STARTTAG).append("\n");
+        sb.append(this.Name).append("\n");
+        sb.append(this.Abbrev).append("\n");
+        sb.append(this.WKN).append("\n");
+
+        for (DayData d : this.data) {
+            sb.append(d.createStringRepresentation());
+        }
+
+        sb.append(ENDTAG).append("\n");
+
+        return sb.toString();
     }
 
 }

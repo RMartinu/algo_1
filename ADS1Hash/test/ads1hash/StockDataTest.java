@@ -8,6 +8,7 @@ package ads1hash;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Scanner;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -20,6 +21,7 @@ import static org.junit.Assert.*;
  * @author Robert Martinu
  */
 public class StockDataTest {
+    StockData testInstance;
     
     public StockDataTest() {
     }
@@ -34,6 +36,7 @@ public class StockDataTest {
     
     @Before
     public void setUp() {
+        testInstance=new StockData("TestCompany", "TCMP", "123456");
     }
     
     @After
@@ -157,35 +160,8 @@ public class StockDataTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of getNameHash method, of class StockData.
-     */
-    @Test
-    public void testGetNameHash() {
-        System.out.println("getNameHash");
-        fail("The test case is a prototype.");
-        StockData instance = null;
-        int expResult = 0;
-        int result = instance.getNameHash();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        
-    }
 
-    /**
-     * Test of getAbbreviationHash method, of class StockData.
-     */
-    @Test
-    public void testGetAbbreviationHash() {
-        System.out.println("getAbbreviationHash");
-        fail("The test case is a prototype.");
-        StockData instance = null;
-        int expResult = 0;
-        int result = instance.getAbbreviationHash();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+
 
     /**
      * Test of getOpeningCourse method, of class StockData.
@@ -232,6 +208,26 @@ public class StockDataTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
+    }
+    
+    @Test
+    public void testCreateStringRepresentation()
+    {
+        testInstance.insertDayData(new DayData(LocalDate.parse("2017-04-01"), 10, 20, 30, 40, 50, 60));
+        String StrRep=testInstance.createStringRepresentation();
+        Scanner sc = new Scanner(StrRep);
+        String checker=sc.nextLine();
+        
+       // System.err.println("got me some: "+checker + " should be: " + StockData.STARTTAG);
+        //System.err.println(checker.compareToIgnoreCase(StockData.STARTTAG.));
+        assertTrue(StockData.STARTTAG.startsWith(checker));
+        StockData instance= new StockData(sc);
+        sc.close();
+        assertEquals(instance.getName(), testInstance.getName());
+        assertEquals(instance.getAbbreviation(), testInstance.getAbbreviation());
+        assertEquals(instance.getWKN(), testInstance.getWKN());
+        //ToDo: Insert checks for the other fields
+        assertArrayEquals(testInstance.getOpeningCourse(), instance.getOpeningCourse(), 0.01);
     }
     
 }
