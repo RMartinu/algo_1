@@ -87,6 +87,10 @@ public class StockData implements Serialize {
      */
     void insertDayData(DayData dataPoint) {
 
+        if(dataPoint==null)
+        {
+            throw new RuntimeException("No Data to Insert");
+        }
         //check if there is already an entry for this date
         if (data.contains(dataPoint)) {
             System.out.println("Already in there");
@@ -94,6 +98,7 @@ public class StockData implements Serialize {
         }
         data.add(dataPoint);
         Collections.sort(data, (o1, o2) -> o2.getDate().compareTo(o1.getDate()));
+        System.out.println("inserted");
     }
 
     /**
@@ -235,6 +240,10 @@ public class StockData implements Serialize {
         sb.append(ENDTAG).append("\n");
 
         return sb.toString();
+    }
+    boolean containsDayData()
+    {
+        return !data.isEmpty();
     }
 
 }

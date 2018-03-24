@@ -5,6 +5,7 @@
  */
 package ads1hash;
 
+import java.util.Arrays;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.control.ContentDisplay;
@@ -65,7 +66,7 @@ public class PlotterPanel extends Pane {
     Label lAdjClose = new Label("Adjusted Close");
     Label adjClose = new Label();
 
-    boolean renderAbsolute = false;
+    boolean renderAbsolute = true;
     StockData data;
 
     public PlotterPanel() {
@@ -101,6 +102,7 @@ public class PlotterPanel extends Pane {
         GridPane.setHgrow(name, Priority.ALWAYS);
         Layout.getChildren().addAll(gp, Display);
         Rectangle backgnd = new Rectangle(650, 400);
+        
         Display.getChildren().add(backgnd);
         this.getChildren().addAll(Layout);
 
@@ -135,24 +137,38 @@ public class PlotterPanel extends Pane {
         /*Plotting the opening course*/
         //ToDo: the same for the others
         System.out.println(Display.getWidth());
+        System.err.println(this.workSet.getName());
+        Display.getChildren().clear();
+        
+        Rectangle bg=new Rectangle(650, 400);
+        bg.setFill(Color.BISQUE);
+        Display.getChildren().add(bg);
+                
         if (this.showOpen) {
 
-            double dPointsY[] = this.data.getOpeningCourse(30);
+            double dPointsY[] = this.workSet.getOpeningCourse(30);
 
             plotData(dPointsY);
         }
         System.out.println("Updatingthe plot");
+        this.name.setText(workSet.getName());
+        this.abbrev.setText(workSet.getAbbreviation());
+        this.wkn.setText(workSet.getWKN());
+        
+        if(workSet.containsDayData()){
+        this.open.setText(Double.toString(workSet.getOpeningCourse(1)[0]));}
 
     }
 
     /**
      * DRY: reusable Code for every plotline
      */
-    private void plotData(double dPointsY[]) {
+    private void plotData(double dPoints[]) {
 
+        double dPointsY[]=new double[dPoints.length];
         //ToDo: normalize Y coords to display size and mode
-        double min = 0, max = 0;
-        for (double c : dPointsY) {
+        double min = Double.MAX_VALUE, max = Double.MIN_VALUE;
+        for (double c : dPoints) {
             if (c < min) {
                 min = c;
             }
@@ -162,19 +178,51 @@ public class PlotterPanel extends Pane {
         }
         //ToDO: Transform Coords according to render flag
 
-        if (renderAbsolute) {
-            double scaling = (Display.getHeight() -20)/ max;
-            for (int i = 0; i < dPointsY.length; i++) {
-                dPointsY[i] *= scaling+10;
-            }
-        } else {
-            double range = max - min;
-            double scaling = (Display.getHeight() -20)/ range;
-            for (int i = 0; i < dPointsY.length; i++) {
-                dPointsY[i] = (dPointsY[i] - min) * scaling+10;
-            }
-
+        double s=350/max;
+        System.err.println(min + " " + max + " " + s);
+        
+        
+        if(renderAbsolute){
+        for (int i =0; i<dPoints.length; i++)
+        {
+            dPointsY[i]=dPoints[i]*s;
         }
+        }else
+        {
+            double biasedY[]=new double[dPoints.length];
+            s=350/(max-min);
+            for(int i =0; i<biasedY.length;i++)
+            {
+                biasedY[i]=dPoints[i] - min;
+                dPointsY[i]=biasedY[i]*s;
+            }
+                    
+        }
+        
+        
+//        if (renderAbsolute) {
+//            double scaling = (Display.getHeight() -120)/ max;
+//            System.out.println("scaling, abs: " + scaling);
+//            for (int i = 0; i < dPointsY.length; i++) {
+//                dPointsY[i] = dPoints[i]*scaling+10;
+//            }
+//        } else {
+//            double range = max - min;
+//            double scaling = (Display.getHeight() -20)/ range;
+//            System.out.println("scaling,rel: " + scaling);
+//            for (int i = 0; i < dPointsY.length; i++) {
+//                dPointsY[i] = (dPoints[i] - min) * scaling+10;
+//            }
+//
+//        }
+        for(int i =0; i<dPoints.length;i++)
+        {
+            dPointsY[i]=390-dPointsY[i];
+        }
+
+
+        System.out.println(Arrays.toString(dPointsY));
+        System.out.println(Arrays.toString(dPoints));
 
         double dPointsX[] = new double[dPointsY.length];
 
@@ -196,7 +244,8 @@ public class PlotterPanel extends Pane {
         }
 
         Polyline plot = new Polyline(dPointsInterleaved);
-        plot.setStroke(Color.RED);
+        //Display.getChildren().clear();
+        plot.setStroke(Color.GREEN);
         Display.getChildren().add(plot);
     }
 
@@ -206,6 +255,8 @@ public class PlotterPanel extends Pane {
      * @param workset the Stockdata to be used
      */
     public void setStock(StockData workset) {
+        if(workset==null)
+        {System.err.println("Missin somethin");return;}
         this.workSet = workset;
         this.update();
     }

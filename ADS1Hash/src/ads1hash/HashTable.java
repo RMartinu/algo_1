@@ -78,6 +78,7 @@ public class HashTable {
                 if (byName[modifiedIndexFromHash] == null) {
                     byName[modifiedIndexFromHash] = sd;
                     byNameCounter[modifiedIndexFromHash]++;
+                    System.out.println("Inserted " + sd.getName());
                     //note: increase size only either here or when inserting into abbreviation table, not twice
                     size++;
                     break;
@@ -174,6 +175,7 @@ public class HashTable {
         for (int i = 0; i < this.capacity; i++) {
             int modifiedHash = getQuadraticProbing(baseHash, i) % this.capacity;
             if (byName[modifiedHash] != null && byName[modifiedHash].getName().equals(name)) {
+                System.err.println("Found it");
                 return byName[modifiedHash];
             }
             if (byNameCounter[modifiedHash] == 0) {

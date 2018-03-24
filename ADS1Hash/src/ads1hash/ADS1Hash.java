@@ -5,6 +5,7 @@
  */
 package ads1hash;
 
+import java.io.File;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -24,6 +25,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 /**
@@ -46,6 +49,25 @@ public class ADS1Hash extends Application {
     }
 
     
+    public void importDayData(Stage s, int numberOfImports)
+    {
+        FileChooser fc=new FileChooser();
+        fc.setTitle("Select CSV to import from");
+        fc.getExtensionFilters().add(new ExtensionFilter("Stock Data Files","*.csv"));
+        File fileToOpen=fc.showOpenDialog(s);
+        if(fileToOpen!=null && recentStockData!=null)
+        {
+            DataReader dr=new DataReader(fileToOpen);
+            for (int i =0; i<numberOfImports; i++)
+            {
+                recentStockData.insertDayData(dr.getDayData());
+                        
+            }
+            pp.setStock(recentStockData);
+        }
+        
+    }
+    
     public void CreateStock()
     {
         Stage creationStage=new Stage();  
@@ -60,7 +82,14 @@ public class ADS1Hash extends Application {
         TextField tfAbbreviation = new TextField();
         Label lWkn=new Label("WKN");
         TextField tfWkn=new TextField();
-        Button submit = new Button("Submit");
+        Button perf = new Button("Submit");
+        perf.defaultButtonProperty().bind(perf.focusedProperty());
+        perf.setOnAction(e->{recentStockData=new StockData(tfName.getText(), tfAbbreviation.getText(), tfWkn.getText());
+            this.dataTable.insert(recentStockData);
+            pp.setStock(recentStockData);
+            creationStage.hide();
+        });
+        
         
         grid.add(head,0,0);
         grid.add(lName, 0, 1);
@@ -72,7 +101,7 @@ public class ADS1Hash extends Application {
         grid.add(lWkn, 0, 3);
         grid.add(tfWkn,1,3);
        
-        grid.add(submit, 0, 4);
+        grid.add(perf, 0, 4);
         
         creationStage.setScene(sc);
         creationStage.show();
@@ -85,7 +114,7 @@ public class ADS1Hash extends Application {
         VBox v = new VBox();
         Label l = new Label("Search for " + whatFor);
         TextField tf = new TextField("enter here...");
-        Button btn = new Button("ClickMe");
+        Button btn = new Button("Search");
         v.getChildren().addAll(l, tf, btn);
         btn.setOnAction(e -> {
             String s = tf.getText();
@@ -138,6 +167,7 @@ public class ADS1Hash extends Application {
             this.CreateStock();
         });
         MenuItem miImport = new MenuItem("Import Data");
+        miImport.setOnAction(e->this.importDayData(primaryStage, 30));
 
         Menu smSearch = new Menu("Search Stock");
         MenuItem smiSearchByName = new MenuItem("Search by Name");
@@ -179,6 +209,8 @@ public class ADS1Hash extends Application {
         RadioMenuItem rmiPlotAbsolute = new RadioMenuItem("Absolute Values");
         RadioMenuItem rmiPlotRelative = new RadioMenuItem("Relative Values");
         rmiPlotAbsolute.setSelected(true);
+        rmiPlotAbsolute.setOnAction(e->{this.pp.renderAbsolute=true; pp.update();});
+        rmiPlotRelative.setOnAction(e->{this.pp.renderAbsolute=false; pp.update();});
 
         ToggleGroup plotStyle = new ToggleGroup();
         rmiPlotAbsolute.setToggleGroup(plotStyle);
