@@ -5,12 +5,20 @@
  */
 package ads1hash;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+import java.util.Scanner;
+
 /**
  *
  * @author Robert Martinu
  */
 public class HashTable {
 
+    final static String STARTTAG="<HashTable>";
+    final static String ENDTAG="</HashTable>";
     private int size; //number of elements in map
     private int capacity; //maximum capacity
 
@@ -179,6 +187,57 @@ public class HashTable {
     //ToDO: find the same way as by name
     StockData findByAbbreviation(String abbreviation) {
         return null;
+    }
+    
+    
+    void saveToFile (File saveTo) throws FileNotFoundException
+    {
+        PrintWriter p = new PrintWriter(saveTo);
+        p.append(STARTTAG).append("\n");
+        p.append(Integer.toString(size)).append("\n");
+        //Here go the indvidual StockData entries
+        for(StockData sd : this.byName)
+        {
+            if(sd==null)
+            {//System.err.println("null");
+                
+            }
+            else
+            {p.append(sd.createStringRepresentation());}
+        }
+        
+        
+        p.append(ENDTAG);
+        p.flush();
+        p.close();
+        
+    }
+    
+    void readFromFile(File readFrom) throws FileNotFoundException
+    {
+        PeekableScanner sc=new PeekableScanner(readFrom);
+        String t=sc.nextLine();
+        if(t.equals(HashTable.STARTTAG))
+        {System.err.println("RiRi OK");}
+        t=sc.nextLine();
+        int prospectiveSize=Integer.parseInt(t);
+        if(sc.peek().equals(StockData.STARTTAG))
+        {
+            System.err.println("Got one!");
+            StockData tsd=new StockData(sc);
+            System.err.println(tsd.getName() + " " + tsd.getAbbreviation());
+            this.insert(tsd);
+        }
+        else
+        {
+            System.err.println("This wasn't a stock data entry");
+        }
+          
+        
+        t=sc.nextLine();
+        if(t.equals(HashTable.ENDTAG))
+        {System.err.println("Done and done");}
+        sc.close();
     }
 
 }

@@ -5,6 +5,7 @@
  */
 package ads1hash;
 
+import java.io.File;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -181,6 +182,49 @@ public class HashTableTest {
         instance.deleteByAbbreviation(abbrev);
         // TODO review the generated test code and remove the default call to fail.
 
+    }
+
+    /**
+     * Test of delete method, of class HashTable.
+     */
+    @Test
+    public void testDelete() {
+        System.out.println("delete");
+        fail("The test case is a prototype.");
+        StockData deleteMe = null;
+        HashTable instance = null;
+        instance.delete(deleteMe);
+        // TODO review the generated test code and remove the default call to fail.
+        
+    }
+
+    /**
+     * Test of saveToFile method, of class HashTable.
+     * @throws java.lang.Exception
+     */
+    @Test
+    public void testSaveToFile() throws Exception {
+        System.out.println("saveToFile");
+        File saveTo = new File("D:\\httest.txt");
+        HashTable instance = new HashTable(30);
+               instance.insert(new StockData("TestCo", "TC", "4321"));
+        instance.saveToFile(saveTo);
+        // TODO review the generated test code and remove the default call to fail.
+        //fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of readFromFile method, of class HashTable.
+     */
+    @Test
+    public void testReadFromFile() throws Exception {
+        System.out.println("readFromFile");
+        File readFrom = new File("D:\\httest.txt");
+        HashTable instance = new HashTable(40);
+ 
+        instance.readFromFile(readFrom);
+        // TODO review the generated test code and remove the default call to fail.
+        //fail("The test case is a prototype.");
     }
 
 }

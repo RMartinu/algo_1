@@ -38,8 +38,10 @@ public class StockData implements Serialize {
         cachedAbbreviationHash = StockData.getAbbrevHash(Abbrev);
     }
 
-    public StockData(Scanner Deserialize) {
+    public StockData(PeekableScanner Deserialize) {
 
+        if(!(Deserialize.hasNext() && Deserialize.nextLine().contains(StockData.STARTTAG)))
+            throw new RuntimeException("Restore failed");
         if (Deserialize.hasNextLine()) {
             this.Name = Deserialize.nextLine();
         } else {

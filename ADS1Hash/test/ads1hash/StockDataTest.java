@@ -215,12 +215,12 @@ public class StockDataTest {
     {
         testInstance.insertDayData(new DayData(LocalDate.parse("2017-04-01"), 10, 20, 30, 40, 50, 60));
         String StrRep=testInstance.createStringRepresentation();
-        Scanner sc = new Scanner(StrRep);
-        String checker=sc.nextLine();
+        PeekableScanner sc = new PeekableScanner(StrRep);
+        //String checker=sc.nextLine();
         
        // System.err.println("got me some: "+checker + " should be: " + StockData.STARTTAG);
         //System.err.println(checker.compareToIgnoreCase(StockData.STARTTAG.));
-        assertTrue(StockData.STARTTAG.startsWith(checker));
+        //assertTrue(StockData.STARTTAG.startsWith(checker));
         StockData instance= new StockData(sc);
         sc.close();
         assertEquals(instance.getName(), testInstance.getName());
