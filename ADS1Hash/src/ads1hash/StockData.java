@@ -231,9 +231,9 @@ public class StockData implements Serialize {
         sb.append(this.Abbrev).append("\n");
         sb.append(this.WKN).append("\n");
 
-        for (DayData d : this.data) {
+        data.forEach((d) -> {
             sb.append(d.createStringRepresentation());
-        }
+        });
 
         sb.append(ENDTAG).append("\n");
 

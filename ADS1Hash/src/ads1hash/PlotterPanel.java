@@ -98,12 +98,18 @@ public class PlotterPanel extends Pane {
         gp.setPadding(new Insets(5));
         gp.setPrefWidth(200);
         gp.setMinWidth(200);
+        
+        
+        //ToDo: Set alignment for other data fields
         GridPane.setHalignment(name, HPos.RIGHT);
         GridPane.setHgrow(name, Priority.ALWAYS);
+        
+        
+        
         Layout.getChildren().addAll(gp, Display);
-        Rectangle backgnd = new Rectangle(650, 400);
+       // Rectangle backgnd = new Rectangle(650, 400);
 
-        Display.getChildren().add(backgnd);
+       // Display.getChildren().add(backgnd);
         this.getChildren().addAll(Layout);
 
     }

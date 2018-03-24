@@ -85,9 +85,9 @@ public class DataReader {
 
     }
 
+
     /**
-     * Returns exactly on set of Data from the Data source associated with the
-     * reader
+     * Parses the Column order
      */
     private void evalColumnOrder() {
         String t = sc.nextLine();
@@ -102,6 +102,10 @@ public class DataReader {
         }
     }
 
+        /**
+     * Returns exactly on set of Data from the Data source associated with the
+     * reader
+     */
     DayData getDayData() {
 
         sc.useDelimiter(",|\\n");

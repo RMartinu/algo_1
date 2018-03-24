@@ -273,6 +273,8 @@ public class ADS1Hash extends Application {
 
         smDelete.getItems().addAll(smiDelCurrent, new SeparatorMenuItem(), smiDelByName, smiDelByAbbrev);
 
+        
+        //ToDo: Make those other menu items live
         CheckMenuItem cmiOpen = new CheckMenuItem("Open Course");
         cmiOpen.setAccelerator(new KeyCodeCombination(KeyCode.DIGIT1));
         cmiOpen.setOnAction(e -> {
