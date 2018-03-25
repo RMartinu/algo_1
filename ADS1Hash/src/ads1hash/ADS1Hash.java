@@ -58,8 +58,14 @@ public class ADS1Hash extends Application {
         fc.setTitle("Select CSV to import from");
         fc.getExtensionFilters().add(new ExtensionFilter("Stock Data Files", "*.csv"));
         File fileToOpen = fc.showOpenDialog(s);
+        
+        /**
+         * Try to import some data.
+         * There must both be a source file selected as well as a receiving object available
+         */
         if (fileToOpen != null && recentStockData != null) {
             DataReader dr = new DataReader(fileToOpen);
+            /*we want a specific number of datapoints*/
             if (numberOfImports > 0) {
                 for (int i = 0; i < numberOfImports; i++) {
 
@@ -73,6 +79,7 @@ public class ADS1Hash extends Application {
 
                 }
             } else {
+                /*get the whole file*/
                 DayData temp;
                 while (true) {
                     temp = dr.getDayData();
@@ -199,6 +206,7 @@ public class ADS1Hash extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        /*Ask for a certain size, the constructor will choose an appropriate aproximation*/
         dataTable = new HashTable(2000);
         ExtensionFilter eFilter = new ExtensionFilter("ADS Hashtable File", "*.AHF");
         MenuBar menuBar = new MenuBar();
@@ -266,6 +274,8 @@ public class ADS1Hash extends Application {
         );
         MenuItem miImportAll = new MenuItem("Import all Data");
         miImportAll.setOnAction(e -> {
+            /*could be refactored into an overloaded version with just one argument;
+            or zero args & always relating to primaryStage*/
             this.importDayData(primaryStage, -1);
             pp.updateStockData();
         });
@@ -274,16 +284,16 @@ public class ADS1Hash extends Application {
         MenuItem smiSearchByName = new MenuItem("Search by Name");
         smiSearchByName.setAccelerator(new KeyCodeCombination(KeyCode.N));
         smiSearchByName.setOnAction(e -> {
-            System.out.println("Searching by Name");
+            //System.out.println("Searching by Name");
             String findme = this.SearchPanel("Name");
-            System.out.println("found" + findme);
+            //System.out.println("found" + findme);
         });
         MenuItem smiSearchByAbbreviation = new MenuItem("Search by Abbreviation");
         smiSearchByAbbreviation.setAccelerator(new KeyCodeCombination(KeyCode.A));
         smiSearchByAbbreviation.setOnAction(e -> {
             String findme = SearchPanel("Abbreviation");
-            System.out.println("Searching by Abbreviaion");
-            System.out.println("find me some " + findme);
+            //System.out.println("Searching by Abbreviaion");
+            //System.out.println("find me some " + findme);
         });
         smSearch.getItems().addAll(smiSearchByName, smiSearchByAbbreviation);
 
@@ -303,6 +313,7 @@ public class ADS1Hash extends Application {
         smDelete.getItems().addAll(smiDelCurrent, new SeparatorMenuItem(), smiDelByName, smiDelByAbbrev);
 
         //ToDo: Make those other menu items live
+        
         CheckMenuItem cmiOpen = new CheckMenuItem("Open Course");
         cmiOpen.setAccelerator(new KeyCodeCombination(KeyCode.DIGIT1));
         cmiOpen.setOnAction(e -> {
@@ -314,7 +325,8 @@ public class ADS1Hash extends Application {
         CheckMenuItem cmiCLose = new CheckMenuItem("Closing Course");
         CheckMenuItem cmiVolume = new CheckMenuItem("Trade Volume");
         CheckMenuItem cmiAdjClose = new CheckMenuItem("Adjusted Closeing");
-
+    
+        
         RadioMenuItem rmiPlotAbsolute = new RadioMenuItem("Absolute Values");
         RadioMenuItem rmiPlotRelative = new RadioMenuItem("Relative Values");
         rmiPlotAbsolute.setSelected(true);
@@ -330,6 +342,7 @@ public class ADS1Hash extends Application {
         ToggleGroup plotStyle = new ToggleGroup();
         rmiPlotAbsolute.setToggleGroup(plotStyle);
         rmiPlotRelative.setToggleGroup(plotStyle);
+        
 
         fileMenu.getItems().addAll(miLoad, miSave, new SeparatorMenuItem(), miExit);
         stockMenu.getItems().addAll(smSearch, new SeparatorMenuItem(), miNewStock, miImport, miImportAll, smDelete);

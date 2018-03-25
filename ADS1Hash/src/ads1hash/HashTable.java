@@ -162,7 +162,9 @@ public class HashTable {
         int newIndex = baseIndex;
         newIndex += Math.pow(iteration, 2); //Just in case someone is pondering higher order probing
         if (newIndex < 0) {
-            System.err.println("overflowm base: " + baseIndex + " iteration " + iteration);
+            //System.err.println("overflowm base: " + baseIndex + " iteration " + iteration);
+            //should never happen
+            
             return 0;
         }
         return newIndex;
@@ -178,7 +180,7 @@ public class HashTable {
         for (int i = 0; i < this.capacity; i++) {
             int modifiedHash = getQuadraticProbing(baseHash, i) % this.capacity;
             if (byName[modifiedHash] != null && byName[modifiedHash].getName().equals(name)) {
-                System.err.println("Found it");
+                //System.err.println("Found it");
                 return byName[modifiedHash];
             }
             if (byNameCounter[modifiedHash] == 0) {
@@ -209,6 +211,7 @@ public class HashTable {
 
             p.append(ENDTAG);
             p.flush();
+            p.close();
         }
 
     }
@@ -216,8 +219,10 @@ public class HashTable {
     void readFromFile(File readFrom) throws FileNotFoundException {
         PeekableScanner sc = new PeekableScanner(readFrom);
         String t = sc.nextLine();
-        if (t.equals(HashTable.STARTTAG)) {
-            System.err.println("RiRi OK");
+        if (!t.equals(HashTable.STARTTAG)) {
+            System.err.println("Not a valid file");
+            sc.close();
+            return;
         }
         t = sc.nextLine();
         int prospectiveSize = Integer.parseInt(t);
@@ -241,8 +246,8 @@ public class HashTable {
         }
 
         t = sc.nextLine();
-        if (t.equals(HashTable.ENDTAG)) {
-            System.err.println("Done and done");
+        if (!t.equals(HashTable.ENDTAG)) {
+            System.err.println("File malformed");
         }
         sc.close();
     }

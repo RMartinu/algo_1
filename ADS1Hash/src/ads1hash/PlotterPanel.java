@@ -214,7 +214,7 @@ public class PlotterPanel extends Pane {
             return;
         }
         numberOfAvailablePoints = workSet.getOpeningCourse().length;
-        this.numberOfPlotPoints = 30;
+        this.numberOfPlotPoints = Integer.min(numberOfAvailablePoints, 30);
         this.adjustDepthSlider();
         this.Plotdepth.setValue(numberOfPlotPoints);
         update();
@@ -335,8 +335,7 @@ public class PlotterPanel extends Pane {
         }
         this.workSet = workset;
         updateStockData();
-        
-        this.update();
+
     }
     
 }
