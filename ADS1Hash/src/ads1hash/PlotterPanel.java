@@ -205,7 +205,9 @@ public class PlotterPanel extends Pane {
     public void updateStockData() {
         if (workSet == null) {
             update();
+            Plotdepth.setValue(30);
             Plotdepth.setDisable(true);
+            lPotDepthIndicator.setDisable(true);
             this.name.setText("");
             
             this.abbrev.setText("");
