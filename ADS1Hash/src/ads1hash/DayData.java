@@ -6,7 +6,6 @@
 package ads1hash;
 
 import java.time.LocalDate;
-import java.util.Scanner;
 import java.util.StringTokenizer;
 
 /**
@@ -62,7 +61,6 @@ public class DayData implements Serialize {
             System.err.println("Didn't start w proper Tag: " + temp);
             throw new RuntimeException("restore failed");
         }
-        
 
     }
 

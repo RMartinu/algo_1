@@ -91,12 +91,12 @@ public class StockData implements Serialize {
         }
         //check if there is already an entry for this date
         if (data.contains(dataPoint)) {
-            System.out.println("Already in there");
+//            System.out.println("Already in there");
             return;
         }
         data.add(dataPoint);
         Collections.sort(data, (o1, o2) -> o2.getDate().compareTo(o1.getDate()));
-        System.out.println("inserted");
+        //System.out.println("inserted");
     }
 
     /**
@@ -105,7 +105,7 @@ public class StockData implements Serialize {
      */
     void replaceDayData(DayData dataPoint) {
         if (data.contains(dataPoint)) {
-            System.out.println("Replacing");
+//            System.out.println("Replacing");
             data.remove(data.indexOf(dataPoint));
         }
 

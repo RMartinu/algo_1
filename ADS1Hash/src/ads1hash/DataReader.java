@@ -85,7 +85,6 @@ public class DataReader {
 
     }
 
-
     /**
      * Parses the Column order
      */
@@ -97,12 +96,12 @@ public class DataReader {
                 readOrder[i] = st.nextToken();
             }
         }
-        for (String s : readOrder) {
-            System.out.println(s);
-        }
+//        for (String s : readOrder) {
+//            System.out.println(s);
+//        }
     }
 
-        /**
+    /**
      * Returns exactly on set of Data from the Data source associated with the
      * reader
      */
@@ -110,8 +109,7 @@ public class DataReader {
 
         sc.useDelimiter(",|\\n");
         sc.useLocale(Locale.US);
-        //ToDo: someone should handle the potential exceptions
-        System.err.println("start reading");
+//       System.err.println("start reading");
         if (!sc.hasNextLine()) {
             return null;
         }

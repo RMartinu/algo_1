@@ -6,10 +6,14 @@
 package ads1hash;
 
 import java.util.Arrays;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -23,54 +27,117 @@ import javafx.scene.shape.Rectangle;
  * @author Robert Martinu
  */
 public class PlotterPanel extends Pane {
-
+    
     StockData workSet;
+    int numberOfPlotPoints = 30;
+    int numberOfAvailablePoints;
     HBox Layout = new HBox();
-
+    
     GridPane gp = new GridPane();
     Pane Display = new Pane();
-
+    
     Label lname = new Label("Stock Name");
     Label name = new Label("TestDAta");
-
+    
     Label labbrev = new Label("Stock Abbreviation");
     Label abbrev = new Label();
-
+    
     Label lwkn = new Label("WKN");
     Label wkn = new Label();
-
+    
     Label ldate = new Label("Date");
     Label date = new Label();
-
+    
     boolean showOpen;
     Label lopen = new Label("Open");
     Label open = new Label();
-
+    
     boolean showHigh;
     Label lhigh = new Label("Daily High");
     Label high = new Label();
-
+    
     boolean showLow;
     Label llow = new Label("Daily Low");
     Label low = new Label();
-
+    
     boolean showClose;
     Label lclose = new Label("Close");
     Label close = new Label();
-
+    
     boolean showVolume;
     Label lvolume = new Label("Trade Volume");
     Label volume = new Label();
-
+    
     boolean showAdjClose;
     Label lAdjClose = new Label("Adjusted Close");
     Label adjClose = new Label();
-
+    
+    Label lPlotDepth = new Label("Plot Depth");
+    TextField lPotDepthIndicator = new TextField("");
+    
+    Slider Plotdepth = new Slider();
+    
     boolean renderAbsolute = true;
     StockData data;
+    
+    private void adjustDepthSlider() {
+        if (workSet != null && workSet.containsDayData()) {
+            //System.err.println("enable slider");
 
+            lPotDepthIndicator.setText(Integer.toString(numberOfPlotPoints));
+            
+            Plotdepth.setMin(5);
+            Plotdepth.setDisable(false);
+            Plotdepth.setMax(numberOfAvailablePoints);
+            //Plotdepth.setValue((Plotdepth.maxProperty().doubleValue()>30)?30:Plotdepth.maxProperty().doubleValue());
+        } else {
+            lPotDepthIndicator.setText("");
+            Plotdepth.setDisable(true);
+        }
+    }
+    
     public PlotterPanel() {
+        
+        Plotdepth.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            numberOfPlotPoints = (int) Plotdepth.getValue();
 
+            // System.err.println(Plotdepth.getValue());
+            lPotDepthIndicator.setText(Integer.toString(numberOfPlotPoints));
+            update();
+        });
+        adjustDepthSlider();
+        
+        lPotDepthIndicator.setOnAction(e -> {
+            int t = 30;
+            try {
+                t = Integer.parseInt(lPotDepthIndicator.getText());
+            } catch (NumberFormatException ex) {
+                System.err.println("missparse");
+            }
+            numberOfPlotPoints = t;
+            update();
+        });
+        lPotDepthIndicator.setDisable(true);
+
+//        lPotDepthIndicator.setOnMouseEntered(e -> {
+//            lPotDepthIndicator.setDisable(false);
+//        });
+//        lPotDepthIndicator.setOnMouseExited(e -> {
+//            lPotDepthIndicator.setDisable(true);
+//        });
+        Display.setOnMouseEntered(e -> {
+            lPotDepthIndicator.setDisable(true);
+        });
+        Display.setOnMouseExited(e -> {
+            if (!Plotdepth.isDisable()) {
+                lPotDepthIndicator.setDisable(false);
+            }
+        });
+        Plotdepth.setOnMouseExited(e -> {
+            lPotDepthIndicator.setDisable(false);
+        });
+        
         name.minWidth(100);
         name.setContentDisplay(ContentDisplay.RIGHT);
         gp.add(lname, 0, 0);
@@ -93,25 +160,25 @@ public class PlotterPanel extends Pane {
         gp.add(volume, 1, 8);
         gp.add(lAdjClose, 0, 9);
         gp.add(adjClose, 1, 9);
+        gp.add(lPlotDepth, 0, 12);
+        gp.add(lPotDepthIndicator, 1, 12);
+        gp.add(Plotdepth, 0, 13);
         gp.setHgap(10);
         gp.setVgap(10);
         gp.setPadding(new Insets(5));
         gp.setPrefWidth(200);
         gp.setMinWidth(200);
-        
-        
+
         //ToDo: Set alignment for other data fields
         GridPane.setHalignment(name, HPos.RIGHT);
         GridPane.setHgrow(name, Priority.ALWAYS);
         
-        
-        
         Layout.getChildren().addAll(gp, Display);
-       // Rectangle backgnd = new Rectangle(650, 400);
+        // Rectangle backgnd = new Rectangle(650, 400);
 
-       // Display.getChildren().add(backgnd);
+        // Display.getChildren().add(backgnd);
         this.getChildren().addAll(Layout);
-
+        
     }
 
     //ToDo: implement all toggle functions
@@ -119,35 +186,26 @@ public class PlotterPanel extends Pane {
         this.showOpen = show;
         this.update();
     }
-
+    
     public void showHigh(boolean show) {
     }
-
+    
     public void showLow(boolean show) {
     }
-
+    
     public void showClose(boolean show) {
     }
-
+    
     public void showVolume(boolean show) {
     }
-
+    
     public void showAdjClose(boolean show) {
     }
-
-    /**
-     * Fills the pane with active plots based on recent StockData
-     */
-    public void update() {
-
-        Display.getChildren().clear();
-
-        Rectangle bg = new Rectangle(650, 400);
-        bg.setFill(Color.BISQUE);
-        Display.getChildren().add(bg);
+    
+    public void updateStockData() {
         if (workSet == null) {
             this.name.setText("");
-
+            
             this.abbrev.setText("");
             this.wkn.setText("");
             this.open.setText("");
@@ -155,34 +213,57 @@ public class PlotterPanel extends Pane {
 
             return;
         }
+        numberOfAvailablePoints = workSet.getOpeningCourse().length;
+        this.numberOfPlotPoints = 30;
+        this.adjustDepthSlider();
+        this.Plotdepth.setValue(numberOfPlotPoints);
+        update();
+    }
+
+    /**
+     * Fills the pane with active plots based on recent StockData
+     */
+    public void update() {
+        
+        Display.getChildren().clear();
+        
+        Rectangle bg = new Rectangle(650, 400);
+        bg.setFill(Color.BISQUE);
+        Display.getChildren().add(bg);
+        if (workSet == null) {
+            return;
+        }
+
         /*Plotting the opening course*/
         //ToDo: the same for the others
-        System.out.println(Display.getWidth());
-        System.err.println(this.workSet.getName());
-
+//        System.out.println(Display.getWidth());
+//        System.err.println(this.workSet.getName());
         if (this.showOpen) {
-
-            double dPointsY[] = this.workSet.getOpeningCourse(30);
-
+            
+            double dPointsY[] = this.workSet.getOpeningCourse(numberOfPlotPoints);
+            
             plotData(dPointsY);
         }
-        System.out.println("Updatingthe plot");
+        // System.out.println("Updatingthe plot");
         this.name.setText(workSet.getName());
         this.abbrev.setText(workSet.getAbbreviation());
         this.wkn.setText(workSet.getWKN());
-
+        
         if (workSet.containsDayData()) {
             this.open.setText(Double.toString(workSet.getOpeningCourse(1)[0]));
             //ToDo: The other fields need values too
+        } else {
+            //ToDo: The data labels may contains debris, clean up
+            this.open.setText("");
         }
-
+        
     }
 
     /**
      * DRY: reusable Code for every plotline
      */
     private void plotData(double dPoints[]) {
-
+        
         double dPointsY[] = new double[dPoints.length];
         //ToDo: normalize Y coords to display size and mode
         double min = Double.MAX_VALUE, max = Double.MIN_VALUE;
@@ -197,39 +278,38 @@ public class PlotterPanel extends Pane {
         //ToDO: Transform Coords according to render flag
 
         double s = 350 / max;
-        System.err.println(min + " " + max + " " + s);
+        //System.err.println(min + " " + max + " " + s);
 
         if (renderAbsolute) {
             for (int i = 0; i < dPoints.length; i++) {
-                dPointsY[i] = dPoints[i] * s;
+                dPointsY[i] = dPoints[dPoints.length - (i + 1)] * s;
             }
         } else {
             double biasedY[] = new double[dPoints.length];
             s = 350 / (max - min);
             for (int i = 0; i < biasedY.length; i++) {
-                biasedY[i] = dPoints[i] - min;
+                biasedY[i] = dPoints[dPoints.length - (i + 1)] - min;
                 dPointsY[i] = biasedY[i] * s;
             }
-
+            
         }
         for (int i = 0; i < dPoints.length; i++) {
             dPointsY[i] = 390 - dPointsY[i];
         }
 
-        System.out.println(Arrays.toString(dPointsY));
-        System.out.println(Arrays.toString(dPoints));
-
+//        System.out.println(Arrays.toString(dPointsY));
+//        System.out.println(Arrays.toString(dPoints));
         double dPointsX[] = new double[dPointsY.length];
-
+        
         int padding = 20;
         double spacing = (Display.getWidth() - 2 * padding) / (double) dPointsX.length;
-
+        
         double xCoord = padding;
         for (int i = 0; i < dPointsX.length; i++) {
             dPointsX[i] = xCoord;
             xCoord += spacing;
         }
-
+        
         double dPointsInterleaved[] = new double[dPointsX.length + dPointsY.length];
 
         //interleaving, als PolyLine wants its points in this format
@@ -237,7 +317,7 @@ public class PlotterPanel extends Pane {
             dPointsInterleaved[2 * i] = dPointsX[i];
             dPointsInterleaved[2 * i + 1] = dPointsY[i];
         }
-
+        
         Polyline plot = new Polyline(dPointsInterleaved);
         //Display.getChildren().clear();
         plot.setStroke(Color.GREEN);
@@ -254,7 +334,9 @@ public class PlotterPanel extends Pane {
             System.err.println("Missin somethin");
         }
         this.workSet = workset;
+        updateStockData();
+        
         this.update();
     }
-
+    
 }

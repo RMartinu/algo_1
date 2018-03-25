@@ -53,19 +53,41 @@ public class ADS1Hash extends Application {
         Application.launch(args);
     }
 
-    public void importDayData(Stage s, int numberOfImports) {
+    public boolean importDayData(Stage s, int numberOfImports) {
         FileChooser fc = new FileChooser();
         fc.setTitle("Select CSV to import from");
         fc.getExtensionFilters().add(new ExtensionFilter("Stock Data Files", "*.csv"));
         File fileToOpen = fc.showOpenDialog(s);
         if (fileToOpen != null && recentStockData != null) {
             DataReader dr = new DataReader(fileToOpen);
-            for (int i = 0; i < numberOfImports; i++) {
-                recentStockData.insertDayData(dr.getDayData());
+            if (numberOfImports > 0) {
+                for (int i = 0; i < numberOfImports; i++) {
 
+                    DayData temp = dr.getDayData();
+                    if (temp != null) {
+                        recentStockData.insertDayData(temp);
+                    } else {
+                        pp.update();
+                        return false;
+                    }
+
+                }
+            } else {
+                DayData temp;
+                while (true) {
+                    temp = dr.getDayData();
+                    if (temp == null) {
+                        pp.update();
+                        return true;
+                    }
+                    recentStockData.insertDayData(temp);
+                }
             }
-            pp.setStock(recentStockData);
+            // pp.setStock(recentStockData);
+            pp.update();
         }
+
+        return true;
 
     }
 
@@ -194,6 +216,9 @@ public class ADS1Hash extends Application {
             File loadFrom = fc.showOpenDialog(primaryStage);
             if (loadFrom != null) {
                 System.out.println("laoding from: " + loadFrom.toURI());
+                recentStockData = null;
+                pp.setStock(recentStockData);
+
                 try {
                     dataTable.readFromFile(loadFrom);
                 } catch (FileNotFoundException ex) {
@@ -233,13 +258,17 @@ public class ADS1Hash extends Application {
         });
         MenuItem miImport = new MenuItem("Import Data");
         miImport.setOnAction((ActionEvent e) -> {
-            try {
-                this.importDayData(primaryStage, 30);
-            } catch (RuntimeException ex) {
-                System.err.println("Got less datapoints then expected");
-            }
+
+            importDayData(primaryStage, 30);
+            pp.updateStockData();
+
         }
         );
+        MenuItem miImportAll = new MenuItem("Import all Data");
+        miImportAll.setOnAction(e -> {
+            this.importDayData(primaryStage, -1);
+            pp.updateStockData();
+        });
 
         Menu smSearch = new Menu("Search Stock");
         MenuItem smiSearchByName = new MenuItem("Search by Name");
@@ -273,7 +302,6 @@ public class ADS1Hash extends Application {
 
         smDelete.getItems().addAll(smiDelCurrent, new SeparatorMenuItem(), smiDelByName, smiDelByAbbrev);
 
-        
         //ToDo: Make those other menu items live
         CheckMenuItem cmiOpen = new CheckMenuItem("Open Course");
         cmiOpen.setAccelerator(new KeyCodeCombination(KeyCode.DIGIT1));
@@ -304,7 +332,7 @@ public class ADS1Hash extends Application {
         rmiPlotRelative.setToggleGroup(plotStyle);
 
         fileMenu.getItems().addAll(miLoad, miSave, new SeparatorMenuItem(), miExit);
-        stockMenu.getItems().addAll(smSearch, new SeparatorMenuItem(), miNewStock, miImport, smDelete);
+        stockMenu.getItems().addAll(smSearch, new SeparatorMenuItem(), miNewStock, miImport, miImportAll, smDelete);
         plotMenu.getItems().addAll(cmiOpen, cmiHigh, cmiLow, cmiCLose, cmiVolume, cmiAdjClose, new SeparatorMenuItem(), rmiPlotAbsolute, rmiPlotRelative);
 
         menuBar.getMenus().addAll(fileMenu, stockMenu, plotMenu);
