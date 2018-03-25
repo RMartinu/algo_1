@@ -204,6 +204,8 @@ public class PlotterPanel extends Pane {
     
     public void updateStockData() {
         if (workSet == null) {
+            update();
+            Plotdepth.setDisable(true);
             this.name.setText("");
             
             this.abbrev.setText("");
@@ -330,9 +332,9 @@ public class PlotterPanel extends Pane {
      * @param workset the Stockdata to be used
      */
     public void setStock(StockData workset) {
-        if (workset == null) {
-            System.err.println("Missin somethin");
-        }
+//        if (workset == null) {
+//            System.err.println("Missin somethin");
+//        }
         this.workSet = workset;
         updateStockData();
 
