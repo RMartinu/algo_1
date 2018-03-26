@@ -209,6 +209,15 @@ public class ADS1Hash extends Application {
         /*Ask for a certain size, the constructor will choose an appropriate aproximation*/
         dataTable = new HashTable(2000);
         ExtensionFilter eFilter = new ExtensionFilter("ADS Hashtable File", "*.AHF");
+        
+        /**
+         * Events are fired to early :/
+         */
+        primaryStage.widthProperty().addListener((observable,newVal, oldVal )->{pp.update();});
+        primaryStage.heightProperty().addListener((observable, newVal, oldVal)->{pp.update();});
+        primaryStage.maximizedProperty().addListener((observable, newVal, oldVal)->{pp.update();});
+        
+        
         MenuBar menuBar = new MenuBar();
 
         Menu fileMenu = new Menu("File");

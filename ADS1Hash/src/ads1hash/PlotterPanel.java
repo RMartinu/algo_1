@@ -231,7 +231,7 @@ public class PlotterPanel extends Pane {
         
         Display.getChildren().clear();
         
-        Rectangle bg = new Rectangle(650, 400);
+        Rectangle bg = new Rectangle(this.getWidth()-gp.getWidth(), this.getHeight());
         bg.setFill(Color.BISQUE);
         Display.getChildren().add(bg);
         if (workSet == null) {
@@ -267,6 +267,9 @@ public class PlotterPanel extends Pane {
      * DRY: reusable Code for every plotline
      */
     private void plotData(double dPoints[]) {
+        double height=Display.getHeight();
+        double width=Display.getWidth();
+        double padding = 10; //leave a little bit of distance
         
         double dPointsY[] = new double[dPoints.length];
         //ToDo: normalize Y coords to display size and mode
@@ -281,32 +284,43 @@ public class PlotterPanel extends Pane {
         }
         //ToDO: Transform Coords according to render flag
 
-        double s = 350 / max;
+        double s = (height-(2*padding)) / max;
         //System.err.println(min + " " + max + " " + s);
 
+        
+        /**
+         * Apply scaling factor between stock value and display size
+         * Reverse array so latest entries appear on the right
+         */
         if (renderAbsolute) {
             for (int i = 0; i < dPoints.length; i++) {
                 dPointsY[i] = dPoints[dPoints.length - (i + 1)] * s;
             }
         } else {
             double biasedY[] = new double[dPoints.length];
-            s = 350 / (max - min);
+            s = (height-(2*padding)) / (max - min);
+                    
             for (int i = 0; i < biasedY.length; i++) {
                 biasedY[i] = dPoints[dPoints.length - (i + 1)] - min;
                 dPointsY[i] = biasedY[i] * s;
             }
             
         }
+        /**
+         * Java screen coordinates go from up to down, 
+         * high course values should make the plot go up
+         * -> stock value is distance from larger edge
+         */
         for (int i = 0; i < dPoints.length; i++) {
-            dPointsY[i] = 390 - dPointsY[i];
+            dPointsY[i] = height-padding - dPointsY[i];
         }
 
-//        System.out.println(Arrays.toString(dPointsY));
+      //  System.out.println(Arrays.toString(dPointsY));
 //        System.out.println(Arrays.toString(dPoints));
         double dPointsX[] = new double[dPointsY.length];
         
-        int padding = 20;
-        double spacing = (Display.getWidth() - 2 * padding) / (double) dPointsX.length;
+       // int padding = 20;
+        double spacing = (width - 2 * padding) / (double) dPointsX.length;
         
         double xCoord = padding;
         for (int i = 0; i < dPointsX.length; i++) {
