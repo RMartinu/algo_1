@@ -203,11 +203,11 @@ public class HashTable {
         int baseHash = StockData.getHashCode(abbreviation) % this.capacity;
         for (int i = 0; i < this.capacity; i++) {
             int modifiedHash = getQuadraticProbing(baseHash, i) % this.capacity;
-            if (byName[modifiedHash] != null && byName[modifiedHash].getAbbreviation().equals(abbreviation)) {
+            if (byAbbreviation[modifiedHash] != null && byAbbreviation[modifiedHash].getAbbreviation().equals(abbreviation)) {
                 //System.err.println("Found it");
-                return byName[modifiedHash];
+                return byAbbreviation[modifiedHash];
             }
-            if (byNameCounter[modifiedHash] == 0) {
+            if (byAbbreviationCounter[modifiedHash] == 0) {
                 return null;
             }
         }
