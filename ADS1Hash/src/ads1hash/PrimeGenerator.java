@@ -171,9 +171,9 @@ public class PrimeGenerator {
 
         prime = tempPrimeList.stream().mapToInt(i -> i).toArray();
 
-        for (int i : prime) {
-            System.out.print(i + " ");
-        }
+//        for (int i : prime) {
+//            System.out.print(i + " ");
+//        }
         System.out.println(" done");
 
     }

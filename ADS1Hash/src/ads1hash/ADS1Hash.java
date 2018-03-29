@@ -354,7 +354,7 @@ public class ADS1Hash extends Application {
         
 
         fileMenu.getItems().addAll(miLoad, miSave, new SeparatorMenuItem(), miExit);
-        stockMenu.getItems().addAll(smSearch, new SeparatorMenuItem(), miNewStock, miImport, miImportAll, smDelete);
+        stockMenu.getItems().addAll(smSearch, new SeparatorMenuItem(), miNewStock, new SeparatorMenuItem(),miImport, miImportAll,new SeparatorMenuItem() ,smDelete);
         plotMenu.getItems().addAll(cmiOpen, cmiHigh, cmiLow, cmiCLose, cmiVolume, cmiAdjClose, new SeparatorMenuItem(), rmiPlotAbsolute, rmiPlotRelative);
 
         menuBar.getMenus().addAll(fileMenu, stockMenu, plotMenu);
