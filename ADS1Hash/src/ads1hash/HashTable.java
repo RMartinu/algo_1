@@ -148,6 +148,12 @@ public class HashTable {
      * and Abbreviation table
      */
     void deleteByAbbreviation(String abbrev) {
+        
+        StockData deleteMe = findByAbbreviation(abbrev);
+        if (deleteMe == null) {
+            return;
+        }
+        this.delete(deleteMe);
     }
 
     /**
@@ -193,6 +199,19 @@ public class HashTable {
 
     //ToDO: find the same way as by name
     StockData findByAbbreviation(String abbreviation) {
+        System.out.println("Searching for: " + abbreviation);
+        int baseHash = StockData.getHashCode(abbreviation) % this.capacity;
+        for (int i = 0; i < this.capacity; i++) {
+            int modifiedHash = getQuadraticProbing(baseHash, i) % this.capacity;
+            if (byName[modifiedHash] != null && byName[modifiedHash].getAbbreviation().equals(abbreviation)) {
+                //System.err.println("Found it");
+                return byName[modifiedHash];
+            }
+            if (byNameCounter[modifiedHash] == 0) {
+                return null;
+            }
+        }
+
         return null;
     }
 

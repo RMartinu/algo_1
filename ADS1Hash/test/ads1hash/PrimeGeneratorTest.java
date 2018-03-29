@@ -75,9 +75,9 @@ public class PrimeGeneratorTest {
     @Test
     public void testFindClosestPrime() {
         System.out.println("findClosestPrime");
-        int input = 0;
+        int input = 400;
         PrimeGenerator instance = new PrimeGenerator(234500);
-        int expResult = 2017;
+        int expResult = 401;
         int result = instance.findClosestPrime(input);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.

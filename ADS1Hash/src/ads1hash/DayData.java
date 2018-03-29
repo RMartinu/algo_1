@@ -73,6 +73,31 @@ public class DayData implements Serialize {
         /*allows using the "open"-course data without being able to alter it*/
         return open;
     }
+    
+    double getHighestCourse() {
+        /*allows using the "open"-course data without being able to alter it*/
+        return high;
+    }
+    
+    double getLowestCourse() {
+        /*allows using the "open"-course data without being able to alter it*/
+        return low;
+    }
+    
+    double getCloseCourse() {
+        /*allows using the "open"-course data without being able to alter it*/
+        return close;
+    }
+    
+    double getVolume() {
+        /*allows using the "open"-course data without being able to alter it*/
+        return volume;
+    }
+    
+    double getAdjustedCloseCourse() {
+        /*allows using the "open"-course data without being able to alter it*/
+        return adjClose;
+    }
 
     @Override
     public String toString() {

@@ -195,6 +195,115 @@ public class StockData implements Serialize {
         return values;
     }
 
+    double[] getHighestCourse() {
+        double values[] = new double[data.size()];
+        for (int i = 0; i < data.size(); i++) {
+            values[i] = data.get(i).getHighestCourse();
+        }
+
+        return values;
+    }
+
+    /**
+     * Get a specific number of Datapoints
+     */
+    double[] getHighestCourse(int amount) {
+        amount = (amount < data.size()) ? amount : data.size(); //Do we have enough Data to fullfill the request? Best Effort
+        double values[] = new double[amount];
+        for (int i = 0; i < amount; ++i) {
+            values[i] = data.get(i).getHighestCourse();
+        }
+        return values;
+    }
+    
+   double[] getLowestCourse() {
+        double values[] = new double[data.size()];
+        for (int i = 0; i < data.size(); i++) {
+            values[i] = data.get(i).getLowestCourse();
+        }
+
+        return values;
+    }
+
+    /**
+     * Get a specific number of Datapoints
+     */
+    double[] getLowestCourse(int amount) {
+        amount = (amount < data.size()) ? amount : data.size(); //Do we have enough Data to fullfill the request? Best Effort
+        double values[] = new double[amount];
+        for (int i = 0; i < amount; ++i) {
+            values[i] = data.get(i).getLowestCourse();
+        }
+        return values;
+    } 
+    
+    double[] getCloseCourse() {
+        double values[] = new double[data.size()];
+        for (int i = 0; i < data.size(); i++) {
+            values[i] = data.get(i).getCloseCourse();
+        }
+
+        return values;
+    }
+
+    /**
+     * Get a specific number of Datapoints
+     */
+    double[] getCloseCourse(int amount) {
+        amount = (amount < data.size()) ? amount : data.size(); //Do we have enough Data to fullfill the request? Best Effort
+        double values[] = new double[amount];
+        for (int i = 0; i < amount; ++i) {
+            values[i] = data.get(i).getCloseCourse();
+        }
+        return values;
+    } 
+    
+    double[] getVolume() {
+        double values[] = new double[data.size()];
+        for (int i = 0; i < data.size(); i++) {
+            values[i] = data.get(i).getVolume();
+        }
+
+        return values;
+    }
+
+    /**
+     * Get a specific number of Datapoints
+     */
+    double[] getVolume(int amount) {
+        amount = (amount < data.size()) ? amount : data.size(); //Do we have enough Data to fullfill the request? Best Effort
+        double values[] = new double[amount];
+        for (int i = 0; i < amount; ++i) {
+            values[i] = data.get(i).getVolume();
+        }
+        return values;
+    } 
+    
+    double[] getAdjustedCloseCourse() {
+        double values[] = new double[data.size()];
+        for (int i = 0; i < data.size(); i++) {
+            values[i] = data.get(i).getAdjustedCloseCourse();
+        }
+
+        return values;
+    }
+
+    /**
+     * Get a specific number of Datapoints
+     */
+    double[] getAdjustedCloseCourse(int amount) {
+        amount = (amount < data.size()) ? amount : data.size(); //Do we have enough Data to fullfill the request? Best Effort
+        double values[] = new double[amount];
+        for (int i = 0; i < amount; ++i) {
+            values[i] = data.get(i).getAdjustedCloseCourse();
+        }
+        return values;
+    } 
+    
+    
+    
+    
+    
     /**
      * retrives the most recent Set of datapoints
      */

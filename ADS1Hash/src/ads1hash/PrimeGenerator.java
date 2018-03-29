@@ -93,7 +93,32 @@ public class PrimeGenerator {
     int findClosestPrime(int input) {
         // TODO: implement non generic return value
         //System.out.println(prime.length);
-        return 2017;
+        int runtime = (int) Math.round(Math.log(prime.length)/Math.log(2))+1;
+        int x = (int) Math.round(prime.length/2);
+        boolean bigger = true;
+        
+        for(int i = 0; i<runtime; ++i)
+        {
+            if(input==prime[x])
+            {
+                //System.out.println("return equal" + prime[x]);
+                return prime[x];
+            }
+            else if(input<prime[x])
+            {
+                //System.out.println("smaller than" + prime[x]);
+                x -= (int) Math.round(prime.length/(Math.pow(2,i+2)));
+                bigger = true;
+                
+            }
+            else
+            {
+                //System.out.println("bigger than" + prime[x]);
+                x += (int) Math.round(prime.length/(Math.pow(2,i+2)));
+                bigger = false;
+            }
+        }
+        return bigger ? prime[x]:prime[x+1];
     }
 
     PrimeGenerator(int toInt) {
