@@ -130,23 +130,24 @@ public class StockData implements Serialize {
     *we can pack the information more densely the with arbitrary strings,
     *thus increasing hash quality*/
     static int getAbbrevHash(String hashMe) {
-        if (hashMe.length() > 6)//to much String, fall back to the default
-        {
-            return getHashCode(hashMe);
-        }
-
-        int hashCode = 0;
-        /**
-         * Shift the value range of the input string's characters from A to Z to
-         * 0-25, we can represent each character by 5 bits and assemble those
-         * blocks by shifting them according to their position in the string and
-         * adding them together;
-         */
-        for (int i = 0; i < hashMe.length(); i++) {
-            hashCode += ((Character.toUpperCase(hashMe.charAt(i) - 'A') << (5 * i)));
-        }
-
-        return hashCode;
+        return getHashCode(hashMe);
+//        if (hashMe.length() > 6)//to much String, fall back to the default
+//        {
+//            return getHashCode(hashMe);
+//        }
+//
+//        int hashCode = 0;
+//        /**
+//         * Shift the value range of the input string's characters from A to Z to
+//         * 0-25, we can represent each character by 5 bits and assemble those
+//         * blocks by shifting them according to their position in the string and
+//         * adding them together;
+//         */
+//        for (int i = 0; i < hashMe.length(); i++) {
+//            hashCode += ((Character.toUpperCase(hashMe.charAt(i) - 'A') << (5 * i)));
+//        }
+//
+//        return hashCode;
     }
 
     String getName() {
