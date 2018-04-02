@@ -27,65 +27,65 @@ import javafx.scene.shape.Rectangle;
  * @author Robert Martinu
  */
 public class PlotterPanel extends Pane {
-    
+
     StockData workSet;
     int numberOfPlotPoints = 30;
     int numberOfAvailablePoints;
     HBox Layout = new HBox();
-    
+
     GridPane gp = new GridPane();
     Pane Display = new Pane();
-    
+
     Label lname = new Label("Stock Name");
     Label name = new Label("TestDAta");
-    
+
     Label labbrev = new Label("Stock Abbreviation");
     Label abbrev = new Label();
-    
+
     Label lwkn = new Label("WKN");
     Label wkn = new Label();
-    
+
     Label ldate = new Label("Date");
     Label date = new Label();
-    
+
     boolean showOpen;
     Label lopen = new Label("Open");
     Label open = new Label();
-    
+
     boolean showHigh;
     Label lhigh = new Label("Daily High");
     Label high = new Label();
-    
+
     boolean showLow;
     Label llow = new Label("Daily Low");
     Label low = new Label();
-    
+
     boolean showClose;
     Label lclose = new Label("Close");
     Label close = new Label();
-    
+
     boolean showVolume;
     Label lvolume = new Label("Trade Volume");
     Label volume = new Label();
-    
+
     boolean showAdjClose;
     Label lAdjClose = new Label("Adjusted Close");
     Label adjClose = new Label();
-    
+
     Label lPlotDepth = new Label("Plot Depth");
     TextField lPotDepthIndicator = new TextField("");
-    
+
     Slider Plotdepth = new Slider();
-    
+
     boolean renderAbsolute = true;
     StockData data;
-    
+
     private void adjustDepthSlider() {
         if (workSet != null && workSet.containsDayData()) {
             //System.err.println("enable slider");
 
             lPotDepthIndicator.setText(Integer.toString(numberOfPlotPoints));
-            
+
             Plotdepth.setMin(5);
             Plotdepth.setDisable(false);
             Plotdepth.setMax(numberOfAvailablePoints);
@@ -95,9 +95,9 @@ public class PlotterPanel extends Pane {
             Plotdepth.setDisable(true);
         }
     }
-    
+
     public PlotterPanel() {
-        
+
         Plotdepth.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             numberOfPlotPoints = (int) Plotdepth.getValue();
@@ -107,7 +107,7 @@ public class PlotterPanel extends Pane {
             update();
         });
         adjustDepthSlider();
-        
+
         lPotDepthIndicator.setOnAction(e -> {
             int t = 30;
             try {
@@ -138,7 +138,7 @@ public class PlotterPanel extends Pane {
         Plotdepth.setOnMouseExited(e -> {
             lPotDepthIndicator.setDisable(false);
         });
-        
+
         name.minWidth(100);
         name.setContentDisplay(ContentDisplay.RIGHT);
         gp.add(lname, 0, 0);
@@ -173,38 +173,38 @@ public class PlotterPanel extends Pane {
         //ToDo: Set alignment for other data fields
         GridPane.setHalignment(name, HPos.RIGHT);
         GridPane.setHgrow(name, Priority.ALWAYS);
-        
-                GridPane.setHalignment(abbrev, HPos.RIGHT);
+
+        GridPane.setHalignment(abbrev, HPos.RIGHT);
         GridPane.setHgrow(abbrev, Priority.ALWAYS);
-        
-                GridPane.setHalignment(wkn, HPos.RIGHT);
+
+        GridPane.setHalignment(wkn, HPos.RIGHT);
         GridPane.setHgrow(wkn, Priority.ALWAYS);
-        
-                GridPane.setHalignment(adjClose, HPos.RIGHT);
+
+        GridPane.setHalignment(adjClose, HPos.RIGHT);
         GridPane.setHgrow(adjClose, Priority.ALWAYS);
-        
-                GridPane.setHalignment(close, HPos.RIGHT);
+
+        GridPane.setHalignment(close, HPos.RIGHT);
         GridPane.setHgrow(close, Priority.ALWAYS);
-        
-                GridPane.setHalignment(date, HPos.RIGHT);
+
+        GridPane.setHalignment(date, HPos.RIGHT);
         GridPane.setHgrow(date, Priority.ALWAYS);
-                GridPane.setHalignment(high, HPos.RIGHT);
+        GridPane.setHalignment(high, HPos.RIGHT);
         GridPane.setHgrow(high, Priority.ALWAYS);
-                GridPane.setHalignment(low, HPos.RIGHT);
+        GridPane.setHalignment(low, HPos.RIGHT);
         GridPane.setHgrow(low, Priority.ALWAYS);
-        
-                GridPane.setHalignment(volume, HPos.RIGHT);
+
+        GridPane.setHalignment(volume, HPos.RIGHT);
         GridPane.setHgrow(volume, Priority.ALWAYS);
-        
-                GridPane.setHalignment(open, HPos.RIGHT);
+
+        GridPane.setHalignment(open, HPos.RIGHT);
         GridPane.setHgrow(open, Priority.ALWAYS);
-        
+
         Layout.getChildren().addAll(gp, Display);
         // Rectangle backgnd = new Rectangle(650, 400);
 
         // Display.getChildren().add(backgnd);
         this.getChildren().addAll(Layout);
-        
+
     }
 
     //ToDo: implement all toggle functions
@@ -212,30 +212,32 @@ public class PlotterPanel extends Pane {
         this.showOpen = show;
         this.update();
     }
-    
+
     public void showHigh(boolean show) {
-        this.showHigh=show;
+        this.showHigh = show;
         this.update();
     }
-    
+
     public void showLow(boolean show) {
-        this.showLow=show;
+        this.showLow = show;
         this.update();
     }
-    
+
     public void showClose(boolean show) {
-        showClose=show;update();
-    }
-    
-    public void showVolume(boolean show) {
-        showVolume=show;
+        showClose = show;
         update();
     }
-    
-    public void showAdjClose(boolean show) {
-        showAdjClose=show; update();
+
+    public void showVolume(boolean show) {
+        showVolume = show;
+        update();
     }
-    
+
+    public void showAdjClose(boolean show) {
+        showAdjClose = show;
+        update();
+    }
+
     public void updateStockData() {
         if (workSet == null) {
             //update();
@@ -243,13 +245,12 @@ public class PlotterPanel extends Pane {
             Plotdepth.setDisable(true);
             lPotDepthIndicator.setDisable(true);
             this.name.setText("");
-            
+
             this.abbrev.setText("");
             this.wkn.setText("");
             this.date.setText("");
-            
+
             //ToDo: all the other labels need to be reset
-            
             this.open.setText("");
             this.high.setText("");
             this.low.setText("");
@@ -271,10 +272,10 @@ public class PlotterPanel extends Pane {
      * Fills the pane with active plots based on recent StockData
      */
     public void update() {
-        
+
         Display.getChildren().clear();
-        
-        Rectangle bg = new Rectangle(this.getWidth()-gp.getWidth(), this.getHeight());
+
+        Rectangle bg = new Rectangle(this.getWidth() - gp.getWidth(), this.getHeight());
         bg.setFill(Color.BLACK);
         Display.getChildren().add(bg);
         if (workSet == null) {
@@ -286,57 +287,51 @@ public class PlotterPanel extends Pane {
 //        System.out.println(Display.getWidth());
 //        System.err.println(this.workSet.getName());
         if (this.showOpen) {
-            
+
             double dPointsY[] = this.workSet.getOpeningCourse(numberOfPlotPoints);
-            
+
             plotData(dPointsY, Color.CYAN);
         }
-        
-        if(this.showHigh)
-        {
-            double dPointsY[]=this.workSet.getHighestCourse(numberOfPlotPoints);
+
+        if (this.showHigh) {
+            double dPointsY[] = this.workSet.getHighestCourse(numberOfPlotPoints);
             plotData(dPointsY, Color.GREEN);
         }
-        
-        if(this.showLow)
-        {double dPointsY[]=this.workSet.getLowestCourse(numberOfPlotPoints);
-            plotData(dPointsY, Color.RED);}
-        
-        if(this.showVolume)
-        {
-            long ldPointsY[]=this.workSet.getVolume(numberOfPlotPoints);
-            double dPointsY[]=new double[ldPointsY.length];
-            for (int i =0; i<dPointsY.length;i++)
-            {
-                dPointsY[i]=ldPointsY[i];
+
+        if (this.showLow) {
+            double dPointsY[] = this.workSet.getLowestCourse(numberOfPlotPoints);
+            plotData(dPointsY, Color.RED);
+        }
+
+        if (this.showVolume) {
+            long ldPointsY[] = this.workSet.getVolume(numberOfPlotPoints);
+            double dPointsY[] = new double[ldPointsY.length];
+            for (int i = 0; i < dPointsY.length; i++) {
+                dPointsY[i] = ldPointsY[i];
             }
             plotData(dPointsY, Color.BLUE);
-            
+
         }
-        if(this.showAdjClose)
-        {
-            double dPointsY[]=this.workSet.getAdjustedCloseCourse(numberOfPlotPoints);
+        if (this.showAdjClose) {
+            double dPointsY[] = this.workSet.getAdjustedCloseCourse(numberOfPlotPoints);
             plotData(dPointsY, Color.CRIMSON);
         }
-        
-        if(this.showClose        
-                
-                )
-        {
-            double dPointsY[]=this.workSet.getCloseCourse(numberOfPlotPoints);
+
+        if (this.showClose) {
+            double dPointsY[] = this.workSet.getCloseCourse(numberOfPlotPoints);
             plotData(dPointsY, Color.BLUEVIOLET);
         }
-        
+
         // System.out.println("Updatingthe plot");
         this.name.setText(workSet.getName());
         this.abbrev.setText(workSet.getAbbreviation());
         this.wkn.setText(workSet.getWKN());
-        
+
         if (workSet.containsDayData()) {
-            DayData mostRecent=workSet.getLatestDataPoint();
+            DayData mostRecent = workSet.getLatestDataPoint();
             this.open.setText(Double.toString(mostRecent.getOpenCourse()));
             //ToDo: The other fields need values too
-       
+
             this.high.setText(Double.toString(mostRecent.getHighestCourse()));
             this.low.setText(Double.toString(mostRecent.getLowestCourse()));
             this.close.setText(Double.toString(mostRecent.getCloseCourse()));
@@ -345,7 +340,7 @@ public class PlotterPanel extends Pane {
             this.date.setText(mostRecent.getDate().toString());
         } else {
             //ToDo: The data labels may contains debris, clean up
-          
+
             this.open.setText("");
             this.high.setText("");
             this.low.setText("");
@@ -353,17 +348,17 @@ public class PlotterPanel extends Pane {
             this.volume.setText("");
             this.adjClose.setText("");
         }
-        
+
     }
 
     /**
      * DRY: reusable Code for every plotline
      */
     private void plotData(double dPoints[], Color theColorToUse) {
-        double height=Display.getHeight();
-        double width=Display.getWidth();
+        double height = Display.getHeight();
+        double width = Display.getWidth();
         double padding = 10; //leave a little bit of distance
-        
+
         double dPointsY[] = new double[dPoints.length];
         //ToDo: normalize Y coords to display size and mode
         double min = Double.MAX_VALUE, max = Double.MIN_VALUE;
@@ -377,13 +372,12 @@ public class PlotterPanel extends Pane {
         }
         //ToDO: Transform Coords according to render flag
 
-        double s = (height-(2*padding)) / max;
+        double s = (height - (2 * padding)) / max;
         //System.err.println(min + " " + max + " " + s);
 
-        
         /**
-         * Apply scaling factor between stock value and display size
-         * Reverse array so latest entries appear on the right
+         * Apply scaling factor between stock value and display size Reverse
+         * array so latest entries appear on the right
          */
         if (renderAbsolute) {
             for (int i = 0; i < dPoints.length; i++) {
@@ -391,36 +385,35 @@ public class PlotterPanel extends Pane {
             }
         } else {
             double biasedY[] = new double[dPoints.length];
-            s = (height-(2*padding)) / (max - min);
-                    
+            s = (height - (2 * padding)) / (max - min);
+
             for (int i = 0; i < biasedY.length; i++) {
                 biasedY[i] = dPoints[dPoints.length - (i + 1)] - min;
                 dPointsY[i] = biasedY[i] * s;
             }
-            
+
         }
         /**
-         * Java screen coordinates go from up to down, 
-         * high course values should make the plot go up
-         * -> stock value is distance from larger edge
+         * Java screen coordinates go from up to down, high course values should
+         * make the plot go up -> stock value is distance from larger edge
          */
         for (int i = 0; i < dPoints.length; i++) {
-            dPointsY[i] = height-padding - dPointsY[i];
+            dPointsY[i] = height - padding - dPointsY[i];
         }
 
-      //  System.out.println(Arrays.toString(dPointsY));
+        //  System.out.println(Arrays.toString(dPointsY));
 //        System.out.println(Arrays.toString(dPoints));
         double dPointsX[] = new double[dPointsY.length];
-        
-       // int padding = 20;
+
+        // int padding = 20;
         double spacing = (width - 2 * padding) / (double) dPointsX.length;
-        
+
         double xCoord = padding;
         for (int i = 0; i < dPointsX.length; i++) {
             dPointsX[i] = xCoord;
             xCoord += spacing;
         }
-        
+
         double dPointsInterleaved[] = new double[dPointsX.length + dPointsY.length];
 
         //interleaving, als PolyLine wants its points in this format
@@ -428,7 +421,7 @@ public class PlotterPanel extends Pane {
             dPointsInterleaved[2 * i] = dPointsX[i];
             dPointsInterleaved[2 * i + 1] = dPointsY[i];
         }
-        
+
         Polyline plot = new Polyline(dPointsInterleaved);
         //Display.getChildren().clear();
         plot.setStroke(theColorToUse);
@@ -448,5 +441,5 @@ public class PlotterPanel extends Pane {
         updateStockData();
 
     }
-    
+
 }

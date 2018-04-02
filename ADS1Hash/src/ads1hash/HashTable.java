@@ -47,7 +47,6 @@ public class HashTable {
 
     boolean requestResize(int newCapacity) {
 
-        
         int actualNewCap = this.primeGen.findClosestPrime(newCapacity);
 
         System.out.print("Resizing");
@@ -99,13 +98,13 @@ public class HashTable {
         }
         /*is there ambiguity?*/
         if ((findByName(sd.getName()) != null) || (findByAbbreviation(sd.getAbbreviation()) != null)) {
-            System.err.println("Stock already in DB: " + sd.getName() + " "+ sd.getAbbreviation());
+            System.err.println("Stock already in DB: " + sd.getName() + " " + sd.getAbbreviation());
             return false;
         }
 
         //can we even insert the new element?
         //should we try to insert into a table beyond a certain laod factor?
-        if ((size * 2) + 1 >= capacity) {
+        if (getLoadFActor()>0.75) {
             //ToDO: trigger relocation to a larger hashtable
             if (requestResize(capacity * 2)) {
                 /*Resize worked just as planned, nothing to see, continue*/
@@ -114,58 +113,33 @@ public class HashTable {
                 return false;
             }
         }
-        //insert into byName table
 
-        int IndexFromHash = sd.getNameHash() % this.capacity;
-        /*some lines of code vs. an additional call to getQuadraticProbing w, Counter=0*/
-        if (byName[IndexFromHash] == null) {
-            /*slot is useable*/
-            byName[IndexFromHash] = sd;
-            byNameCounter[IndexFromHash]++;
-            size++;
-        } else {
-            int counter = 1;
-            while (true) {
-                int modifiedIndexFromHash = this.getQuadraticProbing(sd.getNameHash(), counter) % this.capacity;
-                /*We use this box as a stepping stone, record the usage*/
-                byNameCounter[modifiedIndexFromHash]++;
-                System.out.println("Name Collision" + sd.getName());
-                if (byName[modifiedIndexFromHash] == null) {
-                    /*We arrived at an empty slot, insert the data*/
-                    byName[modifiedIndexFromHash] = sd;
-
-                    System.out.println("Inserted " + sd.getName());
-                    //note: increase size only either here or when inserting into abbreviation table, not twice
-                    size++;
-                    break;
-                } else {
-                    /*already occupied, go for the next one*/
-                    counter++;
-                }
+        //fetch the hash of the Dataset to be inserted
+        int baseIndex = sd.getNameHash();
+        for (int i = 0; i < byName.length; i++) {
+            //calculate the index from hash&iteration count
+            int actualIndex = getQuadraticProbing(baseIndex, i) % this.capacity;
+            //We used this cell, so we increase the usage counter
+            byNameCounter[actualIndex]++;
+            //if the cell s free: use it
+            if (byName[actualIndex] == null) {
+                byName[actualIndex] = sd;
+                size++;
+                break;
             }
+            //otherwise probe another cell in the next iteration
         }
 
         //insert into byAbbreviation table
         //TODO same as above, just different
-        IndexFromHash = sd.getAbbreviationHash() % this.capacity;
-        if (byAbbreviation[IndexFromHash] == null) {
-            byAbbreviation[IndexFromHash] = sd;
-            byAbbreviationCounter[IndexFromHash]++;
-        } else {
-            System.out.println("bbrevCollision" + sd.getAbbreviation());
-            int counter = 1;
-            while (true) {
-                int modifiedIndexFromHash = this.getQuadraticProbing(sd.getAbbreviationHash(), counter) % this.capacity;
-                byAbbreviationCounter[modifiedIndexFromHash]++;
-                if (byAbbreviation[modifiedIndexFromHash] == null) {
-                    byAbbreviation[modifiedIndexFromHash] = sd;
-                    break;
-
-                } else {
-                    counter++;
-                }
+        baseIndex = sd.getAbbreviationHash();
+        for (int i = 0; i < byAbbreviation.length; i++) {
+            int actualIndex = getQuadraticProbing(baseIndex, i) % this.capacity;
+            byAbbreviationCounter[actualIndex]++;
+            if (byAbbreviation[actualIndex] == null) {
+                byAbbreviation[actualIndex] = sd;
+                break;
             }
-
         }
 
         return true;
@@ -176,7 +150,7 @@ public class HashTable {
      */
     void delete(StockData deleteMe) {
 
-        int baseIndex = StockData.getHashCode(deleteMe.getName()) % this.capacity;
+        int baseIndex = StockData.getHashCode(deleteMe.getName());
         int modifiedIndex;
 
         for (int i = 0; i < this.capacity; i++) {
@@ -192,7 +166,7 @@ public class HashTable {
         }
 
         /*removing the entry also from the byAbbreviation table*/
-        baseIndex = StockData.getAbbrevHash(deleteMe.getAbbreviation()) % this.capacity;
+        baseIndex = StockData.getAbbrevHash(deleteMe.getAbbreviation());
         for (int i = 0; i < this.capacity; i++) {
             modifiedIndex = getQuadraticProbing(baseIndex, i) % this.capacity;
             byAbbreviationCounter[modifiedIndex]--;
@@ -257,7 +231,7 @@ public class HashTable {
     StockData findByName(String name) {
 
         //System.out.println("Searching for: " + name);
-        int baseHash = StockData.getHashCode(name) % this.capacity;
+        int baseHash = StockData.getHashCode(name);
         for (int i = 0; i < this.capacity; i++) {
             int modifiedHash = getQuadraticProbing(baseHash, i) % this.capacity;
             if (byName[modifiedHash] != null && byName[modifiedHash].getName().equals(name)) {
@@ -275,7 +249,7 @@ public class HashTable {
     //ToDO: find the same way as by name
     StockData findByAbbreviation(String abbreviation) {
         //System.out.println("Searching for: " + abbreviation);
-        int baseHash = StockData.getHashCode(abbreviation) % this.capacity;
+        int baseHash = StockData.getHashCode(abbreviation);
         for (int i = 0; i < this.capacity; i++) {
             int modifiedHash = getQuadraticProbing(baseHash, i) % this.capacity;
             if (byAbbreviation[modifiedHash] != null && byAbbreviation[modifiedHash].getAbbreviation().equals(abbreviation)) {

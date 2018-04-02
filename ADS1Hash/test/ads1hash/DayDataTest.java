@@ -75,12 +75,13 @@ public class DayDataTest {
     @Test
     public void testToString() {
         System.out.println("toString");
-        DayData instance = null;
-        String expResult = "";
+        DayData instance = new DayData(LocalDate.parse("2112-02-29"), 0, 0, 0, 0, 0, 0);
+      
+        String expResult = "DayData{date=2112-02-29, open=0.0, high=0.0, low=0.0, close=0.0, volume=0, adjClose=0.0}";
         String result = instance.toString();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**
@@ -95,7 +96,7 @@ public class DayDataTest {
         boolean result = instance.equals(o);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**

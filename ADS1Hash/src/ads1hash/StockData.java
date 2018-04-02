@@ -216,8 +216,8 @@ public class StockData implements Serialize {
         }
         return values;
     }
-    
-   double[] getLowestCourse() {
+
+    double[] getLowestCourse() {
         double values[] = new double[data.size()];
         for (int i = 0; i < data.size(); i++) {
             values[i] = data.get(i).getLowestCourse();
@@ -236,8 +236,8 @@ public class StockData implements Serialize {
             values[i] = data.get(i).getLowestCourse();
         }
         return values;
-    } 
-    
+    }
+
     double[] getCloseCourse() {
         double values[] = new double[data.size()];
         for (int i = 0; i < data.size(); i++) {
@@ -257,8 +257,8 @@ public class StockData implements Serialize {
             values[i] = data.get(i).getCloseCourse();
         }
         return values;
-    } 
-    
+    }
+
     long[] getVolume() {
         long values[] = new long[data.size()];
         for (int i = 0; i < data.size(); i++) {
@@ -278,8 +278,8 @@ public class StockData implements Serialize {
             values[i] = data.get(i).getVolume();
         }
         return values;
-    } 
-    
+    }
+
     double[] getAdjustedCloseCourse() {
         double values[] = new double[data.size()];
         for (int i = 0; i < data.size(); i++) {
@@ -299,12 +299,8 @@ public class StockData implements Serialize {
             values[i] = data.get(i).getAdjustedCloseCourse();
         }
         return values;
-    } 
-    
-    
-    
-    
-    
+    }
+
     /**
      * retrives the most recent Set of datapoints
      */

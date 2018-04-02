@@ -40,7 +40,7 @@ import javafx.stage.Stage;
  * @author Robert Martinu
  */
 public class ADS1Hash extends Application {
-
+    
     PlotterPanel pp = new PlotterPanel();
     StockData recentStockData;
     HashTable dataTable;
@@ -53,23 +53,23 @@ public class ADS1Hash extends Application {
 
         Application.launch(args);
     }
-
+    
     public boolean importDayData(Stage s, int numberOfImports) {
         FileChooser fc = new FileChooser();
         fc.setTitle("Select CSV to import from");
         fc.getExtensionFilters().add(new ExtensionFilter("Stock Data Files", "*.csv"));
         File fileToOpen = fc.showOpenDialog(s);
-        
+
         /**
-         * Try to import some data.
-         * There must both be a source file selected as well as a receiving object available
+         * Try to import some data. There must both be a source file selected as
+         * well as a receiving object available
          */
         if (fileToOpen != null && recentStockData != null) {
             DataReader dr = new DataReader(fileToOpen);
             /*we want a specific number of datapoints*/
             if (numberOfImports > 0) {
                 for (int i = 0; i < numberOfImports; i++) {
-
+                    
                     DayData temp = dr.getDayData();
                     if (temp != null) {
                         recentStockData.insertDayData(temp);
@@ -77,7 +77,7 @@ public class ADS1Hash extends Application {
                         pp.update();
                         return false;
                     }
-
+                    
                 }
             } else {
                 /*get the whole file*/
@@ -94,17 +94,17 @@ public class ADS1Hash extends Application {
             // pp.setStock(recentStockData);
             pp.update();
         }
-
+        
         return true;
-
+        
     }
-
+    
     public void CreateStock() {
         Stage creationStage = new Stage();
         creationStage.setTitle("Create a new Stock Entry");
         GridPane grid = new GridPane();
         Scene sc = new Scene(grid, 350, 300);
-
+        
         Button perf = new Button("Submit");
         Label head = new Label("Create a new Stock");
         Label lName = new Label("Name: ");
@@ -120,7 +120,7 @@ public class ADS1Hash extends Application {
                 tfWkn.requestFocus();
             }
         });
-
+        
         TextField tfName = new TextField();
         tfName.setOnKeyReleased(e -> {
             if (e.getCode() == KeyCode.ENTER) {
@@ -128,9 +128,9 @@ public class ADS1Hash extends Application {
             }
         });
         Label lAbrreviation = new Label("Abbreviation");
-
+        
         Label lWkn = new Label("WKN");
-
+        
         perf.defaultButtonProperty().bind(perf.focusedProperty());
         perf.setOnAction(e -> {
             if (tfName.getText().isEmpty()) {
@@ -146,27 +146,27 @@ public class ADS1Hash extends Application {
                 creationStage.hide();
             }
         });
-
+        
         grid.add(head, 0, 0);
         grid.add(lName, 0, 1);
         grid.add(tfName, 1, 1);
-
+        
         grid.add(lAbrreviation, 0, 2);
         grid.add(tfAbbreviation, 1, 2);
-
+        
         grid.add(lWkn, 0, 3);
         grid.add(tfWkn, 1, 3);
-
+        
         grid.add(perf, 0, 4);
-
+        
         creationStage.setScene(sc);
         creationStage.show();
     }
-
+    
     public String SearchPanel(String whatFor) {
-
+        
         Stage searchStage = new Stage();
-
+        
         searchStage.setTitle("Searching for: " + whatFor);
         VBox v = new VBox();
         Label l = new Label("Search for " + whatFor);
@@ -178,15 +178,15 @@ public class ADS1Hash extends Application {
             }
         });
         Label lNotFound = new Label();
-
+        
         btn.defaultButtonProperty().bind(btn.focusedProperty());
-
+        
         v.getChildren().addAll(l, tf, lNotFound, btn);
         btn.setOnAction(e -> {
             String s = (tf.getText().length() > 4) ? tf.getText().substring(0, 4) : tf.getText();
             StockData t = (whatFor.charAt(0) == 'N') ? dataTable.findByName(tf.getText()) : dataTable.findByAbbreviation(s);
             if (t != null) {
-
+                
                 recentStockData = t;
                 pp.setStock(recentStockData);
                 searchStage.hide();
@@ -199,32 +199,37 @@ public class ADS1Hash extends Application {
         p.getChildren().add(v);
         Scene sc = new Scene(p, 350, 150);
         searchStage.setScene(sc);
-
+        
         searchStage.show();
-
+        
         return null;
     }
-
+    
     @Override
     public void start(Stage primaryStage) throws Exception {
         /*Ask for a certain size, the constructor will choose an appropriate aproximation*/
         dataTable = new HashTable(2000);
         ExtensionFilter eFilter = new ExtensionFilter("ADS Hashtable File", "*.AHF");
-        
+
         /**
          * Events are fired to early :/
          */
-        primaryStage.widthProperty().addListener((observable,newVal, oldVal )->{pp.update();});
-        primaryStage.heightProperty().addListener((observable, newVal, oldVal)->{pp.update();});
-        primaryStage.maximizedProperty().addListener((observable, newVal, oldVal)->{pp.update();});
-        
+        primaryStage.widthProperty().addListener((observable, newVal, oldVal) -> {
+            pp.update();
+        });
+        primaryStage.heightProperty().addListener((observable, newVal, oldVal) -> {
+            pp.update();
+        });
+        primaryStage.maximizedProperty().addListener((observable, newVal, oldVal) -> {
+            pp.update();
+        });
         
         MenuBar menuBar = new MenuBar();
-
+        
         Menu fileMenu = new Menu("File");
         Menu stockMenu = new Menu("Stock");
         Menu plotMenu = new Menu("Plot");
-
+        
         MenuItem miLoad = new MenuItem("Load");
         miLoad.setAccelerator(new KeyCodeCombination(KeyCode.L, KeyCombination.CONTROL_DOWN));
         miLoad.setOnAction(e -> {
@@ -236,7 +241,7 @@ public class ADS1Hash extends Application {
                 System.out.println("laoding from: " + loadFrom.toURI());
                 recentStockData = null;
                 pp.setStock(recentStockData);
-
+                
                 try {
                     dataTable.readFromFile(loadFrom);
                 } catch (FileNotFoundException ex) {
@@ -244,7 +249,7 @@ public class ADS1Hash extends Application {
                 }
             }
         });
-
+        
         MenuItem miSave = new MenuItem("Save");
         miSave.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
         miSave.setOnAction(e -> {
@@ -267,19 +272,19 @@ public class ADS1Hash extends Application {
             System.out.println("Bye");
             Platform.exit();
         });
-
+        
         MenuItem miNewStock = new MenuItem("New Stock");
-
+        
         miNewStock.setOnAction(e -> {
             System.out.println("Creating a new Entry");
             this.CreateStock();
         });
         MenuItem miImport = new MenuItem("Import Data");
         miImport.setOnAction((ActionEvent e) -> {
-
+            
             importDayData(primaryStage, 30);
             pp.updateStockData();
-
+            
         }
         );
         MenuItem miImportAll = new MenuItem("Import all Data");
@@ -289,7 +294,7 @@ public class ADS1Hash extends Application {
             this.importDayData(primaryStage, -1);
             pp.updateStockData();
         });
-
+        
         Menu smSearch = new Menu("Search Stock");
         MenuItem smiSearchByName = new MenuItem("Search by Name");
         smiSearchByName.setAccelerator(new KeyCodeCombination(KeyCode.N));
@@ -306,9 +311,9 @@ public class ADS1Hash extends Application {
             //System.out.println("find me some " + findme);
         });
         smSearch.getItems().addAll(smiSearchByName, smiSearchByAbbreviation);
-
+        
         Menu smDelete = new Menu("Delete Stock");
-
+        
         MenuItem smiDelCurrent = new MenuItem("Delete current Stock");
         smiDelCurrent.setOnAction(e -> {
             dataTable.delete(recentStockData);
@@ -319,37 +324,45 @@ public class ADS1Hash extends Application {
         smiDelByName.setDisable(true);
         MenuItem smiDelByAbbrev = new MenuItem("Delete Stock by Abbreviation");
         smiDelByAbbrev.setDisable(true);
-
+        
         smDelete.getItems().addAll(smiDelCurrent, new SeparatorMenuItem(), smiDelByName, smiDelByAbbrev);
 
         //ToDo: Make those other menu items live
-        
         CheckMenuItem cmiOpen = new CheckMenuItem("Open Course");
         cmiOpen.setAccelerator(new KeyCodeCombination(KeyCode.DIGIT1));
         cmiOpen.setOnAction(e -> {
             pp.showOpen(cmiOpen.isSelected());
         });
-
+        
         CheckMenuItem cmiHigh = new CheckMenuItem("Daily High");
         cmiHigh.setAccelerator(new KeyCodeCombination(KeyCode.DIGIT2));
-        cmiHigh.setOnAction(e->{pp.showHigh(cmiHigh.isSelected());});
+        cmiHigh.setOnAction(e -> {
+            pp.showHigh(cmiHigh.isSelected());
+        });
         
         CheckMenuItem cmiLow = new CheckMenuItem("Daily Low");
         cmiLow.setAccelerator(new KeyCodeCombination(KeyCode.DIGIT3));
-        cmiLow.setOnAction(e->{pp.showLow(cmiLow.isSelected());});
+        cmiLow.setOnAction(e -> {
+            pp.showLow(cmiLow.isSelected());
+        });
         
         CheckMenuItem cmiCLose = new CheckMenuItem("Closing Course");
         cmiCLose.setAccelerator(new KeyCodeCombination(KeyCode.DIGIT4));
-        cmiCLose.setOnAction(e->{pp.showClose(cmiCLose.isSelected());});
+        cmiCLose.setOnAction(e -> {
+            pp.showClose(cmiCLose.isSelected());
+        });
         
         CheckMenuItem cmiVolume = new CheckMenuItem("Trade Volume");
         cmiVolume.setAccelerator(new KeyCodeCombination(KeyCode.DIGIT5));
-        cmiVolume.setOnAction(e->{pp.showVolume(cmiVolume.isSelected());});
+        cmiVolume.setOnAction(e -> {
+            pp.showVolume(cmiVolume.isSelected());
+        });
         
         CheckMenuItem cmiAdjClose = new CheckMenuItem("Adjusted Closeing");
         cmiAdjClose.setAccelerator(new KeyCodeCombination(KeyCode.DIGIT6));
-        cmiAdjClose.setOnAction(e->{pp.showAdjClose(cmiAdjClose.isSelected());});
-    
+        cmiAdjClose.setOnAction(e -> {
+            pp.showAdjClose(cmiAdjClose.isSelected());
+        });
         
         RadioMenuItem rmiPlotAbsolute = new RadioMenuItem("Absolute Values");
         RadioMenuItem rmiPlotRelative = new RadioMenuItem("Relative Values");
@@ -362,20 +375,19 @@ public class ADS1Hash extends Application {
             this.pp.renderAbsolute = false;
             pp.update();
         });
-
+        
         ToggleGroup plotStyle = new ToggleGroup();
         rmiPlotAbsolute.setToggleGroup(plotStyle);
         rmiPlotRelative.setToggleGroup(plotStyle);
         
-
         fileMenu.getItems().addAll(miLoad, miSave, new SeparatorMenuItem(), miExit);
-        stockMenu.getItems().addAll(smSearch, new SeparatorMenuItem(), miNewStock, new SeparatorMenuItem(),miImport, miImportAll,new SeparatorMenuItem() ,smDelete);
+        stockMenu.getItems().addAll(smSearch, new SeparatorMenuItem(), miNewStock, new SeparatorMenuItem(), miImport, miImportAll, new SeparatorMenuItem(), smDelete);
         plotMenu.getItems().addAll(cmiOpen, cmiHigh, cmiLow, cmiCLose, cmiVolume, cmiAdjClose, new SeparatorMenuItem(), rmiPlotAbsolute, rmiPlotRelative);
-
+        
         menuBar.getMenus().addAll(fileMenu, stockMenu, plotMenu);
-
+        
         BorderPane root = new BorderPane();
-
+        
         root.setTop(menuBar);
         root.setCenter(pp);
         Scene scene = new Scene(root, 900, 450);
@@ -383,5 +395,5 @@ public class ADS1Hash extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
+    
 }
