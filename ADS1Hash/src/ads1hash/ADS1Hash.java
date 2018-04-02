@@ -23,6 +23,7 @@ import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyCharacterCombination;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -330,10 +331,24 @@ public class ADS1Hash extends Application {
         });
 
         CheckMenuItem cmiHigh = new CheckMenuItem("Daily High");
+        cmiHigh.setAccelerator(new KeyCodeCombination(KeyCode.DIGIT2));
+        cmiHigh.setOnAction(e->{pp.showHigh(cmiHigh.isSelected());});
+        
         CheckMenuItem cmiLow = new CheckMenuItem("Daily Low");
+        cmiLow.setAccelerator(new KeyCodeCombination(KeyCode.DIGIT3));
+        cmiLow.setOnAction(e->{pp.showLow(cmiLow.isSelected());});
+        
         CheckMenuItem cmiCLose = new CheckMenuItem("Closing Course");
+        cmiCLose.setAccelerator(new KeyCodeCombination(KeyCode.DIGIT4));
+        cmiCLose.setOnAction(e->{pp.showClose(cmiCLose.isSelected());});
+        
         CheckMenuItem cmiVolume = new CheckMenuItem("Trade Volume");
+        cmiVolume.setAccelerator(new KeyCodeCombination(KeyCode.DIGIT5));
+        cmiVolume.setOnAction(e->{pp.showVolume(cmiVolume.isSelected());});
+        
         CheckMenuItem cmiAdjClose = new CheckMenuItem("Adjusted Closeing");
+        cmiAdjClose.setAccelerator(new KeyCodeCombination(KeyCode.DIGIT6));
+        cmiAdjClose.setOnAction(e->{pp.showAdjClose(cmiAdjClose.isSelected());});
     
         
         RadioMenuItem rmiPlotAbsolute = new RadioMenuItem("Absolute Values");

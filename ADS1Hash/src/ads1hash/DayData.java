@@ -89,7 +89,7 @@ public class DayData implements Serialize {
         return close;
     }
     
-    double getVolume() {
+    long getVolume() {
         /*allows using the "open"-course data without being able to alter it*/
         return volume;
     }
@@ -98,6 +98,7 @@ public class DayData implements Serialize {
         /*allows using the "open"-course data without being able to alter it*/
         return adjClose;
     }
+  
 
     @Override
     public String toString() {

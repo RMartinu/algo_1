@@ -89,7 +89,7 @@ public class PlotterPanel extends Pane {
             Plotdepth.setMin(5);
             Plotdepth.setDisable(false);
             Plotdepth.setMax(numberOfAvailablePoints);
-            //Plotdepth.setValue((Plotdepth.maxProperty().doubleValue()>30)?30:Plotdepth.maxProperty().doubleValue());
+            Plotdepth.setValue(30);
         } else {
             lPotDepthIndicator.setText("");
             Plotdepth.setDisable(true);
@@ -116,6 +116,7 @@ public class PlotterPanel extends Pane {
                 System.err.println("missparse");
             }
             numberOfPlotPoints = t;
+            Plotdepth.setValue(t);
             update();
         });
         lPotDepthIndicator.setDisable(true);
@@ -173,6 +174,31 @@ public class PlotterPanel extends Pane {
         GridPane.setHalignment(name, HPos.RIGHT);
         GridPane.setHgrow(name, Priority.ALWAYS);
         
+                GridPane.setHalignment(abbrev, HPos.RIGHT);
+        GridPane.setHgrow(abbrev, Priority.ALWAYS);
+        
+                GridPane.setHalignment(wkn, HPos.RIGHT);
+        GridPane.setHgrow(wkn, Priority.ALWAYS);
+        
+                GridPane.setHalignment(adjClose, HPos.RIGHT);
+        GridPane.setHgrow(adjClose, Priority.ALWAYS);
+        
+                GridPane.setHalignment(close, HPos.RIGHT);
+        GridPane.setHgrow(close, Priority.ALWAYS);
+        
+                GridPane.setHalignment(date, HPos.RIGHT);
+        GridPane.setHgrow(date, Priority.ALWAYS);
+                GridPane.setHalignment(high, HPos.RIGHT);
+        GridPane.setHgrow(high, Priority.ALWAYS);
+                GridPane.setHalignment(low, HPos.RIGHT);
+        GridPane.setHgrow(low, Priority.ALWAYS);
+        
+                GridPane.setHalignment(volume, HPos.RIGHT);
+        GridPane.setHgrow(volume, Priority.ALWAYS);
+        
+                GridPane.setHalignment(open, HPos.RIGHT);
+        GridPane.setHgrow(open, Priority.ALWAYS);
+        
         Layout.getChildren().addAll(gp, Display);
         // Rectangle backgnd = new Rectangle(650, 400);
 
@@ -188,23 +214,31 @@ public class PlotterPanel extends Pane {
     }
     
     public void showHigh(boolean show) {
+        this.showHigh=show;
+        this.update();
     }
     
     public void showLow(boolean show) {
+        this.showLow=show;
+        this.update();
     }
     
     public void showClose(boolean show) {
+        showClose=show;update();
     }
     
     public void showVolume(boolean show) {
+        showVolume=show;
+        update();
     }
     
     public void showAdjClose(boolean show) {
+        showAdjClose=show; update();
     }
     
     public void updateStockData() {
         if (workSet == null) {
-            update();
+            //update();
             Plotdepth.setValue(30);
             Plotdepth.setDisable(true);
             lPotDepthIndicator.setDisable(true);
@@ -212,8 +246,17 @@ public class PlotterPanel extends Pane {
             
             this.abbrev.setText("");
             this.wkn.setText("");
-            this.open.setText("");
+            this.date.setText("");
+            
             //ToDo: all the other labels need to be reset
+            
+            this.open.setText("");
+            this.high.setText("");
+            this.low.setText("");
+            this.close.setText("");
+            this.volume.setText("");
+            this.adjClose.setText("");
+            update();
 
             return;
         }
@@ -232,7 +275,7 @@ public class PlotterPanel extends Pane {
         Display.getChildren().clear();
         
         Rectangle bg = new Rectangle(this.getWidth()-gp.getWidth(), this.getHeight());
-        bg.setFill(Color.BISQUE);
+        bg.setFill(Color.BLACK);
         Display.getChildren().add(bg);
         if (workSet == null) {
             return;
@@ -246,19 +289,69 @@ public class PlotterPanel extends Pane {
             
             double dPointsY[] = this.workSet.getOpeningCourse(numberOfPlotPoints);
             
-            plotData(dPointsY);
+            plotData(dPointsY, Color.CYAN);
         }
+        
+        if(this.showHigh)
+        {
+            double dPointsY[]=this.workSet.getHighestCourse(numberOfPlotPoints);
+            plotData(dPointsY, Color.GREEN);
+        }
+        
+        if(this.showLow)
+        {double dPointsY[]=this.workSet.getLowestCourse(numberOfPlotPoints);
+            plotData(dPointsY, Color.RED);}
+        
+        if(this.showVolume)
+        {
+            long ldPointsY[]=this.workSet.getVolume(numberOfPlotPoints);
+            double dPointsY[]=new double[ldPointsY.length];
+            for (int i =0; i<dPointsY.length;i++)
+            {
+                dPointsY[i]=ldPointsY[i];
+            }
+            plotData(dPointsY, Color.BLUE);
+            
+        }
+        if(this.showAdjClose)
+        {
+            double dPointsY[]=this.workSet.getAdjustedCloseCourse(numberOfPlotPoints);
+            plotData(dPointsY, Color.CRIMSON);
+        }
+        
+        if(this.showClose        
+                
+                )
+        {
+            double dPointsY[]=this.workSet.getCloseCourse(numberOfPlotPoints);
+            plotData(dPointsY, Color.BLUEVIOLET);
+        }
+        
         // System.out.println("Updatingthe plot");
         this.name.setText(workSet.getName());
         this.abbrev.setText(workSet.getAbbreviation());
         this.wkn.setText(workSet.getWKN());
         
         if (workSet.containsDayData()) {
-            this.open.setText(Double.toString(workSet.getOpeningCourse(1)[0]));
+            DayData mostRecent=workSet.getLatestDataPoint();
+            this.open.setText(Double.toString(mostRecent.getOpenCourse()));
             //ToDo: The other fields need values too
+       
+            this.high.setText(Double.toString(mostRecent.getHighestCourse()));
+            this.low.setText(Double.toString(mostRecent.getLowestCourse()));
+            this.close.setText(Double.toString(mostRecent.getCloseCourse()));
+            this.volume.setText(Long.toString(mostRecent.getVolume()));
+            this.adjClose.setText(Double.toString(mostRecent.getAdjustedCloseCourse()));
+            this.date.setText(mostRecent.getDate().toString());
         } else {
             //ToDo: The data labels may contains debris, clean up
+          
             this.open.setText("");
+            this.high.setText("");
+            this.low.setText("");
+            this.close.setText("");
+            this.volume.setText("");
+            this.adjClose.setText("");
         }
         
     }
@@ -266,7 +359,7 @@ public class PlotterPanel extends Pane {
     /**
      * DRY: reusable Code for every plotline
      */
-    private void plotData(double dPoints[]) {
+    private void plotData(double dPoints[], Color theColorToUse) {
         double height=Display.getHeight();
         double width=Display.getWidth();
         double padding = 10; //leave a little bit of distance
@@ -338,7 +431,7 @@ public class PlotterPanel extends Pane {
         
         Polyline plot = new Polyline(dPointsInterleaved);
         //Display.getChildren().clear();
-        plot.setStroke(Color.GREEN);
+        plot.setStroke(theColorToUse);
         Display.getChildren().add(plot);
     }
 

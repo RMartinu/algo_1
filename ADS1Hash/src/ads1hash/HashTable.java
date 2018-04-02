@@ -46,23 +46,45 @@ public class HashTable {
     }
 
     boolean requestResize(int newCapacity) {
-        return false;
+
+        int actualNewCap = this.primeGen.findClosestPrime(newCapacity);
+
+        System.out.print("Resizing");
+        // Keep a handle on the current map
+        StockData[] temp = byName;
+
+        //create new storage facilities
+        //Lets ignore the possibility of failed allocations for now
+        byName = new StockData[actualNewCap];
+        byNameCounter = new int[actualNewCap];
+        byAbbreviation = new StockData[actualNewCap];
+        byAbbreviationCounter = new int[actualNewCap];
+        size = 0;
+        capacity = actualNewCap;
+
+        for (StockData t : temp) {
+            this.insert(t);
+        }
+
+        System.out.println("...successfull");
+        return true;
     }
-    
-    void printState()
-    {
-        for (int i =0; i<capacity; i++)
-        {
-            if(byName[i]!=null || byNameCounter[i]!=0 || byAbbreviation[i]!=null || byAbbreviationCounter[i]!=0)
-            {
-                if(byName[i]!=null)
-                {System.out.print(byName[i].getName());}
-                else
-                {System.out.print("null");}
+
+    void printState() {
+        for (int i = 0; i < capacity; i++) {
+            if (byName[i] != null || byNameCounter[i] != 0 || byAbbreviation[i] != null || byAbbreviationCounter[i] != 0) {
+                if (byName[i] != null) {
+                    System.out.print(byName[i].getName());
+                } else {
+                    System.out.print("null");
+                }
                 System.out.print(byAbbreviationCounter[i]);
-                
-                if(byAbbreviation[i]!=null)
-                {System.out.print(byAbbreviation[i].getAbbreviation());}else{System.out.print("null");}
+
+                if (byAbbreviation[i] != null) {
+                    System.out.print(byAbbreviation[i].getAbbreviation());
+                } else {
+                    System.out.print("null");
+                }
                 System.out.println(byAbbreviationCounter[i]);
             }
         }
@@ -82,18 +104,18 @@ public class HashTable {
 
         //can we even insert the new element?
         //should we try to insert into a table beyond a certain laod factor?
-        if ((size*2)+1 >= capacity) {
+        if ((size * 2) + 1 >= capacity) {
             //ToDO: trigger relocation to a larger hashtable
-            if(requestResize(capacity*2))
-            {
+            if (requestResize(capacity * 2)) {
                 /*Resize worked just as planned, nothing to see, continue*/
-            }else{
+            } else {
                 /*Sorry, can't do that, returning*/
-            return false;}
+                return false;
+            }
         }
         //insert into byName table
 
-        int IndexFromHash = sd.getNameHash()% this.capacity;
+        int IndexFromHash = sd.getNameHash() % this.capacity;
         /*some lines of code vs. an additional call to getQuadraticProbing w, Counter=0*/
         if (byName[IndexFromHash] == null) {
             /*slot is useable*/
@@ -109,7 +131,7 @@ public class HashTable {
                 if (byName[modifiedIndexFromHash] == null) {
                     /*We arrived at an empty slot, insert the data*/
                     byName[modifiedIndexFromHash] = sd;
-                    
+
                     System.out.println("Inserted " + sd.getName());
                     //note: increase size only either here or when inserting into abbreviation table, not twice
                     size++;
@@ -123,38 +145,27 @@ public class HashTable {
 
         //insert into byAbbreviation table
         //TODO same as above, just different
-         IndexFromHash=sd.getAbbreviationHash()%this.capacity;
-         if(byAbbreviation[IndexFromHash]==null)
-         {
-             byAbbreviation[IndexFromHash]=sd;
-             byAbbreviationCounter[IndexFromHash]++;
-         }
-         else
-         {
-             System.out.println("bbrevCollision" + sd.getAbbreviation());
-             int counter =1;
-             while(true)
-             {
-                 int modifiedIndexFromHash=this.getQuadraticProbing(sd.getAbbreviationHash(), counter)%this.capacity;
-                 byAbbreviationCounter[modifiedIndexFromHash]++;
-                 if(byAbbreviation[modifiedIndexFromHash]==null)
-                     
-                 {
-                     byAbbreviation[modifiedIndexFromHash]=sd;
-                     break;
-                     
-                 }
-                 else
-                 {
-                     counter++;
-                 }
-             }
-             
-         }
-        
-        
-         
-         this.printState();
+        IndexFromHash = sd.getAbbreviationHash() % this.capacity;
+        if (byAbbreviation[IndexFromHash] == null) {
+            byAbbreviation[IndexFromHash] = sd;
+            byAbbreviationCounter[IndexFromHash]++;
+        } else {
+            System.out.println("bbrevCollision" + sd.getAbbreviation());
+            int counter = 1;
+            while (true) {
+                int modifiedIndexFromHash = this.getQuadraticProbing(sd.getAbbreviationHash(), counter) % this.capacity;
+                byAbbreviationCounter[modifiedIndexFromHash]++;
+                if (byAbbreviation[modifiedIndexFromHash] == null) {
+                    byAbbreviation[modifiedIndexFromHash] = sd;
+                    break;
+
+                } else {
+                    counter++;
+                }
+            }
+
+        }
+
         return true;
     }
 
@@ -210,7 +221,7 @@ public class HashTable {
      * and Abbreviation table
      */
     void deleteByAbbreviation(String abbrev) {
-        
+
         StockData deleteMe = findByAbbreviation(abbrev);
         if (deleteMe == null) {
             return;
@@ -232,7 +243,7 @@ public class HashTable {
         if (newIndex < 0) {
             //System.err.println("overflowm base: " + baseIndex + " iteration " + iteration);
             //should never happen
-            
+
             return 0;
         }
         return newIndex;

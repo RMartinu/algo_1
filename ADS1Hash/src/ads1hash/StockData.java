@@ -259,8 +259,8 @@ public class StockData implements Serialize {
         return values;
     } 
     
-    double[] getVolume() {
-        double values[] = new double[data.size()];
+    long[] getVolume() {
+        long values[] = new long[data.size()];
         for (int i = 0; i < data.size(); i++) {
             values[i] = data.get(i).getVolume();
         }
@@ -271,9 +271,9 @@ public class StockData implements Serialize {
     /**
      * Get a specific number of Datapoints
      */
-    double[] getVolume(int amount) {
+    long[] getVolume(int amount) {
         amount = (amount < data.size()) ? amount : data.size(); //Do we have enough Data to fullfill the request? Best Effort
-        double values[] = new double[amount];
+        long values[] = new long[amount];
         for (int i = 0; i < amount; ++i) {
             values[i] = data.get(i).getVolume();
         }
