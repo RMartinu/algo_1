@@ -329,14 +329,15 @@ public class PlotterPanel extends Pane {
 
         if (workSet.containsDayData()) {
             DayData mostRecent = workSet.getLatestDataPoint();
-            this.open.setText(Double.toString(mostRecent.getOpenCourse()));
+            this.open.setText(String.format("%.2f",mostRecent.getOpenCourse()));
             //ToDo: The other fields need values too
 
-            this.high.setText(Double.toString(mostRecent.getHighestCourse()));
-            this.low.setText(Double.toString(mostRecent.getLowestCourse()));
-            this.close.setText(Double.toString(mostRecent.getCloseCourse()));
+            
+            this.high.setText(String.format("%.2f",mostRecent.getHighestCourse()));
+            this.low.setText(String.format("%.2f",mostRecent.getLowestCourse()));
+            this.close.setText(String.format("%.2f",mostRecent.getCloseCourse()));
             this.volume.setText(Long.toString(mostRecent.getVolume()));
-            this.adjClose.setText(Double.toString(mostRecent.getAdjustedCloseCourse()));
+            this.adjClose.setText(String.format("%.2f",mostRecent.getAdjustedCloseCourse()));
             this.date.setText(mostRecent.getDate().toString());
         } else {
             //ToDo: The data labels may contains debris, clean up
