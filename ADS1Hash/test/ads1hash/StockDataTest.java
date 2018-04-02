@@ -8,7 +8,6 @@ package ads1hash;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Scanner;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

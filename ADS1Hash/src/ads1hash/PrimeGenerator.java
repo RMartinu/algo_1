@@ -122,7 +122,8 @@ public class PrimeGenerator {
         /*Lets check if its one of those pattern primes, pick the next larger if neccessary*/
         while(isMersennePrime(primeCandidate))
         {
-            findClosestPrime(primeCandidate+1);
+            
+            primeCandidate=findClosestPrime(primeCandidate+1);
         }
         return primeCandidate;
         

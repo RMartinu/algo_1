@@ -290,12 +290,13 @@ public class HashTable {
     }
 
     void saveToFile(File saveTo) throws FileNotFoundException {
+        System.out.println("Saving");
         try (PrintWriter p = new PrintWriter(saveTo)) {
             p.append(STARTTAG).append("\n");
             p.append(Integer.toString(size)).append("\n");
             //Here go the indvidual StockData entries
             for (StockData sd : this.byName) {
-                if (sd == null) {//System.err.println("null");
+                if (sd == null) {System.err.println("null");
 
                 } else {
                     p.append(sd.createStringRepresentation());

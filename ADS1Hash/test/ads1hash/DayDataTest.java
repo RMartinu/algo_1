@@ -90,7 +90,7 @@ public class DayDataTest {
     public void testEquals() {
         System.out.println("equals");
         Object o = null;
-        DayData instance = null;
+        DayData instance = new DayData(LocalDate.parse("2001-01-01"), 0, 0, 0, 0, 0, 0);
         boolean expResult = false;
         boolean result = instance.equals(o);
         assertEquals(expResult, result);

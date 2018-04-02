@@ -76,7 +76,7 @@ public class PrimeGeneratorTest {
     public void testFindClosestPrime() {
         System.out.println("findClosestPrime");
         int input = 400;
-        PrimeGenerator instance = new PrimeGenerator(234500);
+        PrimeGenerator instance = new PrimeGenerator(23450);
         int expResult = 401;
         int result = instance.findClosestPrime(input);
         assertEquals(expResult, result);
@@ -129,6 +129,8 @@ public class PrimeGeneratorTest {
             }
             suggestedPrime = p.findClosestPrime(i);
             expectedPrime = primes[primeIndex];
+            //Mersennes would get discarded, so we don't test for them
+            if(p.isMersennePrime(expectedPrime)){continue;}
             assertEquals(expectedPrime, suggestedPrime);
 
         }

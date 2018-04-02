@@ -46,7 +46,7 @@ public class HashTableTest {
         System.out.println("requestResize");
         int newCapacity = 0;
         HashTable instance = new HashTable(137);
-        boolean expResult = false;
+        boolean expResult = true;
         boolean result = instance.requestResize(newCapacity);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
@@ -235,11 +235,11 @@ public class HashTableTest {
      */
     @Test
     public void testSaveToFile() throws Exception {
-        fail();
+        //fail();
         System.out.println("saveToFile");
-        File saveTo = new File("D:\\httest.txt");
+        File saveTo = new File("D:\\httest1.txt");
         HashTable instance = new HashTable(30);
-               instance.insert(new StockData("TestCo", "TC", "4321"));
+              instance.insert(new StockData("TestCo", "TC", "4321"));
         instance.saveToFile(saveTo);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
