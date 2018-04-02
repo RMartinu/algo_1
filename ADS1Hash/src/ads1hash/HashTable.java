@@ -47,6 +47,7 @@ public class HashTable {
 
     boolean requestResize(int newCapacity) {
 
+        
         int actualNewCap = this.primeGen.findClosestPrime(newCapacity);
 
         System.out.print("Resizing");
@@ -98,7 +99,7 @@ public class HashTable {
         }
         /*is there ambiguity?*/
         if ((findByName(sd.getName()) != null) || (findByAbbreviation(sd.getAbbreviation()) != null)) {
-            System.err.println("Stock already in DB");
+            System.err.println("Stock already in DB: " + sd.getName() + " "+ sd.getAbbreviation());
             return false;
         }
 
@@ -255,7 +256,7 @@ public class HashTable {
      */
     StockData findByName(String name) {
 
-        System.out.println("Searching for: " + name);
+        //System.out.println("Searching for: " + name);
         int baseHash = StockData.getHashCode(name) % this.capacity;
         for (int i = 0; i < this.capacity; i++) {
             int modifiedHash = getQuadraticProbing(baseHash, i) % this.capacity;
@@ -273,7 +274,7 @@ public class HashTable {
 
     //ToDO: find the same way as by name
     StockData findByAbbreviation(String abbreviation) {
-        System.out.println("Searching for: " + abbreviation);
+        //System.out.println("Searching for: " + abbreviation);
         int baseHash = StockData.getHashCode(abbreviation) % this.capacity;
         for (int i = 0; i < this.capacity; i++) {
             int modifiedHash = getQuadraticProbing(baseHash, i) % this.capacity;
@@ -290,13 +291,13 @@ public class HashTable {
     }
 
     void saveToFile(File saveTo) throws FileNotFoundException {
-        System.out.println("Saving");
+        //System.out.println("Saving");
         try (PrintWriter p = new PrintWriter(saveTo)) {
             p.append(STARTTAG).append("\n");
             p.append(Integer.toString(size)).append("\n");
             //Here go the indvidual StockData entries
             for (StockData sd : this.byName) {
-                if (sd == null) {System.err.println("null");
+                if (sd == null) {//System.err.println("null");
 
                 } else {
                     p.append(sd.createStringRepresentation());

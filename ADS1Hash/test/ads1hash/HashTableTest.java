@@ -6,6 +6,7 @@
 package ads1hash;
 
 import java.io.File;
+import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -71,9 +72,6 @@ public class HashTableTest {
         assertEquals(sd2, result);
 
     }
-    
-
-    
 
     /**
      * Test of getQuadraticProbing method, of class HashTable.
@@ -172,33 +170,102 @@ public class HashTableTest {
         // TODO review the generated test code and remove the default call to fail.
         // fail("The test case is a prototype.");
     }
-    
+
     @Test
-    public void testLotsOfInsertions()
-    {
+    public void testLotsOfInsertions() {
         System.out.println("Lots of inserts");
         HashTable instance = new HashTable(100);
-        StockData ds[]=new StockData[175];
-        StringBuilder sbName=new StringBuilder("13");
-        for(int i =0; i<ds.length;i++)
-        {
-            sbName.setCharAt(0, (char)('A'+(i/26)));
-            sbName.setCharAt(1, (char)('A'+(i%26)));
-            System.out.print(sbName.toString() + "_" );
-            ds[i]=new StockData("Name "+sbName.toString(), "AB"+sbName.toString(), "123");
+        StockData ds[] = new StockData[1750];
+        StringBuilder sbName = new StringBuilder("13");
+        for (int i = 0; i < ds.length; i++) {
+            sbName.setCharAt(0, (char) ('A' + (i / 26)));
+            sbName.setCharAt(1, (char) ('A' + (i % 26)));
+            System.out.print(sbName.toString() + "_");
+            ds[i] = new StockData("Name " + sbName.toString(), "AB" + sbName.toString(), "123");
             instance.insert(ds[i]);
         }
-        for(StockData s: ds)
-        {
-            StockData retByName=instance.findByName(s.getName());
-            StockData retByAbbreviation=instance.findByAbbreviation(s.getAbbreviation());
-            
+        for (StockData s : ds) {
+            StockData retByName = instance.findByName(s.getName());
+            StockData retByAbbreviation = instance.findByAbbreviation(s.getAbbreviation());
+
             assertEquals(retByName, s);
             assertEquals(retByAbbreviation, s);
         }
-        
+
         System.out.println("Done w printo");
         //fail("nothing toworry about");
+    }
+
+    @Test
+    public void testChainedOperations() {
+        System.out.println("A Sequence of insertions, deletions interspresed with searches");
+
+        HashTable instance = new HashTable(200);
+        StockData insertable[] = new StockData[5000];
+
+        StockData killedOf[] = new StockData[5000];
+
+        StringBuffer sb = new StringBuffer("xBC");
+        int firstDigit = 0, secondDigit = 0, thirdDigit = 0;
+        for (int i = 0; i < 3834; i++) {
+
+            thirdDigit %= 25;
+            secondDigit %= 25;
+            firstDigit %= 25;
+            if (thirdDigit == 24) {
+                secondDigit++;
+            }
+            if (secondDigit > 22) {
+                firstDigit++;
+            }
+
+            sb.setCharAt(0, (char) ('A' + firstDigit));
+            sb.setCharAt(1, (char) ('A' + secondDigit));
+            sb.setCharAt(2, (char) ('A' + thirdDigit));
+            thirdDigit++;
+            StockData t = new StockData("Name " + sb.toString(), sb.toString(), Integer.toString(firstDigit * 26 * 26 + secondDigit * 26 + thirdDigit));
+            int index = 0;
+            while (insertable[index++] != null) {
+                insertable[index] = t;
+            }
+            instance.insert(t);
+
+        }
+
+        for (StockData searchFor : insertable) {
+            if (searchFor != null) {
+                StockData retValName = instance.findByName(searchFor.getName());
+                StockData retValAbbrev = instance.findByAbbreviation(searchFor.getAbbreviation());
+                assertEquals(retValName, retValAbbrev);
+                assertEquals(retValName, searchFor);
+            }
+        }
+
+        for (int i = 0; i < insertable.length; i++) {
+            if (Math.random() * insertable.length > 0.8) {
+                if (insertable[i] == null) {
+                    continue;
+                }
+                StockData transfer = insertable[i];
+                insertable[i] = null;
+                int index = 0;
+                while (killedOf[index++] != null);
+                killedOf[index] = transfer;
+                assertNull("found abbev demon", instance.findByAbbreviation(transfer.getAbbreviation()));
+                assertNull("found a demon", instance.findByName(transfer.getName()));
+
+            }
+        }
+
+        for (StockData searchFor : insertable) {
+            if (searchFor != null) {
+                StockData retValName = instance.findByName(searchFor.getName());
+                StockData retValAbbrev = instance.findByAbbreviation(searchFor.getAbbreviation());
+                assertEquals(retValName, retValAbbrev);
+                assertEquals(retValName, searchFor);
+            }
+        }
+
     }
 
     /**
@@ -226,11 +293,12 @@ public class HashTableTest {
         HashTable instance = null;
         instance.delete(deleteMe);
         // TODO review the generated test code and remove the default call to fail.
-        
+
     }
 
     /**
      * Test of saveToFile method, of class HashTable.
+     *
      * @throws java.lang.Exception
      */
     @Test
@@ -239,7 +307,7 @@ public class HashTableTest {
         System.out.println("saveToFile");
         File saveTo = new File("D:\\httest1.txt");
         HashTable instance = new HashTable(30);
-              instance.insert(new StockData("TestCo", "TC", "4321"));
+        instance.insert(new StockData("TestCo", "TC", "4321"));
         instance.saveToFile(saveTo);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
@@ -253,7 +321,7 @@ public class HashTableTest {
         System.out.println("readFromFile");
         File readFrom = new File("D:\\httest.txt");
         HashTable instance = new HashTable(40);
- 
+
         instance.readFromFile(readFrom);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");

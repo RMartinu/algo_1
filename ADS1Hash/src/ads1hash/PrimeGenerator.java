@@ -93,6 +93,14 @@ public class PrimeGenerator {
     int findClosestPrime(int input) {
         // TODO: implement non generic return value
         //System.out.println(prime.length);
+        
+
+        if(input>=prime[prime.length-1])
+        {
+            sieve(input*2);
+        }
+            
+        
         int runtime = (int) Math.round(Math.log(prime.length)/Math.log(2))+1;
         int x = (int) Math.round(prime.length/2);
         boolean bigger = true;
@@ -139,7 +147,14 @@ public class PrimeGenerator {
 //        }
 
 
-        /*Using the Sieve of Eratosthenes to create a table of prime numbers*/
+sieve(toInt);
+
+
+    }
+    
+    void sieve(int toInt)
+    {
+            /*Using the Sieve of Eratosthenes to create a table of prime numbers*/
         boolean sieve[] = new boolean[toInt + 1];
         for (int i = 0; i < sieve.length; i++) {
             sieve[i] = true;
@@ -183,7 +198,6 @@ public class PrimeGenerator {
 //            System.out.print(i + " ");
 //        }
         System.out.println(" done");
-
     }
 
     /*Need a default constructor in case the default array is sufficient*/
