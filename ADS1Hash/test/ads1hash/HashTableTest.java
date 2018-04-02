@@ -71,6 +71,9 @@ public class HashTableTest {
         assertEquals(sd2, result);
 
     }
+    
+
+    
 
     /**
      * Test of getQuadraticProbing method, of class HashTable.
@@ -169,6 +172,34 @@ public class HashTableTest {
         // TODO review the generated test code and remove the default call to fail.
         // fail("The test case is a prototype.");
     }
+    
+    @Test
+    public void testLotsOfInsertions()
+    {
+        System.out.println("Lots of inserts");
+        HashTable instance = new HashTable(100);
+        StockData ds[]=new StockData[175];
+        StringBuilder sbName=new StringBuilder("13");
+        for(int i =0; i<ds.length;i++)
+        {
+            sbName.setCharAt(0, (char)('A'+(i/26)));
+            sbName.setCharAt(1, (char)('A'+(i%26)));
+            System.out.print(sbName.toString() + "_" );
+            ds[i]=new StockData("Name "+sbName.toString(), "AB"+sbName.toString(), "123");
+            instance.insert(ds[i]);
+        }
+        for(StockData s: ds)
+        {
+            StockData retByName=instance.findByName(s.getName());
+            StockData retByAbbreviation=instance.findByAbbreviation(s.getAbbreviation());
+            
+            assertEquals(retByName, s);
+            assertEquals(retByAbbreviation, s);
+        }
+        
+        System.out.println("Done w printo");
+        //fail("nothing toworry about");
+    }
 
     /**
      * Test of deleteByAbbreviation method, of class HashTable.
@@ -204,6 +235,7 @@ public class HashTableTest {
      */
     @Test
     public void testSaveToFile() throws Exception {
+        fail();
         System.out.println("saveToFile");
         File saveTo = new File("D:\\httest.txt");
         HashTable instance = new HashTable(30);

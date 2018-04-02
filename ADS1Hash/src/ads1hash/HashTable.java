@@ -128,6 +128,7 @@ public class HashTable {
                 int modifiedIndexFromHash = this.getQuadraticProbing(sd.getNameHash(), counter) % this.capacity;
                 /*We use this box as a stepping stone, record the usage*/
                 byNameCounter[modifiedIndexFromHash]++;
+                System.out.println("Name Collision" + sd.getName());
                 if (byName[modifiedIndexFromHash] == null) {
                     /*We arrived at an empty slot, insert the data*/
                     byName[modifiedIndexFromHash] = sd;

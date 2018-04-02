@@ -118,7 +118,14 @@ public class PrimeGenerator {
                 bigger = false;
             }
         }
-        return bigger ? prime[x]:prime[x+1];
+        int primeCandidate= bigger ? prime[x]:prime[x+1];
+        /*Lets check if its one of those pattern primes, pick the next larger if neccessary*/
+        while(isMersennePrime(primeCandidate))
+        {
+            findClosestPrime(primeCandidate+1);
+        }
+        return primeCandidate;
+        
     }
 
     PrimeGenerator(int toInt) {
