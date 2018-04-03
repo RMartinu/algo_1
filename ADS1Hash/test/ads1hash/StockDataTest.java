@@ -203,7 +203,7 @@ public class StockDataTest {
         DayData td=new DayData(LocalDate.parse("2001-01-05"), 01, 02, 03, 04, 05, 06);
         instance.insertDayData(td);
         DayData expResult = td;
-        DayData result = instance.getLatestDataPoint();
+        DayData result = instance.getMostRecentDataPoint();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");

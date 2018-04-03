@@ -32,7 +32,7 @@ public class HashTable {
         primeGen = new PrimeGenerator();
         /*Get a prime number marginally large then the desired size,
         *as we want the map to have an undividable amount of elements*/
-        capacity = primeGen.findClosestPrime(desiredCapacity);
+        capacity = primeGen.findClosestPrime(desiredCapacity * 2);
         byName = new StockData[capacity];
         byNameCounter = new int[capacity];
         byAbbreviation = new StockData[capacity];
@@ -104,7 +104,7 @@ public class HashTable {
 
         //can we even insert the new element?
         //should we try to insert into a table beyond a certain laod factor?
-        if (getLoadFActor()>0.75) {
+        if (getLoadFActor() > 0.75) {
             //ToDO: trigger relocation to a larger hashtable
             if (requestResize(capacity * 2)) {
                 /*Resize worked just as planned, nothing to see, continue*/
@@ -127,7 +127,7 @@ public class HashTable {
                 size++;
                 break;
             }
-            
+
             //otherwise probe another cell in the next iteration
             //System.out.println("Had a name collision: "+sd.getName());
         }
@@ -307,14 +307,11 @@ public class HashTable {
         this.byNameCounter = new int[capacity];
 
         while (sc.peek().equals(StockData.STARTTAG)) {
-            if (sc.peek().equals(StockData.STARTTAG)) {
-                System.err.println("Got one!");
-                StockData tsd = new StockData(sc);
-                System.err.println(tsd.getName() + " " + tsd.getAbbreviation());
-                this.insert(tsd);
-            } else {
-                System.err.println("This wasn't a stock data entry");
-            }
+
+            StockData tsd = new StockData(sc);
+            System.out.println("Inserting: " + tsd.getName() + " " + tsd.getAbbreviation());
+            this.insert(tsd);
+
         }
 
         t = sc.nextLine();

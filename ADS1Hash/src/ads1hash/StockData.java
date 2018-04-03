@@ -119,7 +119,7 @@ public class StockData implements Serialize {
         for (int i = 0; i < hashMe.length(); i++) {
             currentChar = hashMe.charAt(i);
             hashCode = (hashCode * 257 + currentChar) % 234499;
-            /* use some adequate prime*/
+            /* use some adequate prime, adapt for hashlists with more then 200k entries*/
         }
 
         return hashCode;
@@ -304,7 +304,7 @@ public class StockData implements Serialize {
     /**
      * retrives the most recent Set of datapoints
      */
-    DayData getLatestDataPoint() {
+    DayData getMostRecentDataPoint() {
         if (data.isEmpty()) {
             return null;
         }

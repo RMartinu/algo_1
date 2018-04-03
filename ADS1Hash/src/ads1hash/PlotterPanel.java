@@ -326,7 +326,7 @@ public class PlotterPanel extends Pane {
         this.wkn.setText(workSet.getWKN());
 
         if (workSet.containsDayData()) {
-            DayData mostRecent = workSet.getLatestDataPoint();
+            DayData mostRecent = workSet.getMostRecentDataPoint();
             this.open.setText(String.format("%.2f",mostRecent.getOpenCourse()));
             //ToDo: The other fields need values too
 
