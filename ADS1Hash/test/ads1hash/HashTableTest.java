@@ -6,7 +6,8 @@
 package ads1hash;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.security.acl.NotOwnerException;
+import java.util.LinkedList;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -180,7 +181,7 @@ public class HashTableTest {
         for (int i = 0; i < ds.length; i++) {
             sbName.setCharAt(0, (char) ('A' + (i / 26)));
             sbName.setCharAt(1, (char) ('A' + (i % 26)));
-            System.out.print(sbName.toString() + "_");
+            //System.out.print(sbName.toString() + "_");
             ds[i] = new StockData("Name " + sbName.toString(), "AB" + sbName.toString(), "123");
             instance.insert(ds[i]);
         }
@@ -203,11 +204,12 @@ public class HashTableTest {
         HashTable instance = new HashTable(200);
         StockData insertable[] = new StockData[5000];
 
-        StockData killedOf[] = new StockData[5000];
+        StockData killedOf[] = new StockData[insertable.length];
 
         StringBuffer sb = new StringBuffer("xBC");
         int firstDigit = 0, secondDigit = 0, thirdDigit = 0;
-        for (int i = 0; i < 3834; i++) {
+        int index = 0;
+        for (int i = 0; i < insertable.length; i++) {
 
             thirdDigit %= 25;
             secondDigit %= 25;
@@ -224,7 +226,7 @@ public class HashTableTest {
             sb.setCharAt(2, (char) ('A' + thirdDigit));
             thirdDigit++;
             StockData t = new StockData("Name " + sb.toString(), sb.toString(), Integer.toString(firstDigit * 26 * 26 + secondDigit * 26 + thirdDigit));
-            int index = 0;
+
             while (insertable[index++] != null) {
                 insertable[index] = t;
             }
@@ -241,6 +243,7 @@ public class HashTableTest {
             }
         }
 
+        index = 0;
         for (int i = 0; i < insertable.length; i++) {
             if (Math.random() * insertable.length > 0.8) {
                 if (insertable[i] == null) {
@@ -248,7 +251,7 @@ public class HashTableTest {
                 }
                 StockData transfer = insertable[i];
                 insertable[i] = null;
-                int index = 0;
+
                 while (killedOf[index++] != null);
                 killedOf[index] = transfer;
                 assertNull("found abbev demon", instance.findByAbbreviation(transfer.getAbbreviation()));
@@ -268,13 +271,122 @@ public class HashTableTest {
 
     }
 
+    @Test
+    public void testInterleavedOps() {
+        System.out.println("Some more ins and outs");
+        LinkedList<StockData> insertSet = new LinkedList<>();
+        LinkedList<StockData> removedSet = new LinkedList<>();
+        HashTable testedInstance = new HashTable(200);
+        StockData temp;
+
+        int counter;
+        for (counter = 1; counter % 75 != 0; counter++) {
+            //Spreading the generated strings out gives a not that artificial collision response
+            temp = new StockData("Name" + Integer.toHexString(counter * 2 + 1), Integer.toHexString(counter * 3 + 1), Integer.toString(counter));
+            insertSet.add(temp);
+            testedInstance.insert(temp);
+        }
+
+        for (StockData toBeFound : insertSet) {
+            StockData foundByName = testedInstance.findByName(toBeFound.getName());
+            StockData foundByAbbreviation = testedInstance.findByAbbreviation(toBeFound.getAbbreviation());
+            assertEquals(foundByName, toBeFound);
+            assertEquals(toBeFound, foundByAbbreviation);
+        }
+
+        for (int countdown = insertSet.size() / 4; countdown != 0; countdown--) {
+            StockData t = insertSet.removeFirst();
+            StockData t2 = insertSet.removeLast();
+            testedInstance.deleteByAbbreviation(t.getAbbreviation());
+            testedInstance.deleteByName(t2.getName());
+            removedSet.add(t);
+            removedSet.add(t2);
+        }
+
+        for (StockData notToBeFound : removedSet) {
+            assertNull(testedInstance.findByAbbreviation(notToBeFound.getAbbreviation()));
+            assertNull(testedInstance.findByName(notToBeFound.getName()));
+        }
+        for (StockData toBeFound : insertSet) {
+            StockData foundByName = testedInstance.findByName(toBeFound.getName());
+            StockData foundByAbbreviation = testedInstance.findByAbbreviation(toBeFound.getAbbreviation());
+            assertEquals(foundByName, toBeFound);
+            assertEquals(toBeFound, foundByAbbreviation);
+        }
+
+        System.out.println(counter);
+        counter++;
+        for (; counter % 75 != 0; counter++) {
+
+            //Using the counter to create directly consecutive strings causes lots of collisions
+            temp = new StockData("Name" + Integer.toHexString(counter+1000), Integer.toHexString(counter+1000), Integer.toString(counter+1000));
+            insertSet.add(temp);
+            testedInstance.insert(temp);
+        }
+        System.out.println(counter);
+
+        for (StockData notToBeFound : removedSet) {
+            assertNull(testedInstance.findByAbbreviation(notToBeFound.getAbbreviation()));
+            assertNull(testedInstance.findByName(notToBeFound.getName()));
+        }
+        for (StockData toBeFound : insertSet) {
+            StockData foundByName = testedInstance.findByName(toBeFound.getName());
+            StockData foundByAbbreviation = testedInstance.findByAbbreviation(toBeFound.getAbbreviation());
+            assertEquals(foundByName, toBeFound);
+            assertEquals(toBeFound, foundByAbbreviation);
+        }
+
+        for (int countdown = insertSet.size() / 4; countdown != 0; countdown--) {
+            StockData t = insertSet.removeFirst();
+            StockData t2 = insertSet.removeLast();
+            testedInstance.deleteByAbbreviation(t.getAbbreviation());
+            testedInstance.deleteByName(t2.getName());
+            removedSet.add(t);
+            removedSet.add(t2);
+        }
+
+        for (StockData notToBeFound : removedSet) {
+            assertNull(testedInstance.findByAbbreviation(notToBeFound.getAbbreviation()));
+            assertNull(testedInstance.findByName(notToBeFound.getName()));
+        }
+        for (StockData toBeFound : insertSet) {
+            StockData foundByName = testedInstance.findByName(toBeFound.getName());
+            StockData foundByAbbreviation = testedInstance.findByAbbreviation(toBeFound.getAbbreviation());
+            assertEquals(foundByName, toBeFound);
+            assertEquals(toBeFound, foundByAbbreviation);
+        }
+
+        //reinserting some stuff       
+        for (int i = 0; i < 10; i++) {
+            StockData t1, t2;
+            t1 = removedSet.removeFirst();
+            t2 = removedSet.removeLast();
+            insertSet.add(t2);
+            insertSet.add(t1);
+            testedInstance.insert(t2);
+            testedInstance.insert(t1);
+        }
+
+        for (StockData notToBeFound : removedSet) {
+            assertNull(testedInstance.findByAbbreviation(notToBeFound.getAbbreviation()));
+            assertNull(testedInstance.findByName(notToBeFound.getName()));
+        }
+        for (StockData toBeFound : insertSet) {
+            StockData foundByName = testedInstance.findByName(toBeFound.getName());
+            StockData foundByAbbreviation = testedInstance.findByAbbreviation(toBeFound.getAbbreviation());
+            assertEquals(foundByName, toBeFound);
+            assertEquals(toBeFound, foundByAbbreviation);
+        }
+
+    }
+
     /**
      * Test of deleteByAbbreviation method, of class HashTable.
      */
     @Test
     public void testDeleteByAbbreviation() {
         System.out.println("deleteByAbbreviation");
-       // fail("The test case is a prototype.");
+        // fail("The test case is a prototype.");
         String abbrev = "";
         HashTable instance = null;
 //        instance.deleteByAbbreviation(abbrev);

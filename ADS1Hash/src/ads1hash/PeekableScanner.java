@@ -15,7 +15,7 @@ import java.util.Scanner;
  */
 public class PeekableScanner {
 
-    private Scanner sc;
+    private final Scanner sc;
     private String next;
 
     public PeekableScanner(File in) throws FileNotFoundException {

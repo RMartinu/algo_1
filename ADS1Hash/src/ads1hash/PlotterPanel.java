@@ -5,8 +5,6 @@
  */
 package ads1hash;
 
-import java.util.Arrays;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;

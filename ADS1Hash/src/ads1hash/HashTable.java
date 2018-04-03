@@ -127,7 +127,9 @@ public class HashTable {
                 size++;
                 break;
             }
+            
             //otherwise probe another cell in the next iteration
+            //System.out.println("Had a name collision: "+sd.getName());
         }
 
         //insert into byAbbreviation table
@@ -140,6 +142,7 @@ public class HashTable {
                 byAbbreviation[actualIndex] = sd;
                 break;
             }
+            //System.out.println("Had an abbev collision: "+sd.getAbbreviation());
         }
 
         return true;
