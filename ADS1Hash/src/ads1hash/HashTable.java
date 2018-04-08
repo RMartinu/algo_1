@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 /**
  *
  * @author Robert Martinu
+ * @author Julia Pichler
  */
 public class HashTable {
 
@@ -46,10 +47,13 @@ public class HashTable {
     }
 
     boolean requestResize(int newCapacity) {
+        
 
         int actualNewCap = this.primeGen.findClosestPrime(newCapacity);
+        if(this.size>=actualNewCap)
+            return false;
 
-        System.out.print("Resizing");
+        //System.out.print("Resizing");
         // Keep a handle on the current map
         StockData[] temp = byName;
 
@@ -66,7 +70,7 @@ public class HashTable {
             this.insert(t);
         }
 
-        System.out.println("...successfull");
+        //System.out.println("...successfull");
         return true;
     }
 
@@ -105,11 +109,19 @@ public class HashTable {
         //can we even insert the new element?
         //should we try to insert into a table beyond a certain laod factor?
         if (getLoadFActor() > 0.75) {
-            //ToDO: trigger relocation to a larger hashtable
-            if (requestResize(capacity * 2)) {
+            //Lets create some additional real estate
+            if (requestResize(capacity * 3)) {
                 /*Resize worked just as planned, nothing to see, continue*/
             } else {
+                //just in case the option to actually fail gracefully at reallocation is implemented
+                if(size<capacity)
+                {
+                    //Still inserting, despite overruning the max load 
+                    System.err.println("capacity problems");
+                }
+                else
                 /*Sorry, can't do that, returning*/
+                    System.err.println("insertion impossibe");
                 return false;
             }
         }
@@ -151,7 +163,7 @@ public class HashTable {
     /**
      * removes an object from hastable by reference
      */
-    void delete(StockData deleteMe) {
+    private void delete(StockData deleteMe) {
 
         int baseIndex = StockData.getHashCode(deleteMe.getName());
         int modifiedIndex;

@@ -9,7 +9,8 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Julia
+ * @author Robert Martinu
+ * @author Julia Pichler
  */
 public class PrimeGenerator {
     

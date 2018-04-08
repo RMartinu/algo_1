@@ -6,7 +6,6 @@
 package ads1hash;
 
 import java.io.File;
-import java.security.acl.NotOwnerException;
 import java.util.LinkedList;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -18,6 +17,7 @@ import static org.junit.Assert.*;
 /**
  *
  * @author Robert Martinu
+ * @author Julia Pichler
  */
 public class HashTableTest {
 

@@ -18,6 +18,7 @@ import static org.junit.Assert.*;
 /**
  *
  * @author Robert Martinu
+ * @author Julia Pichler
  */
 public class StockDataTest {
     StockData testInstance;

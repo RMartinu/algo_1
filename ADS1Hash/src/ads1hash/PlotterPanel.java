@@ -23,6 +23,7 @@ import javafx.scene.shape.Rectangle;
 /**
  *
  * @author Robert Martinu
+ * @author Julia Pichler
  */
 public class PlotterPanel extends Pane {
 

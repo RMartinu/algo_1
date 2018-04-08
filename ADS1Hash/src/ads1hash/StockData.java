@@ -11,6 +11,7 @@ import java.util.Collections;
 /**
  *
  * @author Robert Martinu
+ * @author Julia Pichler
  */
 public class StockData implements Serialize {
 
@@ -118,7 +119,7 @@ public class StockData implements Serialize {
         int hashCode = 0;
         for (int i = 0; i < hashMe.length(); i++) {
             currentChar = hashMe.charAt(i);
-            hashCode = (hashCode * 257 + currentChar) % 234499;
+            hashCode = (hashCode * 53 + currentChar) % 234499;
             /* use some adequate prime, adapt for hashlists with more then 200k entries*/
         }
 

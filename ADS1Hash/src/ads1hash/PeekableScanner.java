@@ -12,6 +12,7 @@ import java.util.Scanner;
 /**
  *
  * @author Robert Martinu
+ * @author Julia Pichler
  */
 public class PeekableScanner {
 

@@ -37,6 +37,7 @@ import javafx.stage.Stage;
 /**
  *
  * @author Robert Martinu
+ * @author Julia Pichler
  */
 public class ADS1Hash extends Application {
     
@@ -207,7 +208,7 @@ public class ADS1Hash extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         /*Ask for a certain size, the constructor will choose an appropriate aproximation*/
-        dataTable = new HashTable(2000);
+        dataTable = new HashTable(1000);
         ExtensionFilter eFilter = new ExtensionFilter("ADS Hashtable File", "*.AHF");
 
         /**
@@ -315,7 +316,7 @@ public class ADS1Hash extends Application {
         
         MenuItem smiDelCurrent = new MenuItem("Delete current Stock");
         smiDelCurrent.setOnAction(e -> {
-            dataTable.delete(recentStockData);
+            dataTable.deleteByName(recentStockData.getName());
             recentStockData = null;
             pp.setStock(recentStockData);
         });

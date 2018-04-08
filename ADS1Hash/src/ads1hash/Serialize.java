@@ -8,6 +8,7 @@ package ads1hash;
 /**
  *
  * @author Robert Martinu
+ * @author Julia Pichler
  */
 public interface Serialize {
     

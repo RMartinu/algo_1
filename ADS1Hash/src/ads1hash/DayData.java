@@ -11,6 +11,7 @@ import java.util.StringTokenizer;
 /**
  *
  * @author Robert Martinu
+ * @author Julia Pichler
  */
 public class DayData implements Serialize {
 
@@ -54,7 +55,7 @@ public class DayData implements Serialize {
             if (check.endsWith(ENDTAG)) {//System.out.println("everythings fine");
 
             } else {
-                System.err.println("rest fail");
+                System.err.println("restore fail");
                 throw new RuntimeException("restoration failed");
             }
         } else {
@@ -70,32 +71,32 @@ public class DayData implements Serialize {
     }
 
     double getOpenCourse() {
-        /*allows using the "open"-course data without being able to alter it*/
+        /*allows using the course data without being able to alter it*/
         return open;
     }
 
     double getHighestCourse() {
-        /*allows using the "open"-course data without being able to alter it*/
+        /*allows using the course data without being able to alter it*/
         return high;
     }
 
     double getLowestCourse() {
-        /*allows using the "open"-course data without being able to alter it*/
+        /*allows using the course data without being able to alter it*/
         return low;
     }
 
     double getCloseCourse() {
-        /*allows using the "open"-course data without being able to alter it*/
+        /*allows using the course data without being able to alter it*/
         return close;
     }
 
     long getVolume() {
-        /*allows using the "open"-course data without being able to alter it*/
+        /*allows using the course data without being able to alter it*/
         return volume;
     }
 
     double getAdjustedCloseCourse() {
-        /*allows using the "open"-course data without being able to alter it*/
+        /*allows using the course data without being able to alter it*/
         return adjClose;
     }
 
@@ -121,8 +122,7 @@ public class DayData implements Serialize {
 
     @Override
     public String createStringRepresentation() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-
+        
         StringBuilder sb = new StringBuilder(STARTTAG);
         sb.append(date.toString()).append(" ");
         sb.append(open).append(" ");
